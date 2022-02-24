@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>AdminLTE 3 | Dashboard</title>
+  <title>계획서작성</title>
 
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -33,61 +33,73 @@
 			<!-- Content Header (Page header) -->
 			<section class="content-header">
 				<div class="container-fluid">
+					<div class="row mb-2">
+						<div class="col-sm-6">
+							<h1>General Form</h1>
+						</div>
+						<div class="col-sm-6">
+							<ol class="breadcrumb float-sm-right">
+								<li class="breadcrumb-item"><a href="#">Home</a></li>
+								<li class="breadcrumb-item active">General Form</li>
+							</ol>
+						</div>
+					</div>
+				</div>
+				<!-- /.container-fluid -->
+			</section>
+			<!-- Main content -->
+			<section class="content">
+				<div class="container-fluid">
 					<div class="col-sm-12">
 						<div class="card card-primary">
 							<div class="card-header">
-								<h3 class="card-title">계획서작성</h3>
+								<h3 class="card-title">계획서(판매계획)</h3>
 							</div>
 							<!-- /.card-header -->
 							<!-- form start -->
 							<form>
 								<div class="card-body">
-									<div class="form-group">
-										<label for="addUser">작성자</label> 
-										<input type="text" class="form-control" id="addUser" readonly>
-									</div>
-									<div class="form-group">
-										<label for="PRName">홍보단명</label> 
-										<input type="text" class="form-control" id="PRName">
-									</div>
-									<div class="form-group">
-										<label for="PIProperty">단협</label> 
-										<select class="form-control" id="PIProperty">
-											<option>option 1</option>
-											<option>option 2</option>
-										</select>
-									</div>
-									<div class="form-group">
-										<label for="suPIProperty">행사매장</label> 
-										<select class="form-control" id="suPIProperty">
-											<option>option 1</option>
-											<option>option 2</option>
-										</select>
-									</div>
-									<div class="form-group">
-										<label>진행일</label>
-										<div class="input-group date" id="reservationdate" data-target-input="nearest">
-											<input type="text" class="form-control datetimepicker-input" data-target="#reservationdate">
-											<div class="input-group-append" data-target="#reservationdate" data-toggle="datetimepicker">
-												<div class="input-group-text">
-													<i class="fa fa-calendar"></i>
-												</div>
-											</div>
+									<div id="goodsInfo">
+										<strong>생활재코드</strong>																	
+										<div class="input-group mb-3">
+											<input type="text" class="form-control rounded-0"> 
+											<span class="input-group-append">
+												<button type="button" class="btn btn-info btn-flat">검색</button>
+											</span>
+										</div>
+										<div class="form-group">
+											<label for="PRName">생활재명</label> 
+											<input type="text" class="form-control" id="PRName" readonly>
+										</div>
+										<div class="form-group">
+											<label for="PRName">생산지</label> 
+											<input type="text" class="form-control" id="PRName" readonly>
+										</div>
+										<div class="form-group">
+											<label for="suPIProperty">생활재구분</label> 
+											<select class="form-control" id="suPIProperty">
+												<option>option 1</option>
+												<option>option 2</option>
+											</select>
+										</div>
+										<div class="form-group">
+											<label for="PRName">판매목표</label> 
+											<input type="text" class="form-control" id="PRName">
 										</div>
 									</div>
 									<div class="form-group">
-										<label for="pDay">진행요일</label> 
-										<input type="text" class="form-control" id="pDay" readonly>
+										<button type="button" class="btn btn-info">생활재 추가</button>
+										<button type="button" class="btn btn-danger">생활재 삭제</button>
 									</div>
 									<div class="form-group">
-										<label for="gubun">행사구분</label> 
+										<label for="gubun">시작시간</label> 
 										<select class="form-control" id="gubun">
 											<option>option 1</option>
 											<option>option 2</option>
 										</select>
 									</div>
 									<div class="form-group">
-										<label for="reason">진행배경</label> 
+										<label for="reason">종료시간</label> 
 										<select class="form-control" id="reason">
 											<option>option 1</option>
 											<option>option 2</option>
@@ -96,9 +108,10 @@
 								</div>
 								<!-- /.card-body -->
 
-								<div class="card-footer">
+								<div class="card-footer" style="text-align:center;">
 									<button type="button" class="btn btn-default">이전</button>
-									<button type="button" class="btn btn-primary float-right">다음</button>
+									<button type="button" class="btn btn-warning">임시저장</button>
+									<button type="button" class="btn btn-primary">다음</button>
 								</div>
 							</form>
 						</div>

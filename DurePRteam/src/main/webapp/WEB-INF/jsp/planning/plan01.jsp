@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>AdminLTE 3 | Dashboard</title>
+  <title>계획서작성</title>
 
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -33,10 +33,27 @@
 			<!-- Content Header (Page header) -->
 			<section class="content-header">
 				<div class="container-fluid">
+					<div class="row mb-2">
+						<div class="col-sm-6">
+							<h1>General Form</h1>
+						</div>
+						<div class="col-sm-6">
+							<ol class="breadcrumb float-sm-right">
+								<li class="breadcrumb-item"><a href="#">Home</a></li>
+								<li class="breadcrumb-item active">General Form</li>
+							</ol>
+						</div>
+					</div>
+				</div>
+				<!-- /.container-fluid -->
+			</section>
+			<!-- Main content -->
+			<section class="content">
+				<div class="container-fluid">
 					<div class="col-sm-12">
 						<div class="card card-primary">
 							<div class="card-header">
-								<h3 class="card-title">계획서작성(기본사항)</h3>
+								<h3 class="card-title">계획서(기본사항)</h3>
 							</div>
 							<!-- /.card-header -->
 							<!-- form start -->
@@ -58,7 +75,7 @@
 										</select>
 									</div>
 									<div class="form-group">
-										<label for="suPIProperty">행사매장</label> 
+										<label for="suPIProperty">매장</label> 
 										<select class="form-control" id="suPIProperty">
 											<option>option 1</option>
 											<option>option 2</option>
@@ -96,10 +113,9 @@
 								</div>
 								<!-- /.card-body -->
 
-								<div class="card-footer">								
-									<button type="button" class="btn btn-default">이전</button>									
-									<button type="button" class="btn btn-primary float-right">다음</button>									
-									<button type="button" class="btn btn-warning float-right">임시저장</button>
+								<div class="card-footer" style="text-align:center;">
+									<button type="button" class="btn btn-warning">임시저장</button>
+									<button type="button" class="btn btn-primary">다음</button>
 								</div>
 							</form>
 						</div>
