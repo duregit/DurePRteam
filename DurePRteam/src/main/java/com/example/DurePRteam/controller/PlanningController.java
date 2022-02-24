@@ -22,6 +22,12 @@ public class PlanningController {
         return "index";
     }    
     
+    @RequestMapping("/planning/planList")
+    public String planList() throws Exception {
+
+        return "planning/planList";
+    }
+    
     @RequestMapping("/planning/plan01")
     public String plan01() throws Exception {
 
@@ -32,6 +38,12 @@ public class PlanningController {
     public String plan02() throws Exception {
 
         return "planning/plan02";
+    }
+    
+    @RequestMapping("/planning/plan03")
+    public String plan03() throws Exception {
+
+        return "planning/plan03";
     }
     
 }
