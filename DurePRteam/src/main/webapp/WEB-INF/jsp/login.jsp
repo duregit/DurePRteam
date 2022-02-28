@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>생활재 홍보단 JOIN</title>
+  <title>생활재 홍보단 LOGIN</title>
 
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -35,117 +35,72 @@
 			<!-- Content Header (Page header) -->
 			<section class="content-header">
 				<div class="container-fluid">
-					<div class="row mb-2">
-						<div class="col-sm-6">
-							<h1>General Form</h1>
-						</div>
-						<div class="col-sm-6">
-							<ol class="breadcrumb float-sm-right">
-								<li class="breadcrumb-item"><a href="#">Home</a></li>
-								<li class="breadcrumb-item active">General Form</li>
-							</ol>
-						</div>
-					</div>
-				</div>
-				<!-- /.container-fluid -->
-			</section>
-			<!-- Main content -->
-			<section class="content">
-				<div class="container-fluid">
 					<div class="col-sm-12">
 						<div class="card card-primary">
 							<div class="card-header">
-								<h3 class="card-title">회원가입</h3>
+								<h3 class="card-title">생활재 홍보단</h3>
 							</div>
 							<!-- /.card-header -->
 							<!-- form start -->
 							<form>
 								<div class="card-body">
+									
+								<!-- 
 									<div class="form-group">
 										<label for="UserId">아이디</label> 
+										<input type="text" class="form-control" id="UserId">
+									</div>
+									<div class="form-group">
+										<label for="UserPw">비밀번호</label> 
+										<input type="text" class="form-control" id="UserPw">
+									</div>
+									<div class="input-group">
+										<input type="text" class="form-control">
+		                                <div class="input-group-append"><i class="fa fa-user"></i></div>
+		                                <input type="text" id="userid" value='' placeholder="E-mail을 입력하세요" class="input-group-text" />
+		                            </div>
+		                            <div class="input-group">
+		                                <span class="input-group-addon"><i class="fa fa-lock"></i></span>
+		                                <input type="password" id="password" value='' placeholder="비밀번호를 입력하세요" class="form-control" />
+		                            </div>
+		                        	
+		                            
+		                            <div class="input-group">
+										<input type="text" class="form-control" placeholder="아이디를 입력하세요">
+										<div class="input-group-append">
+											<div class="input-group-text">
+												<i class="fa fa-user"></i>
+											</div>
+										</div>
+									</div>
+		                        -->	     
+									
+									<div class="form-group">
 										<div class="input-group">
-											<input type="text" class="form-control" id="UserId">
-											<button type="button" style="margin-left:10px;" class="btn btn-danger">
-												중복확인
-											</button>
-										</div>
-									<i class="bi bi-person-fill"></i>		
-									</div>							
-									<div class="form-group">
-										<label for="UserPw">패스워드</label> 
-										<input type="password" class="form-control" id="UserPw">
-									</div>								
-									<div class="form-group">
-										<label for="UserNm">이름</label> 
-										<input type="text" class="form-control" id="UserNm">
-									</div>
-									<div class="form-group">
-										<label for="PIProperty">단협</label> 
-										<select class="form-control" id="PIProperty">
-											<option>바른두레생협</option>
-											<option>경기두레생협</option>
-											<option>안양YMCA등대생협</option>
-										</select>
-									</div>
-									<div class="form-group">
-										<label for="suPIProperty">매장</label> 
-										<select class="form-control" id="suPIProperty">
-											<option>매장1</option>
-											<option>매장2</option>
-											<option>매장3</option>
-										</select>
-									</div>
-									<div class="form-group">
-										<label>주소</label>
-										<div style="padding-bottom:5px" class="input-group">
 			                                <div class="input-group-prepend">
 												<div class="input-group-text">
-													<font size="1px">우편주소</font>
+													<i class="fa fa-user"></i>
 												</div>
 											</div>
-			                                <input type="text" id="Zip" value='' class="form-control" readonly/>
+			                                <input type="text" id="UserId" value='' placeholder="아이디를 입력하세요" class="form-control" />
 			                            </div>
-										<div style="padding-bottom:5px" class="input-group">
+			                         </div>
+									<div class="form-group">
+										<div class="input-group">
 			                                <div class="input-group-prepend">
 												<div class="input-group-text">
-													<font size="1px">기본주소</font>
+													<i class="fa fa-lock"></i>
 												</div>
 											</div>
-			                                <input type="text" id="Addr1" value='' class="form-control" readonly/>
+			                                <input type="password" id="UserPw" value='' placeholder="비밀번호를 입력하세요" class="form-control" />
 			                            </div>
-			                            <div style="padding-bottom:5px" class="input-group">
-			                                <div class="input-group-prepend">
-												<div class="input-group-text">
-													<font size="1px">상세주소</font>
-												</div>
-											</div>
-			                                <input type="text" id="Addr2" value='' class="form-control" />
-			                            </div>
-										<div style="text-align:right;">
-										<button type="button" class="btn btn-warning btn-sm">주소검색</button>
-										</div>
-									</div>
-									<div class="form-group">
-										<label for="UserCTel">휴대폰 번호</label> 
-										<input type="text" class="form-control" id="UserCTel" placeholder="' - ' 를 포함해서 입력하세요">
-									</div>
-									<div class="form-group">
-										<label for="ACNum">계좌</label> 
-										<div style="padding-bottom:5px">
-											<select class="form-control" id="ACNum">
-												<option>한국은행</option>
-												<option>한국산업은행</option>
-												<option>중소기업은행</option>
-												<option>KB국민은행</option>
-											</select>
-										</div>
-										<input type="text" class="form-control" id="ACNum" placeholder="' - ' 를 제외해서 입력하세요">
 									</div>
 								</div>
 								<!-- /.card-body -->
 
-								<div class="card-footer" style="text-align:center;">
-									<button type="button" class="btn btn-primary">완료</button>
+								<div class="card-footer">																					
+									<button type="button" class="btn btn-warning float-left">회원가입</button>				
+									<button type="button" class="btn btn-primary float-right">로그인</button>	
 								</div>
 							</form>
 						</div>
@@ -189,12 +144,6 @@
 	<script src="/dist/js/adminlte.js"></script>
 	
 	<script type="text/javascript">
-	$(function () {
-		//Date picker
-	    $('#reservationdate').datetimepicker({
-	        format: 'L'
-	    });
-	});
 	</script>
 </body>
 </html>

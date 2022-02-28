@@ -10,6 +10,6 @@
 <title>MAIN PAGE</title>
 </head>
 <body>
-    <h1>THIS IS MAIN2 PAGE</h1>
+    <h1>THIS IS TEST PAGE</h1>
 </body>
 </html>

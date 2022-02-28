@@ -19,11 +19,11 @@ public class TestController {
 
     @RequestMapping("/")
     public String main() {
-        return "main";
+        return "login";
     }
 
 
-    @RequestMapping("/dbTest")
+    @RequestMapping("/main")
     public ModelAndView dbTest() throws Exception {
 
         List<TestDTO> list = new ArrayList<TestDTO>();
@@ -31,6 +31,6 @@ public class TestController {
 
 
 
-        return new ModelAndView("dbTest", "list", list);
+        return new ModelAndView("main", "list", list);
     }
 }
