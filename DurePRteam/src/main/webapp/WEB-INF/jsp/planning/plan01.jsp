@@ -4,7 +4,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-, initial-scale=1">
   <title>계획서작성</title>
 
 <jsp:include page="/include/_header.jsp" />
