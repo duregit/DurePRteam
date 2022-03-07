@@ -16,6 +16,7 @@
 			<!-- Content Header (Page header) -->
 			<section class="content-header">
 				<div class="container-fluid">
+				<!-- 
 					<div class="row mb-2">
 						<div class="col-sm-6">
 							<h1>General Form</h1>
@@ -27,6 +28,7 @@
 							</ol>
 						</div>
 					</div>
+				 -->
 				</div>
 				<!-- /.container-fluid -->
 			</section>
@@ -42,6 +44,7 @@
 							<!-- form start -->
 							<form>
 								<div class="card-body">
+									<input type="hidden" name="planId" value="${ planning.planNo }"/>
 									<div id="goodsInfo">
 										<strong>생활재코드</strong>																	
 										<div class="input-group mb-3">

@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -16,6 +18,7 @@
 			<!-- Content Header (Page header) -->
 			<section class="content-header">
 				<div class="container-fluid">
+				<!-- 
 					<div class="row mb-2">
 						<div class="col-sm-6">
 							<h1>General Form</h1>
@@ -27,6 +30,7 @@
 							</ol>
 						</div>
 					</div>
+				 -->
 				</div>
 				<!-- /.container-fluid -->
 			</section>
@@ -40,34 +44,36 @@
 							</div>
 							<!-- /.card-header -->
 							<!-- form start -->
-							<form>
+							<form:form method="post" modelAttribute="planning">
+								<input type="hidden" name="planId" value="${ planning.planNo }"/>
 								<div class="card-body">
 									<div class="form-group">
-										<label for="addUser">작성자</label> 
-										<input type="text" class="form-control" id="addUser" readonly>
+										<label for="addUser">작성자</label>
+										<input type="text" class="form-control" name="addUser" readonly value="${ planning.addUser }" >										
 									</div>
 									<div class="form-group">
-										<label for="PRName">홍보단명</label> 
-										<input type="text" class="form-control" id="PRName">
+										<label for="PRName">홍보단명</label>
+										<!--<input type="text" class="form-control" name="prName" value="${ planning.addUser }"> -->
+										<form:input path="prName" class="form-control" />
 									</div>
 									<div class="form-group">
 										<label for="PIProperty">단협</label> 
-										<select class="form-control" id="PIProperty">
-											<option>option 1</option>
-											<option>option 2</option>
+										<select class="form-control" name="piproperty">
+											<option value="1">option 1</option>
+											<option value="1">option 2</option>
 										</select>
 									</div>
 									<div class="form-group">
 										<label for="suPIProperty">매장</label> 
-										<select class="form-control" id="suPIProperty">
-											<option>option 1</option>
-											<option>option 2</option>
+										<select class="form-control" name="suPIProperty">
+											<option value="1">option 1</option>
+											<option value="1">option 2</option>
 										</select>
 									</div>
 									<div class="form-group">
 										<label>진행일</label>
 										<div class="input-group date" id="reservationdate" data-target-input="nearest">
-											<input type="text" class="form-control datetimepicker-input" data-target="#reservationdate">
+											<input type="text" class="form-control datetimepicker-input" name="pDate" data-target="#reservationdate">
 											<div class="input-group-append" data-target="#reservationdate" data-toggle="datetimepicker">
 												<div class="input-group-text">
 													<i class="fa fa-calendar"></i>
@@ -77,30 +83,30 @@
 									</div>
 									<div class="form-group">
 										<label for="pDay">진행요일</label> 
-										<input type="text" class="form-control" id="pDay" readonly>
+										<input type="text" class="form-control" name="pDay" readonly>
 									</div>
 									<div class="form-group">
 										<label for="gubun">행사구분</label> 
-										<select class="form-control" id="gubun">
-											<option>option 1</option>
-											<option>option 2</option>
+										<select class="form-control" name="gubun">
+											<option value="1">option 1</option>
+											<option value="2">option 2</option>
 										</select>
 									</div>
 									<div class="form-group">
 										<label for="reason">진행배경</label> 
-										<select class="form-control" id="reason">
-											<option>option 1</option>
-											<option>option 2</option>
+										<select class="form-control" name="reason">
+											<option value="1">option 1</option>
+											<option value="2">option 2</option>
 										</select>
 									</div>
 								</div>
 								<!-- /.card-body -->
 
 								<div class="card-footer" style="text-align:center;">
-									<button type="button" class="btn btn-warning">임시저장</button>
-									<button type="button" class="btn btn-primary">다음</button>
+									<button type="button" class="btn btn-warning" id="tempSave01">임시저장</button>
+									<button type="button" class="btn btn-primary" id="nextStep01">다음</button>
 								</div>
-							</form>
+							</form:form>
 						</div>
 					</div>
 				</div>
@@ -111,4 +117,16 @@
 	</div>
 </body>
 <jsp:include page="/include/_footer.jsp" />
+
+<script type="text/javascript">
+	$(document).ready(function () {
+		$("#tempSave01").click(function () {
+			$("form").attr("action","tempSave01").submit();
+		});
+		
+		$("#nextStep01").click(function () {
+			$("form").attr("action","newNextStep01").submit();
+		});
+	});
+</script>
 </html>

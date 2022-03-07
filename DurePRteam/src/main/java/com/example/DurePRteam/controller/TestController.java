@@ -14,23 +14,27 @@ import com.example.DurePRteam.service.DbService;
 @Controller
 public class TestController {
 
-    @Autowired
-    DbService dbService;
-
-    @RequestMapping("/")
-    public String main() {
-        return "main";
-    }
-
-
-    @RequestMapping("/dbTest")
-    public ModelAndView dbTest() throws Exception {
-
-        List<TestDTO> list = new ArrayList<TestDTO>();
-        list = dbService.getList();
-
-
-
-        return new ModelAndView("dbTest", "list", list);
-    }
+//    @Autowired
+//    DbService dbService;
+//
+//    @RequestMapping("/")
+//    public String main() {
+//        return "preview";
+//    }
+//
+//    @RequestMapping("/")
+//    public String main() {
+//        return "preview";
+//    }
+//
+//    @RequestMapping("/main")
+//    public ModelAndView dbTest() throws Exception {
+//
+//        List<TestDTO> list = new ArrayList<TestDTO>();
+//        list = dbService.getList();
+//
+//
+//
+//        return new ModelAndView("main", "list", list);
+//    }
 }

@@ -62,7 +62,7 @@
         <!-- JSTL for JSP -->
         <dependency>
             <groupId>javax.servlet</groupId>
-            <artifactId>jstl</artifactId> 
+            <artifactId>jstl</artifactId>
         </dependency>
  
         <!-- Need this to compile JSP -->
@@ -113,8 +113,7 @@
 			<artifactId>spring-boot-devtools</artifactId>
 			<scope>runtime</scope>
 			<optional>true</optional>
-		</dependency>
-		
+		</dependency>		
 	</dependencies>
 
 	<build>

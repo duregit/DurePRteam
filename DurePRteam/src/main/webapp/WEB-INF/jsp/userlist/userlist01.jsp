@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>생활재 홍보단 JOIN</title>
+  <title>생활재 홍보단 UserList</title>
 
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -55,97 +55,94 @@
 					<div class="col-sm-12">
 						<div class="card card-primary">
 							<div class="card-header">
-								<h3 class="card-title">회원가입</h3>
+								<h3 class="card-title">회원관리</h3>
 							</div>
 							<!-- /.card-header -->
-							<!-- form start -->
-							<form>
-								<div class="card-body">
-									<div class="form-group">
-										<label for="UserId">아이디</label> 
-										<div class="input-group">
-											<input type="text" class="form-control" id="UserId">
-											<button type="button" style="margin-left:10px;" class="btn btn-danger">
-												중복확인
-											</button>
-										</div>
-									<i class="bi bi-person-fill"></i>		
-									</div>							
-									<div class="form-group">
-										<label for="UserPw">패스워드</label> 
-										<input type="password" class="form-control" id="UserPw">
-									</div>								
-									<div class="form-group">
-										<label for="UserNm">이름</label> 
-										<input type="text" class="form-control" id="UserNm">
-									</div>
-									<div class="form-group">
-										<label for="PIProperty">단협</label> 
-										<select class="form-control" id="PIProperty">
+							<div class="card-footer">
+								<div>								
+									<font size="1px">단협&nbsp;&nbsp;
+										<select>
 											<option>바른두레생협</option>
 											<option>경기두레생협</option>
 											<option>안양YMCA등대생협</option>
 										</select>
-									</div>
-									<div class="form-group">
-										<label for="suPIProperty">매장</label> 
-										<select class="form-control" id="suPIProperty">
+										&nbsp;&nbsp;&nbsp;매장&nbsp;&nbsp;
+										<select>
 											<option>매장1</option>
 											<option>매장2</option>
 											<option>매장3</option>
 										</select>
-									</div>
-									<div class="form-group">
-										<label>주소</label>
-										<div style="padding-bottom:5px" class="input-group">
-			                                <div class="input-group-prepend">
-												<div class="input-group-text">
-													<font size="1px">우편주소</font>
-												</div>
-											</div>
-			                                <input type="text" id="Zip" value='' class="form-control" readonly/>
-			                            </div>
-										<div style="padding-bottom:5px" class="input-group">
-			                                <div class="input-group-prepend">
-												<div class="input-group-text">
-													<font size="1px">기본주소</font>
-												</div>
-											</div>
-			                                <input type="text" id="Addr1" value='' class="form-control" readonly/>
-			                            </div>
-			                            <div style="padding-bottom:5px" class="input-group">
-			                                <div class="input-group-prepend">
-												<div class="input-group-text">
-													<font size="1px">상세주소</font>
-												</div>
-											</div>
-			                                <input type="text" id="Addr2" value='' class="form-control" />
-			                            </div>
-										<div style="text-align:right;">
-										<button type="button" class="btn btn-warning btn-sm">주소검색</button>
-										</div>
-									</div>
-									<div class="form-group">
-										<label for="UserCTel">휴대폰 번호</label> 
-										<input type="text" class="form-control" id="UserCTel" placeholder="' - ' 를 포함해서 입력하세요">
-									</div>
-									<div class="form-group">
-										<label for="ACNum">계좌</label> 
-										<div style="padding-bottom:5px">
-											<select class="form-control" id="ACNum">
-												<option>한국은행</option>
-												<option>한국산업은행</option>
-												<option>중소기업은행</option>
-												<option>KB국민은행</option>
-											</select>
-										</div>
-										<input type="text" class="form-control" id="ACNum" placeholder="' - ' 를 제외해서 입력하세요">
-									</div>
+										&nbsp;&nbsp;&nbsp;회원상태&nbsp;&nbsp;
+										<select>
+											<option>대기</option>
+											<option>가입</option>
+											<option>탈퇴</option>
+										</select>
+									</font>
+								</div>							
+									<font size="1px">아이디&nbsp;&nbsp;
+										<input type="text">
+										&nbsp;&nbsp;&nbsp;이름&nbsp;&nbsp;
+										<input type="text">
+										<button style="float:right;" type="button" class="btn btn-primary btn-xs">조회</button>
+									</font>
+							</div>
+							<!-- form start -->
+							<form>
+								<div class="card-body">
+									<table class="table table-hover table-striped text-center" style="border:1px solid;">
+										<thead>
+											<tr>
+												<th><input type="checkbox" id="checkall" /></th>
+												<th>단협</th>
+												<th>매장</th>
+												<th>아이디</th>
+												<th>이름</th>
+											</tr>
+										</thead>	
+										<tbody>
+											<tr onclick="fn_contentView()">
+												<td><input type="checkbox" id="tr1" /></td>
+												<td>바른두레생협</td>
+												<td>인덕원점</td>
+												<td>0619</td>
+												<td>정OO</td>
+											</tr>
+											<tr>
+												<td><input type="checkbox" id="tr2" /></td>
+												<td>경기두레생협</td>
+												<td>중동점</td>
+												<td>dkfuek</td>
+												<td>김OO</td>
+											</tr>
+											<tr>
+												<td><input type="checkbox" id="tr3" /></td>
+												<td>경기두레생협</td>
+												<td>배곧점</td>
+												<td>cjkdue</td>
+												<td>이OO</td>
+											</tr>
+											<tr>
+												<td><input type="checkbox" id="tr4" /></td>
+												<td>안성두레생협</td>
+												<td>공도점</td>
+												<td>pdkfiel</td>
+												<td>최OO</td>
+											</tr>
+										</tbody>								
+									</table>
 								</div>
 								<!-- /.card-body -->
 
-								<div class="card-footer" style="text-align:center;">
-									<button type="button" class="btn btn-primary">완료</button>
+								<div class="card-footer">
+									<div class="input-group-prepend"style="float:right;">
+										<select style="width:90px" class="form-control">
+											<option>=선택=</option>
+											<option>가입</option>
+											<option>탈퇴</option>
+										</select>
+										<button style="float:right;margin-left:10px" type="button" class="btn btn-warning">회원상태 변경</button>
+									</div>
 								</div>
 							</form>
 						</div>
@@ -189,12 +186,10 @@
 	<script src="/dist/js/adminlte.js"></script>
 	
 	<script type="text/javascript">
-	$(function () {
-		//Date picker
-	    $('#reservationdate').datetimepicker({
-	        format: 'L'
-	    });
-	});
+		function fn_contentView() {
+			var url = "/userlist/userlist02"
+			location.href = url;
+		}
 	</script>
 </body>
 </html>
