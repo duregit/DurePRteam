@@ -33,121 +33,120 @@
 			<!-- Main content -->
 			<section class="content">
 				<div class="container-fluid">
-					<div class="row">
-						<div class="col-sm-12">
-							<div class="card">
-								<div class="card-header">
-									<div class="row">
-										<div class="col-6">
-											<div class="form-group">										
-												<select class="form-control form-control" id="gubun">
-													<option>단협</option>
-													<option>참좋은두레생협</option>
-												</select>
-											</div>
-										</div>
-										<div class="col-6">
-											<select class="form-control form-control" id="gubun">
-												<option>매장</option>
-												<option>option 2</option>
+					<div class="col-sm-12">
+						<div class="card card-primary">
+							<div class="card-header">
+								<h3 class="card-title">평가서 조회</h3>
+							</div>								
+							<!-- /.card-header -->
+							<div class="card-body">
+								<div class="row">
+									<div class="col-6">
+										<div class="form-group">										
+											<select class="form-control form-control-sm" id="gubun">
+												<option>단협</option>
+												<option>참좋은두레생협</option>
 											</select>
-										</div>										
+										</div>
 									</div>
-									<div class="row">
-										<div class="col-12">
-											<div class="form-group">
-												<div class="input-group date" id="reservationdate" data-target-input="nearest">
-													<input type="text" class="form-control form-control datetimepicker-input" data-target="#reservationdate" placeholder="진행일">
-													<div class="input-group-append" data-target="#reservationdate" data-toggle="datetimepicker">
-														<div class="input-group-text">
-															<i class="fa fa-calendar"></i>
-														</div>
+									<div class="col-6">
+										<select class="form-control form-control-sm" id="gubun">
+											<option>매장</option>
+											<option>option 2</option>
+										</select>
+									</div>										
+								</div>
+								<div class="row">
+									<div class="col-12">
+										<div class="form-group">
+											<div class="input-group date" id="reservationdate" data-target-input="nearest">
+												<input type="text" class="form-control form-control-sm datetimepicker-input" data-target="#reservationdate" placeholder="진행일">
+												<div class="input-group-append" data-target="#reservationdate" data-toggle="datetimepicker">
+													<div class="input-group-text">
+														<i class="fa fa-calendar"></i>
 													</div>
 												</div>
 											</div>
-										</div>								
+										</div>
+									</div>								
+								</div>
+								<div class="row">
+									<div class="col-6">
+										<div class="form-group">
+											<div class="custom-control custom-checkbox">
+					                          <input class="custom-control-input" type="checkbox" id="customCheckbox1" value="option1">
+					                          <label for="customCheckbox1" class="custom-control-label">내 계획서 조회</label>
+					                        </div>						                        
+										</div>
 									</div>
-									<div class="row">
-										<div class="col-6">
-											<div class="form-group">
-												<div class="custom-control custom-checkbox">
-						                          <input class="custom-control-input" type="checkbox" id="customCheckbox1" value="option1">
-						                          <label for="customCheckbox1" class="custom-control-label">내 평가서 조회</label>
-						                        </div>						                        
-											</div>
-										</div>
-										<div class="col-6">
-											<button type="button" class="btn btn-info btn float-right">조회</button>
-										</div>
-									</div>									
+									<div class="col-6">
+										<button type="button" class="btn btn-info btn-sm float-right">조회</button>
+									</div>
 								</div>
-								<!-- /.card-header -->
-								<div class="card-body p-0">
-									<table class="table table-bordered">
-										<thead>
-											<tr>
-												<th style="width: 10px">#</th>
-												<th>Task</th>
-												<th style="width: 40px">Label</th>
-											</tr>
-										</thead>
-										<tbody>
-											<tr>
-												<td>1.</td>
-												<td>Update software</td>
-												<td><span class="badge bg-danger">55%</span></td>
-											</tr>
-											<tr>
-												<td>2.</td>
-												<td>Clean database</td>
-												<td><span class="badge bg-warning">70%</span></td>
-											</tr>
-											<tr>
-												<td>3.</td>
-												<td>Cron job running</td>
-												<td><span class="badge bg-primary">30%</span></td>
-											</tr>
-											<tr>
-												<td>4.</td>
-												<td>Fix and squish bugs</td>
-												<td><span class="badge bg-success">90%</span></td>
-											</tr>
-											<tr>
-												<td>1.</td>
-												<td>Update software</td>
-												<td><span class="badge bg-danger">55%</span></td>
-											</tr>
-											<tr>
-												<td>2.</td>
-												<td>Clean database</td>
-												<td><span class="badge bg-warning">70%</span></td>
-											</tr>
-											<tr>
-												<td>3.</td>
-												<td>Cron job running</td>
-												<td><span class="badge bg-primary">30%</span></td>
-											</tr>
-											<tr>
-												<td>4.</td>
-												<td>Fix and squish bugs</td>
-												<td><span class="badge bg-success">90%</span></td>
-											</tr>											
-										</tbody>
-									</table>
-								</div>
-								<!-- /.card-body -->
-								<div class="card-footer clearfix">
-									<ul class="pagination pagination-sm m-0 float-right">
-										<li class="page-item"><a class="page-link" href="#">«</a></li>
-										<li class="page-item"><a class="page-link" href="#">1</a></li>
-										<li class="page-item"><a class="page-link" href="#">2</a></li>
-										<li class="page-item"><a class="page-link" href="#">3</a></li>
-										<li class="page-item"><a class="page-link" href="#">»</a></li>
-									</ul>
-								</div>
+								<table class="table table-bordered">
+									<thead>
+										<tr>
+											<th style="width: 10px">#</th>
+											<th>Task</th>
+											<th style="width: 40px">Label</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td>1.</td>
+											<td>Update software</td>
+											<td><span class="badge bg-danger">55%</span></td>
+										</tr>
+										<tr>
+											<td>2.</td>
+											<td>Clean database</td>
+											<td><span class="badge bg-warning">70%</span></td>
+										</tr>
+										<tr>
+											<td>3.</td>
+											<td>Cron job running</td>
+											<td><span class="badge bg-primary">30%</span></td>
+										</tr>
+										<tr>
+											<td>4.</td>
+											<td>Fix and squish bugs</td>
+											<td><span class="badge bg-success">90%</span></td>
+										</tr>
+										<tr>
+											<td>1.</td>
+											<td>Update software</td>
+											<td><span class="badge bg-danger">55%</span></td>
+										</tr>
+										<tr>
+											<td>2.</td>
+											<td>Clean database</td>
+											<td><span class="badge bg-warning">70%</span></td>
+										</tr>
+										<tr>
+											<td>3.</td>
+											<td>Cron job running</td>
+											<td><span class="badge bg-primary">30%</span></td>
+										</tr>
+										<tr>
+											<td>4.</td>
+											<td>Fix and squish bugs</td>
+											<td><span class="badge bg-success">90%</span></td>
+										</tr>											
+									</tbody>
+								</table>
+							</div>
+							<!-- /.card-body -->
+							<div class="card-footer clearfix">
+								<ul class="pagination pagination-sm m-0 float-right">
+									<li class="page-item"><a class="page-link" href="#">«</a></li>
+									<li class="page-item"><a class="page-link" href="#">1</a></li>
+									<li class="page-item"><a class="page-link" href="#">2</a></li>
+									<li class="page-item"><a class="page-link" href="#">3</a></li>
+									<li class="page-item"><a class="page-link" href="#">»</a></li>
+								</ul>
 							</div>
 						</div>
-					</div>					
+					</div>
 				</div>
 				<!-- /.container-fluid -->
 			</section>
