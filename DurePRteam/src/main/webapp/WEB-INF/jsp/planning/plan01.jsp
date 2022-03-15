@@ -46,18 +46,20 @@
 							<!-- form start -->
 							<form:form method="post" modelAttribute="planning">
 								<input type="hidden" name="planId" value="${ planning.planNo }"/>
+								<input type="hidden" id="btnGubun" name="btnGubun" value=""/>
 								<div class="card-body">
 									<div class="form-group">
 										<label for="addUser">작성자</label>
-										<input type="text" class="form-control" name="addUser" readonly value="${ planning.addUser }" >										
+										<!-- <input type="text" class="form-control" name="addUser" value="${ planning.addUser }" readonly> -->
+										<form:input path="addUser" class="form-control" readonly="true" />										
 									</div>
 									<div class="form-group">
-										<label for="PRName">홍보단명</label>
-										<!--<input type="text" class="form-control" name="prName" value="${ planning.addUser }"> -->
+										<label for="PRName">홍보단명</label>										
 										<form:input path="prName" class="form-control" />
-									</div>
+									</div>															
 									<div class="form-group">
 										<label for="PIProperty">단협</label> 
+										<!--<form:select path="piproperty" items="${ piproperties }" itemLabel="piPropName" itemValue="piproperty" />-->
 										<select class="form-control" name="piproperty">
 											<option value="1">option 1</option>
 											<option value="1">option 2</option>
@@ -72,9 +74,9 @@
 									</div>
 									<div class="form-group">
 										<label>진행일</label>
-										<div class="input-group date" id="reservationdate" data-target-input="nearest">
-											<input type="text" class="form-control datetimepicker-input" name="pDate" data-target="#reservationdate">
-											<div class="input-group-append" data-target="#reservationdate" data-toggle="datetimepicker">
+										<div class="input-group date dateYYYYMMDD" id="pDate" data-target-input="nearest">
+											<input type="text" class="form-control datetimepicker-input" id="pDate" data-target="#pDate">
+											<div class="input-group-append" data-target="#pDate" data-toggle="datetimepicker">
 												<div class="input-group-text">
 													<i class="fa fa-calendar"></i>
 												</div>
@@ -121,11 +123,13 @@
 <script type="text/javascript">
 	$(document).ready(function () {
 		$("#tempSave01").click(function () {
-			$("form").attr("action","tempSave01").submit();
+			$("#btnGubun").val("save");
+			$("form").attr("action","submit01").submit();
 		});
 		
 		$("#nextStep01").click(function () {
-			$("form").attr("action","newNextStep01").submit();
+			$("#btnGubun").val("next");
+			$("form").attr("action","submit01").submit();
 		});
 	});
 </script>

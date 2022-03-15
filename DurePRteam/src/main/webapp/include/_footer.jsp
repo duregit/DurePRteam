@@ -21,6 +21,7 @@
 <script src="/plugins/jquery-knob/jquery.knob.min.js"></script>
 <!-- daterangepicker -->
 <script src="/plugins/moment/moment.min.js"></script>
+<script src="/plugins/moment/moment-with-locales.js"></script>
 <script src="/plugins/daterangepicker/daterangepicker.js"></script>
 <!-- Tempusdominus Bootstrap 4 -->
 <script src="/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
@@ -30,12 +31,5 @@
 <script src="/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
 <!-- AdminLTE App -->
 <script src="/dist/js/adminlte.js"></script>
-
-<script type="text/javascript">
-$(function () {
-	//Date picker
-    $('#reservationdate').datetimepicker({
-        format: 'YYYY-MM-DD'
-    });
-});
-</script>
+<!-- common.js -->
+<script src="/include/_common.js"></script>

@@ -3,6 +3,7 @@ package com.example.DurePRteam.dto;
 import java.util.Date;
 
 public class Planning {
+	// 계획서
     private int planNo;
     private String prName;
     private String piproperty;
@@ -26,6 +27,9 @@ public class Planning {
     private String confirmUser;
     private Date confirmDate;
     private String comment;
+    
+    // 변수
+    private String btnGubun;	// 버튼)임시저장 or 다음페이지
     
 	public int getPlanNo() {
 		return planNo;
@@ -164,5 +168,11 @@ public class Planning {
 	}
 	public void setComment(String comment) {
 		this.comment = comment;
+	}
+	public String getBtnGubun() {
+		return btnGubun;
+	}
+	public void setBtnGubun(String btnGubun) {
+		this.btnGubun = btnGubun;
 	}
 }

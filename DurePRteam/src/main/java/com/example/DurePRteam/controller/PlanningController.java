@@ -23,6 +23,7 @@ public class PlanningController {
     
     @Autowired PlanningMapper planningMapper;
 
+    // [계획서 조회]
     @RequestMapping("list")
     public String list(Model model) {
         List<Planning> plannings = planningMapper.findAll();
@@ -30,47 +31,52 @@ public class PlanningController {
         return "planning/list";
     }
 
-    // 계획서 조회 > 신규 작성
+    // [계획서 조회]
+    // 신규 작성 버튼 클릭
     @GetMapping("create")
-    public ModelAndView create() throws Exception {
+    public String create(Model model) throws Exception {
     	Planning planning = new Planning();
-    	return new ModelAndView("planning/plan01", "planning", planning);
+        model.addAttribute("planning", planning);
+        
+        // 단협, 매장, 행사구분, 진행배경 모델 추가
+        
+        return "planning/plan01";
     }
     
-    // 계획서 조회 > 계획서 선택
+    // [계획서 조회]
+    // 계획서 선택
     @GetMapping("editPlan01")
     public String edit(Model model, @RequestParam("planNo") int planNo) {
     	Planning planning = planningMapper.findOne(planNo);
         model.addAttribute("planning", planning);
+        
+        // 단협, 매장, 행사구분, 진행배경 모델 추가
+        
         return "planning/plan01";
     }
     
-    // 계획서(기본사항) > 다음
-    @RequestMapping("nextStep01")
-    public ModelAndView nextStep01(Model model, Planning planning) throws Exception {    	    	
-    	if (planning.getPlanNo() > 0) {
-    		// 계획서 선택 > 다음 >>> 계획서 수정
-    		//planningMapper.update01(planning);
-    	} else {
-    		// 신규 작성 > 다음 >>> 계획서 신규 생성
-        	planningMapper.insert(planning);
-    	}
+    // [계획서(기본사항)]
+    // 다음 or 임시저장 버튼 클릭
+    @PostMapping("submit01")
+    public ModelAndView submit01(Model model, Planning planning) throws Exception {
+    	String viewUrl = "planning";
     	
-    	return new ModelAndView("planning/plan02", "planning", planning);
-    }
+    	// 다음 > 2페이지 or 임시저장 > 현재페이지
+    	if (planning.getBtnGubun() == "next") {
+    		viewUrl += "/plan02";
+    	} else if (planning.getBtnGubun() == "save") {
+    		viewUrl += "/plan01";
+    	}
     
-    // 계획서(기본사항) > 임시저장
-    @RequestMapping("tempSave01")
-    public ModelAndView tempSave01(Model model, Planning planning) throws Exception {
-    	if (planning.getPlanNo() > 0) {
-    		// 계획서 선택 >>> 계획서 수정
-    		//planningMapper.update01(planning);
+    	if (planning.getPlanNo() > 0 & planning.getAddUser() == "admin") {	// 생성자 수정 필요
+    		// (수정)다음 >>> 계획서 수정 (작성자 본인만 수정가능)
+    		planningMapper.update01(planning);
     	} else {
-    		// 신규 작성 >>> 계획서 신규 생성
+    		// (신규)다음 >>> 계획서 생성
         	planningMapper.insert(planning);
     	}
     	
-    	return new ModelAndView("planning/plan01", "planning", planning);
+    	return new ModelAndView(viewUrl, "planning", planning);
     }
     
 //    @PostMapping("create")
@@ -86,17 +92,17 @@ public class PlanningController {
 //        return "planning/plan01";
 //    }
 
-    @PostMapping("edit")
-    public String edit(Model model, Planning planning) {
-    	planningMapper.update(planning);
-        return "redirect:list";
-    }
-
-    @RequestMapping("delete")
-    public String delete(Model model, @RequestParam("planNo") int planNo) {
-    	planningMapper.delete(planNo);
-        return "redirect:list";
-    }
+//    @PostMapping("edit")
+//    public String edit(Model model, Planning planning) {
+//    	planningMapper.update(planning);
+//        return "redirect:list";
+//    }
+//
+//    @RequestMapping("delete")
+//    public String delete(Model model, @RequestParam("planNo") int planNo) {
+//    	planningMapper.delete(planNo);
+//        return "redirect:list";
+//    }
     
 //    @RequestMapping("list")
 //    public String list() throws Exception {
