@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -38,44 +40,41 @@
 					<div class="col-sm-12">
 						<div class="card card-primary">
 							<div class="card-header">
-								<h3 class="card-title">계획서(홍보포인트)</h3>
+								<h3 class="card-title">공통코드 ${ not empty commonCode.masterCode ? "수정" : "등록" }</h3>
 							</div>
 							<!-- /.card-header -->
 							<!-- form start -->
-							<form>
+							<form:form method="post" modelAttribute="commonCode" onSubmit="formChk();return false">
 								<div class="card-body">
 									<div class="form-group">
-										<label>연계생활재</label>
-										<textarea class="form-control" rows="2" placeholder="Enter ..."></textarea>
+										<label for="masterCode">공통코드</label>								
+										<form:input path="masterCode" class="form-control"
+											readonly="${ not empty commonCode.masterCode ? true : false }"
+											disabled="${ not empty commonCode.masterCode ? true : false }" />
 									</div>
 									<div class="form-group">
-										<label for="gubun">홍보방법</label> 
-										<select class="form-control" id="gubun">
-											<option>option 1</option>
-											<option>option 2</option>
+										<label for="text">코드명</label>										
+										<form:input path="text" class="form-control" />
+									</div>															
+									<div class="form-group">
+										<label for="activeYN">사용</label>
+										<select class="form-control" name="activeYN">
+											<option value="Y" ${ commonCode.activeYN == "Y" ? "selected" : "" }>Y</option>
+											<option value="N" ${ commonCode.activeYN == "N" ? "selected" : "" }>N</option>
 										</select>
 									</div>
 									<div class="form-group">
-										<label>홍보도구(상세)</label>
-										<textarea class="form-control" rows="2" placeholder="Enter ..." disabled></textarea>
-									</div>
-									<div class="form-group">
-										<label>홍보멘트</label>
-										<textarea class="form-control" rows="5" placeholder="Enter ..."></textarea>
-									</div>
-									<div class="form-group">
-										<label>기타</label>
-										<textarea class="form-control" rows="5" placeholder="Enter ..."></textarea>
+										<label for="remark">비고</label> 
+										<form:input path="remark" class="form-control" />		
 									</div>
 								</div>
 								<!-- /.card-body -->
 
-								<div class="card-footer" style="text-align:center;">
-									<button type="button" class="btn btn-default">이전</button>
-									<button type="button" class="btn btn-warning">임시저장</button>
-									<button type="button" class="btn btn-primary">계획서등록</button>
+								<div class="card-footer">
+									<button type="submit" class="btn btn-primary">저장</button>
+									<a href="list" class="btn btn-warning">목록으로</a>
 								</div>
-							</form>
+							</form:form>
 						</div>
 					</div>
 				</div>
@@ -86,4 +85,14 @@
 	</div>
 </body>
 <jsp:include page="/include/_footer.jsp" />
+<script type="text/javascript">
+	function formChk() {
+		if ($("#masterCode").val().trim() == "") {
+			alert("공통코드를 입력하세요");
+			$("#masterCode").focus();
+			return false;
+		}
+		$("#commonCode").submit();
+	}
+</script>
 </html>

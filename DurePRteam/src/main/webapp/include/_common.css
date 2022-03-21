@@ -1,0 +1,7 @@
+tr[data-url]:hover { 
+	cursor: pointer; 
+	background-color: #ffe; 
+}
+.clicked { 
+	background-color: #ffe; 
+}

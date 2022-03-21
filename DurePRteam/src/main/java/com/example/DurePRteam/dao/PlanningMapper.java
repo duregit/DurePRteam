@@ -43,4 +43,3 @@ public interface PlanningMapper {
 //    void delete(int planNo);
 
 }
- 

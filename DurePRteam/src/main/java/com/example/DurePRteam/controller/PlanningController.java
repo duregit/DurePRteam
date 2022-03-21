@@ -1,6 +1,5 @@
 package com.example.DurePRteam.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,16 +11,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.example.DurePRteam.dao.CommonCodeDetailMapper;
 import com.example.DurePRteam.dao.PlanningMapper;
+import com.example.DurePRteam.dto.CommonCode;
+import com.example.DurePRteam.dto.CommonCodeDetail;
 import com.example.DurePRteam.dto.Planning;
-import com.example.DurePRteam.dto.TestDTO;
-import com.example.DurePRteam.service.DbService;
 
 @Controller
 @RequestMapping("planning")
 public class PlanningController {
     
     @Autowired PlanningMapper planningMapper;
+    @Autowired CommonCodeDetailMapper commonCodeDetailMapper;
 
     // [계획서 조회]
     @RequestMapping("list")
@@ -38,7 +39,16 @@ public class PlanningController {
     	Planning planning = new Planning();
         model.addAttribute("planning", planning);
         
-        // 단협, 매장, 행사구분, 진행배경 모델 추가
+        // 단협, 매장 모델 추가
+       
+        String codeGubun = "PL0001";	// 행사구분
+        String codeReason = "PL0002";	// 진행배경
+        
+        //List<CommonCodeDetail> codeGubuns = commonCodeDetailMapper.findByMasterCode(codeGubun);
+        //List<CommonCodeDetail> codeReasons = commonCodeDetailMapper.findByMasterCode(codeReason);
+        
+        //model.addAttribute("codeGubuns", codeGubuns);
+        //model.addAttribute("codeReasons", codeReasons);
         
         return "planning/plan01";
     }

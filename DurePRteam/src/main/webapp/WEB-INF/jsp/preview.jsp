@@ -114,6 +114,10 @@
 											<td>16.</td>
 											<td><a href="evaluation/evalList">평가서조회</a></td>
 										</tr>
+										<tr>
+											<td>17.</td>
+											<td><a href="admin/commonCode/list">[관리자]공통코드관리</a></td>
+										</tr>
 									</tbody>
 								</table>
 							</div>

@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>계획서조회</title>
+  <title>생활재홍보단</title>
 
 <jsp:include page="/include/_header.jsp" />
 </head>
@@ -132,25 +132,20 @@
 											<td><span class="badge bg-success">90%</span></td>
 										</tr>
 										<tr>
-											<td>1.</td>
+											<td>5.</td>
 											<td>Update software</td>
 											<td><span class="badge bg-danger">55%</span></td>
 										</tr>
 										<tr>
-											<td>2.</td>
-											<td>Clean database</td>
-											<td><span class="badge bg-warning">70%</span></td>
+											<td>6.</td>
+											<td>Update software</td>
+											<td><span class="badge bg-danger">55%</span></td>
 										</tr>
 										<tr>
-											<td>3.</td>
-											<td>Cron job running</td>
-											<td><span class="badge bg-primary">30%</span></td>
+											<td>7.</td>
+											<td>Update software</td>
+											<td><span class="badge bg-danger">55%</span></td>
 										</tr>
-										<tr>
-											<td>4.</td>
-											<td>Fix and squish bugs</td>
-											<td><span class="badge bg-success">90%</span></td>
-										</tr>											
 									</tbody>
 								</table>
 							</div>
