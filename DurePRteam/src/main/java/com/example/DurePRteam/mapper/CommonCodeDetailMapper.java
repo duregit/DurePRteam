@@ -1,4 +1,4 @@
-package com.example.DurePRteam.dao;
+package com.example.DurePRteam.mapper;
  
 import java.util.List;
 
@@ -10,7 +10,6 @@ import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.SelectKey;
 import org.apache.ibatis.annotations.Update;
 
-import com.example.DurePRteam.dto.CommonCode;
 import com.example.DurePRteam.dto.CommonCodeDetail;
 
 public interface CommonCodeDetailMapper {
@@ -18,12 +17,7 @@ public interface CommonCodeDetailMapper {
 	// [상세 공통코드] 전체조회
 	@Select("SELECT * FROM pr_code_detail")
     List<CommonCodeDetail> findAll();
-	
-//	// [상세 공통코드] 공통코드에 해당되는 전체조회
-//	@Select("SELECT * FROM pr_code_detail WHERE MasterCode = #{masterCode} "
-//			+ "LIMIT #{paginationInfo.firstRecordIndex}, #{recordsPerPage} ")
-//    List<CommonCodeDetail> findByMasterCode(CommonCodeDetail pCommonCodeDetail, String masterCode);
-	
+		
 	// [상세 공통코드] 공통코드에 해당되는 전체조회
 	@Select("SELECT * FROM pr_code_detail WHERE MasterCode = #{masterCode}")
     List<CommonCodeDetail> findByMasterCode(String masterCode);

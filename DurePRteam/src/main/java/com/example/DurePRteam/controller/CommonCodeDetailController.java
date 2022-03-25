@@ -8,10 +8,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.example.DurePRteam.dao.CommonCodeDetailMapper;
-import com.example.DurePRteam.dao.CommonCodeMapper;
 import com.example.DurePRteam.dto.CommonCode;
 import com.example.DurePRteam.dto.CommonCodeDetail;
+import com.example.DurePRteam.mapper.CommonCodeDetailMapper;
+import com.example.DurePRteam.mapper.CommonCodeMapper;
 
 @Controller
 @RequestMapping("admin")

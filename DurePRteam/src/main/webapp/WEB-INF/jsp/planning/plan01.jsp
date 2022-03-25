@@ -51,7 +51,7 @@
 									<div class="form-group">
 										<label for="addUser">작성자</label>
 										<!-- <input type="text" class="form-control" name="addUser" value="${ planning.addUser }" readonly> -->
-										<form:input path="addUser" class="form-control" readonly="true" />										
+										<form:input path="addUser" class="form-control" readonly="true" />
 									</div>
 									<div class="form-group">
 										<label for="PRName">홍보단명</label>										
@@ -75,7 +75,8 @@
 									<div class="form-group">
 										<label>진행일</label>
 										<div class="input-group date dateYYYYMMDD" id="pDate" data-target-input="nearest">
-											<input type="text" class="form-control datetimepicker-input" id="pDate" data-target="#pDate">
+											<!-- <input type="text" class="form-control datetimepicker-input" id="pDate" data-target="#pDate"> -->
+											<form:input path="pDate" class="form-control datetimepicker-input" data-target="#pDate" />
 											<div class="input-group-append" data-target="#pDate" data-toggle="datetimepicker">
 												<div class="input-group-text">
 													<i class="fa fa-calendar"></i>
@@ -84,29 +85,28 @@
 										</div>
 									</div>
 									<div class="form-group">
-										<label for="pDay">진행요일</label> 
-										<input type="text" class="form-control" name="pDay" readonly>
+										<label for="pDay">진행요일</label>
+										<form:input path="pDay" class="form-control" readonly="true" />
 									</div>
 									<div class="form-group">
-										<label for="gubun">행사구분</label> 
-										<select class="form-control" name="gubun">
-											<option value="1">option 1</option>
-											<option value="2">option 2</option>
-										</select>
+										<label for="gubun">행사구분</label>
+										<form:select path="gubun" class="form-control">
+											<form:option value="0" label="==선택하세요==" />
+											<form:options itemValue="detailCode" itemLabel="text" items="${ selGubuns }" />
+										</form:select>
 									</div>
 									<div class="form-group">
 										<label for="reason">진행배경</label> 
-										<select class="form-control" name="reason">
-											<option value="1">option 1</option>
-											<option value="2">option 2</option>
-										</select>
+										<form:select path="reason" class="form-control">
+											<form:option value="0" label="==선택하세요==" />
+											<form:options itemValue="detailCode" itemLabel="text" items="${ selReasons }" />
+										</form:select>
 									</div>
 								</div>
 								<!-- /.card-body -->
 
 								<div class="card-footer" style="text-align:center;">
-									<button type="button" class="btn btn-warning" id="tempSave01">임시저장</button>
-									<button type="button" class="btn btn-primary" id="nextStep01">다음</button>
+									<button type="submit" class="btn btn-primary">다음</button>
 								</div>
 							</form:form>
 						</div>
@@ -119,18 +119,4 @@
 	</div>
 </body>
 <jsp:include page="/include/_footer.jsp" />
-
-<script type="text/javascript">
-	$(document).ready(function () {
-		$("#tempSave01").click(function () {
-			$("#btnGubun").val("save");
-			$("form").attr("action","submit01").submit();
-		});
-		
-		$("#nextStep01").click(function () {
-			$("#btnGubun").val("next");
-			$("form").attr("action","submit01").submit();
-		});
-	});
-</script>
 </html>

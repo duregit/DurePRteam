@@ -5,15 +5,15 @@ import java.util.Date;
 import lombok.Data;
 
 @Data
-public class CommonCodeDetail extends Common {
+public class CommonCodeDetail {
 	// 공통코드 디테일
-    private String masterCode;
-    private String detailCode;
-    private String text;
-    private String remark;
-    private String activeYN;
-    private String addUser;
-    private Date addDate;
-    private String modUser;
-    private Date modDate;
+    String masterCode;
+    String detailCode;
+    String text;
+    String remark;
+    String activeYN;
+    String addUser;
+    Date addDate;
+    String modUser;
+    Date modDate;
 }

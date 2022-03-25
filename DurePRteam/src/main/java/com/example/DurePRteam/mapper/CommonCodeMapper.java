@@ -1,4 +1,4 @@
-package com.example.DurePRteam.dao;
+package com.example.DurePRteam.mapper;
  
 import java.util.List;
 

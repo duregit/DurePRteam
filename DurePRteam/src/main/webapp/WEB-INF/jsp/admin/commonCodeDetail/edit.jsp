@@ -97,15 +97,6 @@
 
 <script type="text/javascript">
 	$(document).ready(function () {
-		$("#tempSave01").click(function () {
-			$("#btnGubun").val("save");
-			$("form").attr("action","submit01").submit();
-		});
-		
-		$("#nextStep01").click(function () {
-			$("#btnGubun").val("next");
-			$("form").attr("action","submit01").submit();
-		});
 	});
 </script>
 </html>

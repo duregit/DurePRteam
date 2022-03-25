@@ -9,11 +9,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.example.DurePRteam.dao.CommonCodeDetailMapper;
-import com.example.DurePRteam.dao.CommonCodeMapper;
-
 import com.example.DurePRteam.dto.CommonCode;
 import com.example.DurePRteam.dto.CommonCodeDetail;
+import com.example.DurePRteam.mapper.CommonCodeDetailMapper;
+import com.example.DurePRteam.mapper.CommonCodeMapper;
 import com.example.DurePRteam.paging.Criteria;
 import com.example.DurePRteam.paging.Paging;
 
@@ -58,6 +57,7 @@ public class CommonCodeController {
     @GetMapping("commonCode/create")
     public String create(Model model) {
         model.addAttribute("commonCode", new CommonCode());
+        
         return "admin/commonCode/edit";
     }
 
@@ -65,6 +65,7 @@ public class CommonCodeController {
     @PostMapping("commonCode/create")
     public String create(Model model, CommonCode commonCode) {
     	commonCodeMapper.insert(commonCode);
+    	
         return "redirect:list";
     }
     
@@ -72,7 +73,9 @@ public class CommonCodeController {
     @GetMapping("commonCode/edit")
     public String edit(Model model, String masterCode) {
     	CommonCode commonCode = commonCodeMapper.findOne(masterCode);
+    	
         model.addAttribute("commonCode", commonCode);
+        
         return "admin/commonCode/edit";
     }
     
@@ -80,6 +83,7 @@ public class CommonCodeController {
     @PostMapping("commonCode/edit")
     public String edit(Model model, CommonCode commonCode) {
     	commonCodeMapper.update(commonCode);
+    	
         return "redirect:list";
     }
 }

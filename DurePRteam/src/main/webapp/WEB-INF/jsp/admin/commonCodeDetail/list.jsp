@@ -220,16 +220,6 @@
 <jsp:include page="/include/_footer.jsp" />
 <script type="text/javascript">
 	$(document).ready(function () {
-		$("#edit").click(function () {
-			//data-url="edit?masterCode=${ commonCode.masterCode }"
-			var url = $(this).parent().attr("data-url");
-		    location.href = url;
-		});
-		
-		$("#nextStep01").click(function () {
-			$("#btnGubun").val("next");
-			$("form").attr("action","submit01").submit();
-		});
 	});
 </script>
 </html>

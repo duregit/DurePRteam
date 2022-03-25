@@ -1,4 +1,4 @@
-package com.example.DurePRteam.dao;
+package com.example.DurePRteam.mapper;
  
 import java.util.List;
 
@@ -27,7 +27,7 @@ public interface PlanningMapper {
     @Options(useGeneratedKeys=true, keyProperty="planNo")
     void insert(Planning planning);
 	
-    // 1페이지 수정
+    // [기본사항] 수정
     @Update("UPDATE pr_planning SET "
     		+ "PRName = #{prName}, "
     		+ "PIProperty = #{piproperty}, "
@@ -35,7 +35,7 @@ public interface PlanningMapper {
     		+ "PDate = #{pDate}, "
     		+ "PDay = #{pDay}, "
     		+ "Gubun = #{gubun}, "
-    		+ "Reason = #{reason}, "
+    		+ "Reason = #{reason} "
     		+ "WHERE PlanNo = #{planNo}")
     void update01(Planning planning);
 

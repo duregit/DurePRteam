@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -42,54 +44,92 @@
 							</div>
 							<!-- /.card-header -->
 							<!-- form start -->
-							<form>
+							<form:form method="post" modelAttribute="planning">
 								<div class="card-body">
 									<input type="hidden" name="planId" value="${ planning.planNo }"/>
+									
+									<!-- 생활재정보 -->
 									<div id="goodsInfo">
-										<strong>생활재코드</strong>																	
-										<div class="input-group mb-3">
-											<input type="text" class="form-control rounded-0"> 
-											<span class="input-group-append">
-												<button type="button" class="btn btn-info btn-flat">검색</button>
-											</span>
+										<div id="good1">
+											<strong>생활재코드</strong>																	
+											<div class="input-group mb-3">
+												<input type="hidden" id="piproperty" name="piproperty"/>
+												<input type="hidden" id="gmNo" name="gmNo"/>
+												<input type="text" class="form-control rounded-0" id="gmSeq">												
+												<span class="input-group-append">
+													<button type="button" class="btn btn-info btn-flat" data-search-goods>검색</button>
+												</span>
+											</div>											
+											<div class="form-group">
+												<label for="gmDesc">생활재명</label> 
+												<input type="text" class="form-control" id="gmDesc" name="gmDesc" readonly>
+											</div>
+											<div class="form-group">
+												<label for="gmName">생산지</label> 
+												<input type="text" class="form-control" id="gmName" name="gmName" readonly>
+											</div>
+											<div class="form-group">
+												<label for="gmGubun">생활재구분</label>
+												<select class="form-control" id="salesTarget" name="salesTarget">
+													<c:forEach var="gmGubun" items="${ selGmGubuns }">
+														<option value="${ gmGubun.detailCode }">${ gmGubun.text }</option>
+													</c:forEach>
+												</select>
+											</div>
+											<div class="form-group">
+												<label for="salesTarget">판매목표</label> 
+												<input type="text" class="form-control" id="salesTarget" name="salesTarget">
+											</div>
 										</div>
-										<div class="form-group">
-											<label for="PRName">생활재명</label> 
-											<input type="text" class="form-control" id="PRName" readonly>
-										</div>
-										<div class="form-group">
-											<label for="PRName">생산지</label> 
-											<input type="text" class="form-control" id="PRName" readonly>
-										</div>
-										<div class="form-group">
-											<label for="suPIProperty">생활재구분</label> 
-											<select class="form-control" id="suPIProperty">
-												<option>option 1</option>
-												<option>option 2</option>
-											</select>
-										</div>
-										<div class="form-group">
-											<label for="PRName">판매목표</label> 
-											<input type="text" class="form-control" id="PRName">
+										<div id="good2">
+											<strong>생활재코드</strong>																	
+											<div class="input-group mb-3">
+												<input type="hidden" id="piproperty" name="piproperty"/>
+												<input type="hidden" id="gmNo" name="gmNo"/>
+												<input type="text" class="form-control rounded-0" id="gmSeq">												
+												<span class="input-group-append">
+													<button type="button" class="btn btn-info btn-flat" data-search-goods>검색</button>
+												</span>
+											</div>											
+											<div class="form-group">
+												<label for="gmDesc">생활재명</label> 
+												<input type="text" class="form-control" id="gmDesc" name="gmDesc" readonly>
+											</div>
+											<div class="form-group">
+												<label for="gmName">생산지</label> 
+												<input type="text" class="form-control" id="gmName" name="gmName" readonly>
+											</div>
+											<div class="form-group">
+												<label for="gmGubun">생활재구분</label>
+												<select class="form-control" id="salesTarget" name="salesTarget">
+													<c:forEach var="gmGubun" items="${ selGmGubuns }">
+														<option value="${ gmGubun.detailCode }">${ gmGubun.text }</option>
+													</c:forEach>
+												</select>
+											</div>
+											<div class="form-group">
+												<label for="salesTarget">판매목표</label> 
+												<input type="text" class="form-control" id="salesTarget" name="salesTarget">
+											</div>
 										</div>
 									</div>
 									<div class="form-group">
-										<button type="button" class="btn btn-info">생활재 추가</button>
-										<button type="button" class="btn btn-danger">생활재 삭제</button>
+										<button type="button" class="btn btn-info" id="addBtn" num="1">생활재 추가</button>
+										<button type="button" class="btn btn-danger" id="delBtn">생활재 삭제</button>
 									</div>
 									<div class="form-group">
-										<label for="gubun">시작시간</label> 
-										<select class="form-control" id="gubun">
-											<option>option 1</option>
-											<option>option 2</option>
-										</select>
-									</div>
+										<label for="startTime">시작시간</label>
+											<form:select path="startTime" class="form-control">
+												<form:option value="0" label="==선택하세요==" />
+												<form:options itemValue="detailCode" itemLabel="text" items="${ selStartTimes }" />
+											</form:select>
+										</div>
 									<div class="form-group">
-										<label for="reason">종료시간</label> 
-										<select class="form-control" id="reason">
-											<option>option 1</option>
-											<option>option 2</option>
-										</select>
+										<label for="endTime">종료시간</label> 
+										<form:select path="endTime" class="form-control">
+											<form:option value="0" label="==선택하세요==" />
+											<form:options itemValue="detailCode" itemLabel="text" items="${ selEndTimes }" />
+										</form:select>
 									</div>
 								</div>
 								<!-- /.card-body -->
@@ -99,7 +139,7 @@
 									<button type="button" class="btn btn-warning">임시저장</button>
 									<button type="button" class="btn btn-primary">다음</button>
 								</div>
-							</form>
+							</form:form>
 						</div>
 					</div>
 				</div>
@@ -110,4 +150,76 @@
 	</div>
 </body>
 <jsp:include page="/include/_footer.jsp" />
+<script type="text/javascript">
+	
+	var goodsDiv = "";
+	
+	// 생활재 조회
+	$("[data-search-goods]").click(function() {
+		goodsDiv = $(this).closest("div").parent();
+		var gmSeq = $(this).closest("div").find("#gmSeq").val();	// 생활재번호
+		var inputData = {
+			"gmSeq": parseInt(gmSeq)
+		}
+		// 검색어 체크
+		if(typeof gmSeq == "undefined" || gmSeq == null || gmSeq == "") {
+			alert('생활재번호를 입력하세요.');
+			goodsDiv.find("#gmSeq").focus();
+			return false;
+		}
+		
+		$.ajax({
+			url : "/goodsMaster/searchGoods",
+			type : "POST",
+			data: JSON.stringify(inputData),
+			dataType: "json",
+			contentType:"application/json;charset=UTF-8",
+		    async: false,
+		    success: function(data){
+		        if (data.length == 0) {
+		    	    alert('조회 결과가 없습니다.');
+		        } else {
+		        	goodsDiv.find("#piproperty").val(data.goodsMaster.piproperty);
+		        	goodsDiv.find("#gmSeq").val(data.goodsMaster.gmSeq);
+		        	goodsDiv.find("#gmDesc").val(data.goodsMaster.gmDesc);
+		        	goodsDiv.find("#gmNo").val(data.goodsMaster.gmNo);
+		        	goodsDiv.find("#gmName").val(data.goodsMaster.gmName);
+		        	goodsDiv = "";
+		    	}
+		    },
+		    error: function(xhr, status, error){
+		       alert(xhr.responseText);
+		    },
+		    complete: function(xhr, status){}
+		});
+	});   
+	
+	//생활재 추가
+	$("#addBtn").click(function() {
+		console.log("num", $(this).attr("num"));
+		if ($(this).attr("num") == 5) {
+			alert("최대 5개까지 입력가능합니다.");
+			return false;
+		} else {
+			// 생활재폼 추가
+			var strHtml = '';
+			$(this).attr("num", parseInt($(this).attr("num")) + 1);
+		}
+
+	});
+
+	//생활재 삭제
+	$("#delBtn").click(function() {
+		console.log("num", $("#addBtn").attr("num"));
+		if ($("#addBtn").attr("num") == 1) {
+			alert("최소 1개는 필요합니다.");
+			return false;
+		} else {
+			// 생활재폼 삭제
+			var strHtml = '';
+			$("#addBtn").attr("num", parseInt($("#addBtn").attr("num")) - 1);
+		}
+
+	});
+</script>
 </html>
