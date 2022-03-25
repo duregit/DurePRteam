@@ -4,13 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.example.DurePRteam.service.DbService;
-
 @Controller
 public class UserListController {
-
-    @Autowired
-    DbService dbService;
 
     @RequestMapping("/userlist/userlist01")
     public String userlist01() throws Exception {

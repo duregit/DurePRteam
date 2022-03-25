@@ -9,9 +9,11 @@ import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.SelectKey;
 import org.apache.ibatis.annotations.Update;
+import org.mybatis.spring.annotation.MapperScan;
 
 import com.example.DurePRteam.dto.CommonCodeDetail;
 
+@MapperScan
 public interface CommonCodeDetailMapper {
 	
 	// [상세 공통코드] 전체조회

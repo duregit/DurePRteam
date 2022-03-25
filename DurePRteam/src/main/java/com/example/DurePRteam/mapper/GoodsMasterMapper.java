@@ -8,9 +8,11 @@ import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.SelectKey;
 import org.apache.ibatis.annotations.Update;
+import org.mybatis.spring.annotation.MapperScan;
 
 import com.example.DurePRteam.dto.GoodsMaster;
 
+@MapperScan
 public interface GoodsMasterMapper {
 	
 	// [생활재정보] 검색

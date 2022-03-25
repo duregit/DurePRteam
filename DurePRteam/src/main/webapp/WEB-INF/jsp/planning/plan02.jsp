@@ -80,38 +80,7 @@
 												<label for="salesTarget">판매목표</label> 
 												<input type="text" class="form-control" id="salesTarget" name="salesTarget">
 											</div>
-										</div>
-										<div id="good2">
-											<strong>생활재코드</strong>																	
-											<div class="input-group mb-3">
-												<input type="hidden" id="piproperty" name="piproperty"/>
-												<input type="hidden" id="gmNo" name="gmNo"/>
-												<input type="text" class="form-control rounded-0" id="gmSeq">												
-												<span class="input-group-append">
-													<button type="button" class="btn btn-info btn-flat" data-search-goods>검색</button>
-												</span>
-											</div>											
-											<div class="form-group">
-												<label for="gmDesc">생활재명</label> 
-												<input type="text" class="form-control" id="gmDesc" name="gmDesc" readonly>
-											</div>
-											<div class="form-group">
-												<label for="gmName">생산지</label> 
-												<input type="text" class="form-control" id="gmName" name="gmName" readonly>
-											</div>
-											<div class="form-group">
-												<label for="gmGubun">생활재구분</label>
-												<select class="form-control" id="salesTarget" name="salesTarget">
-													<c:forEach var="gmGubun" items="${ selGmGubuns }">
-														<option value="${ gmGubun.detailCode }">${ gmGubun.text }</option>
-													</c:forEach>
-												</select>
-											</div>
-											<div class="form-group">
-												<label for="salesTarget">판매목표</label> 
-												<input type="text" class="form-control" id="salesTarget" name="salesTarget">
-											</div>
-										</div>
+										</div>										
 									</div>
 									<div class="form-group">
 										<button type="button" class="btn btn-info" id="addBtn" num="1">생활재 추가</button>
@@ -197,15 +166,48 @@
 	//생활재 추가
 	$("#addBtn").click(function() {
 		console.log("num", $(this).attr("num"));
-		if ($(this).attr("num") == 5) {
+		var num = parseInt($(this).attr("num")) + 1);
+		if (num > 6) {
 			alert("최대 5개까지 입력가능합니다.");
 			return false;
 		} else {
 			// 생활재폼 추가
 			var strHtml = '';
-			$(this).attr("num", parseInt($(this).attr("num")) + 1);
+			+ '	<div id="good'+ num +'"> '
+			+ '		<strong>생활재코드</strong> '																	
+			+ '		<div class="input-group mb-3"> '
+			+ '			<input type="hidden" id="piproperty" name="piproperty"/> '
+			+ '			<input type="hidden" id="gmNo" name="gmNo"/> '
+			+ '			<input type="text" class="form-control rounded-0" id="gmSeq"> '												
+			+ '			<span class="input-group-append"> '
+			+ '				<button type="button" class="btn btn-info btn-flat" data-search-goods>검색</button> '
+			+ '			</span> '
+			+ '		</div> '									
+			+ '		<div class="form-group"> '
+			+ '			<label for="gmDesc">생활재명</label> '
+			+ '			<input type="text" class="form-control" id="gmDesc" name="gmDesc" readonly> '
+			+ '		</div> '
+			+ '		<div class="form-group"> '
+			+ '			<label for="gmName">생산지</label> '
+			+ '			<input type="text" class="form-control" id="gmName" name="gmName" readonly> '
+			+ '		</div> '
+			+ ' 	<div class="form-group"> '
+			+ '			<label for="gmGubun">생활재구분</label> '
+			+ '			<select class="form-control" id="salesTarget" name="salesTarget"> '
+			+ '				<c:forEach var="gmGubun" items="${ selGmGubuns }"> '
+			+ '					<option value="${ gmGubun.detailCode }">${ gmGubun.text }</option> '
+			+ '				</c:forEach> '
+			+ '			</select> '
+			+ '		</div> '
+			+ '		<div class="form-group"> '
+			+ '			<label for="salesTarget">판매목표</label> '
+			+ '			<input type="text" class="form-control" id="salesTarget" name="salesTarget"> '
+			+ '		</div> '
+			+ ' </div> ';
+			
+			$("#goodsInfo").append(strHtml);
+			$(this).attr("num", num);
 		}
-
 	});
 
 	//생활재 삭제
