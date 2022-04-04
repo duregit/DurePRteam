@@ -11,7 +11,7 @@
 
 <jsp:include page="/include/_header.jsp" />
 </head>
-<body class="hold-transition sidebar-mini layout-fixed">
+<body class="hold-transition sidebar-mini layout-fixed" onload="initSelect()">
 	<div class="wrapper">
 		<!-- Content Wrapper. Contains page content -->
 		<div class="content-wrapper" style="min-height: 1345.31px;">
@@ -46,44 +46,14 @@
 							<!-- form start -->
 							<form:form method="post" modelAttribute="planning">
 								<div class="card-body">
-									<input type="hidden" name="planId" value="${ planning.planNo }"/>
+									<input type="hidden" id="planId" name="planId" value="${ planning.planNo }"/>
 									
-									<!-- 생활재정보 -->
-									<div id="goodsInfo">
-										<div id="good1">
-											<strong>생활재코드</strong>																	
-											<div class="input-group mb-3">
-												<input type="hidden" id="piproperty" name="piproperty"/>
-												<input type="hidden" id="gmNo" name="gmNo"/>
-												<input type="text" class="form-control rounded-0" id="gmSeq">												
-												<span class="input-group-append">
-													<button type="button" class="btn btn-info btn-flat" data-search-goods>검색</button>
-												</span>
-											</div>											
-											<div class="form-group">
-												<label for="gmDesc">생활재명</label> 
-												<input type="text" class="form-control" id="gmDesc" name="gmDesc" readonly>
-											</div>
-											<div class="form-group">
-												<label for="gmName">생산지</label> 
-												<input type="text" class="form-control" id="gmName" name="gmName" readonly>
-											</div>
-											<div class="form-group">
-												<label for="gmGubun">생활재구분</label>
-												<select class="form-control" id="salesTarget" name="salesTarget">
-													<c:forEach var="gmGubun" items="${ selGmGubuns }">
-														<option value="${ gmGubun.detailCode }">${ gmGubun.text }</option>
-													</c:forEach>
-												</select>
-											</div>
-											<div class="form-group">
-												<label for="salesTarget">판매목표</label> 
-												<input type="text" class="form-control" id="salesTarget" name="salesTarget">
-											</div>
-										</div>										
+									<!-- 생활재정보 시작-->
+									<div id="goodsInfo">										
 									</div>
+									<!-- 생활재정보 끝-->
 									<div class="form-group">
-										<button type="button" class="btn btn-info" id="addBtn" num="1">생활재 추가</button>
+										<button type="button" class="btn btn-info" id="addBtn" num="0">생활재 추가</button>
 										<button type="button" class="btn btn-danger" id="delBtn">생활재 삭제</button>
 									</div>
 									<div class="form-group">
@@ -104,9 +74,17 @@
 								<!-- /.card-body -->
 
 								<div class="card-footer" style="text-align:center;">
-									<button type="button" class="btn btn-default">이전</button>
-									<button type="button" class="btn btn-warning">임시저장</button>
-									<button type="button" class="btn btn-primary">다음</button>
+									<button type="button" class="btn btn-default" gubun="pre" onclick="prePage(this)">이전</button>
+									<c:set var="state" value="${ planning.state }" />
+									<c:choose>
+										<c:when test="${ state eq null or state == 'W' }">
+											<button type="button" class="btn btn-warning" gubun="save" onclick="formSubmit(this)">임시저장</button>
+											<button type="button" class="btn btn-primary" gubun="next" onclick="formSubmit(this)">다음</button>
+										</c:when>
+										<c:when test="${ state == 'R' or state == 'C' }">
+											<button type="button" class="btn btn-primary" gubun="next" onclick="formSubmit(this)">다음</button>
+										</c:when>
+									</c:choose>
 								</div>
 							</form:form>
 						</div>
@@ -120,13 +98,56 @@
 </body>
 <jsp:include page="/include/_footer.jsp" />
 <script type="text/javascript">
+	//시작 시 생활재 정보 초기화
+	function initSelect() {
+		$("#goodsInfo").html("");				// 생활재정보 초기화
+		var planNo = $("#planId").val();		// 계획서 번호	
+		var inputData = {
+			"planNo": parseInt(planNo)
+		}
+		
+		$.ajax({
+			url : "/goodsMaster/planningSelect",
+			type : "POST",
+			data: JSON.stringify(inputData),
+			dataType: "json",
+			contentType:"application/json;charset=UTF-8",
+		    async: false,
+		    success: function(data){
+		    	var planningGoodsInfos = data;
+		    	console.log(data);
+		    	
+		        if ($.isEmptyObject(planningGoodsInfos)) {
+		        	// (신규)생활재 없으면 1개 추가
+		        	addGoodsInfo();
+		        } else {
+		        	// (수정)생활재 있는 개수만큼 추가 후 데이터 바인딩
+		        	$.each(planningGoodsInfos, function(key, value) {
+		        		addGoodsInfo();
+		        		var num = $("#addBtn").attr("num");
+		        		var divInfo = $("#good"+(num));
+		        		divInfo.find("#piproperty").val(value.piproperty);
+		        		divInfo.find("#gmSeq").val(value.gmSeq);
+		        		divInfo.find("#gmDesc").val(value.gmDesc);
+			        	divInfo.find("#gmNo").val(value.gmNo);
+			        	divInfo.find("#gmName").val(value.gmName);
+			        	divInfo.find("#gmGubun").val(value.gmGubun);
+			        	divInfo.find("#salesTarget").val(value.salesTarget);	        		
+		        	});
+		    	}
+		    },
+		    error: function(xhr, status, error){
+		       alert(xhr.responseText);
+		    },
+		    complete: function(xhr, status){}
+		});
+	}
 	
-	var goodsDiv = "";
-	
-	// 생활재 조회
-	$("[data-search-goods]").click(function() {
-		goodsDiv = $(this).closest("div").parent();
-		var gmSeq = $(this).closest("div").find("#gmSeq").val();	// 생활재번호
+	// 생활재 검색	
+	var goodsDiv = "";	// 생활재정보 div
+	function gmSearch(btn) {
+		goodsDiv = $(btn).closest("div").parent();
+		var gmSeq = $(btn).closest("div").find("#gmSeq").val();	// 생활재번호
 		var inputData = {
 			"gmSeq": parseInt(gmSeq)
 		}
@@ -145,8 +166,11 @@
 			contentType:"application/json;charset=UTF-8",
 		    async: false,
 		    success: function(data){
-		        if (data.length == 0) {
+		        if ($.isEmptyObject(data)) {
 		    	    alert('조회 결과가 없습니다.');
+		    	    goodsDiv.find("#gmSeq").val("");
+		    	    goodsDiv.find("#gmSeq").focus();
+					return false;
 		        } else {
 		        	goodsDiv.find("#piproperty").val(data.goodsMaster.piproperty);
 		        	goodsDiv.find("#gmSeq").val(data.goodsMaster.gmSeq);
@@ -161,26 +185,26 @@
 		    },
 		    complete: function(xhr, status){}
 		});
-	});   
+	}
 	
-	//생활재 추가
-	$("#addBtn").click(function() {
-		console.log("num", $(this).attr("num"));
-		var num = parseInt($(this).attr("num")) + 1);
-		if (num > 6) {
+	// 생활재추가
+	function addGoodsInfo() {
+		var num = parseInt($("#addBtn").attr("num")) + 1;
+		
+		if (num > 5) {
 			alert("최대 5개까지 입력가능합니다.");
 			return false;
 		} else {
 			// 생활재폼 추가
-			var strHtml = '';
+			var strHtml = ''
 			+ '	<div id="good'+ num +'"> '
-			+ '		<strong>생활재코드</strong> '																	
+			+ '		<strong>생활재번호</strong> '																	
 			+ '		<div class="input-group mb-3"> '
 			+ '			<input type="hidden" id="piproperty" name="piproperty"/> '
 			+ '			<input type="hidden" id="gmNo" name="gmNo"/> '
 			+ '			<input type="text" class="form-control rounded-0" id="gmSeq"> '												
 			+ '			<span class="input-group-append"> '
-			+ '				<button type="button" class="btn btn-info btn-flat" data-search-goods>검색</button> '
+			+ '				<button type="button" class="btn btn-info btn-flat" onclick="gmSearch(this)">검색</button> '
 			+ '			</span> '
 			+ '		</div> '									
 			+ '		<div class="form-group"> '
@@ -193,7 +217,8 @@
 			+ '		</div> '
 			+ ' 	<div class="form-group"> '
 			+ '			<label for="gmGubun">생활재구분</label> '
-			+ '			<select class="form-control" id="salesTarget" name="salesTarget"> '
+			+ '			<select class="form-control" id="gmGubun" name="gmGubun"> '
+			+ '				<option value="0">==선택하세요==</option> ' 
 			+ '				<c:forEach var="gmGubun" items="${ selGmGubuns }"> '
 			+ '					<option value="${ gmGubun.detailCode }">${ gmGubun.text }</option> '
 			+ '				</c:forEach> '
@@ -206,9 +231,79 @@
 			+ ' </div> ';
 			
 			$("#goodsInfo").append(strHtml);
-			$(this).attr("num", num);
+			$("#addBtn").attr("num", num);
 		}
-	});
+	}
+	
+	// 생활재정보 저장(ajax) 후 계획서 저장(submit)
+	function formSubmit(btn) {
+		var planNo = $("#planId").val();		// 계획서 번호
+		var state = '<c:out value="${ planning.state }"></c:out>'
+			
+		var btnGubun = $(btn).attr("gubun");	// 버튼 종류
+		if (btnGubun == "save") {
+			$("#planning").attr("action", "/planning/save02?planNo=" + planNo)
+		}
+		
+		// 계획서 상태(작성중인 경우만 생활재 수정)
+		if (isEmpty(state) || state == "W") {
+			var divCnt = $("#addBtn").attr("num");	// 생활재 개수
+			
+			var inputDataArray = [];
+			for(var i = 0; i < divCnt; i++) {
+				var divInfo = $("#good"+(i+1));
+				
+				// 객체 초기화
+				var inputData = {}
+				
+				inputData.planNo = planNo;									// 계획서 번호
+				inputData.piproperty = divInfo.find("#piproperty").val();	// 단협코드
+				inputData.gmSeq = divInfo.find("#gmSeq").val();				// 생활재번호
+				inputData.gmDesc = divInfo.find("#gmDesc").val();			// 생활재명
+				inputData.gmNo = divInfo.find("#gmNo").val();				// 거래처번호
+				inputData.gmName = divInfo.find("#gmName").val();			// 거래처명
+				inputData.gmGubun = divInfo.find("#gmGubun").val();			// 생활재구분
+				inputData.salesTarget = divInfo.find("#salesTarget").val();	// 판매목표
+				
+				// 객체배열에 추가
+			    inputDataArray.push(inputData);
+			}
+			
+			$.ajax({
+				url : "/goodsMaster/planningInsert",
+				type : "POST",
+				data: JSON.stringify(inputDataArray),
+				dataType: "text",
+				contentType:"application/json;charset=UTF-8",
+			    async: false,
+			    success: function(){
+			    	$("#planning").submit();
+			    },
+			    error: function(xhr, status, error){
+			       alert(xhr.responseText);
+			    },
+			    complete: function(xhr, status){}
+			});
+		} else {
+			$("#planning").submit();
+		}
+	}
+	
+	//이전페이지
+	function prePage() {	
+		var planNo = $("#planId").val();		// 계획서 번호	
+		if(confirm("이전페이지로 이동하시겠습니까?")) {
+			location.href = "edit01?planNo=" + planNo;
+		} else {
+			return false;
+		}
+	}
+
+$(function() {
+	//생활재 추가
+	$("#addBtn").click(function() {
+		addGoodsInfo();
+	});	
 
 	//생활재 삭제
 	$("#delBtn").click(function() {
@@ -218,10 +313,13 @@
 			return false;
 		} else {
 			// 생활재폼 삭제
-			var strHtml = '';
+			var divId = "good"+($("#addBtn").attr("num"));
+			$("#" + divId + " *").remove();
+			//$("#good"+($("#addBtn").attr("num") +" *")).remove()
+			
 			$("#addBtn").attr("num", parseInt($("#addBtn").attr("num")) - 1);
 		}
-
 	});
+});
 </script>
 </html>

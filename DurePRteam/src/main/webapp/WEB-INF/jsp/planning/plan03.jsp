@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>    
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -42,40 +44,41 @@
 							</div>
 							<!-- /.card-header -->
 							<!-- form start -->
-							<form>
+							<form:form method="post" modelAttribute="planning">
 								<div class="card-body">
+									<input type="hidden" id="planId" name="planId" value="${ planning.planNo }"/>
 									<div class="form-group">
-										<label>연계생활재</label>
-										<textarea class="form-control" rows="2" placeholder="Enter ..."></textarea>
+										<label for="linkedGoods">연계생활재</label>										
+										<form:input path="linkedGoods" class="form-control" />
 									</div>
 									<div class="form-group">
-										<label for="gubun">홍보방법</label> 
-										<select class="form-control" id="gubun">
-											<option>option 1</option>
-											<option>option 2</option>
-										</select>
+										<label for="prMethod">홍보방법</label> 
+										<form:select path="prMethod" class="form-control">
+											<form:option value="0" label="==선택하세요==" />
+											<form:options itemValue="detailCode" itemLabel="text" items="${ selPRMethod }" />
+										</form:select>
 									</div>
 									<div class="form-group">
-										<label>홍보도구(상세)</label>
-										<textarea class="form-control" rows="2" placeholder="Enter ..." disabled></textarea>
+										<label for="prTools">홍보도구(상세)</label>
+										<form:textarea path="prTools" class="form-control" rows="4" disabled="true"/>
 									</div>
 									<div class="form-group">
-										<label>홍보멘트</label>
-										<textarea class="form-control" rows="5" placeholder="Enter ..."></textarea>
+										<label for="prMessage">홍보멘트</label>
+										<form:textarea path="prMessage" class="form-control" rows="4" />
 									</div>
 									<div class="form-group">
-										<label>기타</label>
-										<textarea class="form-control" rows="5" placeholder="Enter ..."></textarea>
+										<label for="etc">기타</label>
+										<form:textarea path="etc" class="form-control" rows="4" />
 									</div>
 								</div>
 								<!-- /.card-body -->
 
 								<div class="card-footer" style="text-align:center;">
-									<button type="button" class="btn btn-default">이전</button>
-									<button type="button" class="btn btn-warning">임시저장</button>
-									<button type="button" class="btn btn-primary">계획서등록</button>
+									<button type="button" class="btn btn-default" gubun="pre" onclick="prePage(this)">이전</button>
+									<button type="button" class="btn btn-warning" gubun="save" onclick="formSubmit(this)">임시저장</button>
+									<button type="button" class="btn btn-primary" gubun="next" onclick="formSubmit(this)">계획서작성</button>
 								</div>
-							</form>
+							</form:form>
 						</div>
 					</div>
 				</div>
@@ -86,4 +89,38 @@
 	</div>
 </body>
 <jsp:include page="/include/_footer.jsp" />
+<script type="text/javascript">
+	//생활재정보 저장(ajax) 후 계획서 저장(submit)
+	function formSubmit(btn) {
+		var planNo = $("#planId").val();		// 계획서 번호
+		
+		var btnGubun = $(btn).attr("gubun");	// 버튼 종류
+		if (btnGubun == "save") {
+			$("#planning").attr("action", "/planning/save03?planNo=" + planNo)
+		}
+		
+		$("#planning").submit();
+	}
+	
+	//이전페이지
+	function prePage() {	
+		var planNo = $("#planId").val();		// 계획서 번호	
+		if (confirm("이전페이지로 이동하시겠습니까?")) {
+			location.href = "edit02?planNo=" + planNo;
+		} else {
+			return false;
+		}
+	}
+	
+$(function() {
+	$("#prMethod").change(function(){
+		// 홍보도구(05) 선택 시 홍보도구 칸 활성화
+		if ($(this).val() == "05") {
+			$("#prTools").attr("disabled", false);
+		} else {
+			$("#prTools").attr("disabled", true);
+		}		
+	});
+});
+</script>
 </html>

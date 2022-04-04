@@ -5,3 +5,10 @@ tr[data-url]:hover {
 .clicked { 
 	background-color: #ffe; 
 }
+.table-list {
+	font-size: 0.8rem;
+}
+.table-list td {
+	padding: 0.7rem;
+	vertical-align: middle;
+}

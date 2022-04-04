@@ -16,7 +16,7 @@ $(function () {
     	//console.log('ev', new Date(ev.date._i).getDay());
     	// 달력 선택 시 요일 초기화	
     	var weekday = getWeekday(ev.date._i);
-    	$('[name=pDay]').val(weekday);
+    	$('[name=prDay]').val(weekday);
     });
     
     // Table
@@ -37,3 +37,13 @@ function getWeekday(strDay) {
 	var weekday = weekdays[day]; 
 	return weekday;
 }
+
+// null 체크
+function isEmpty(value) { 
+	if( value == "" || value == null || value == undefined || ( value != null && typeof value == "object" && !Object.keys(value).length ) ) { 
+		return true; 
+	} else { 
+		return false 
+	} 
+}
+

@@ -10,8 +10,8 @@ public class PlanningGoodsInfo {
     String piproperty;
     int gmSeq;
     String gmDesc;
-    String gMNO;
-    String gMName;
+    String gmNo;
+    String gmName;
     String gmGubun;
     String salesTarget;
 }

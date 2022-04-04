@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -35,15 +38,10 @@
 			<!-- Main content -->
 			<section class="content">
 				<div class="container-fluid">
-					<div class="col-sm-12">
+					<div class="col-md-12">
 						<div class="card card-primary">
 							<div class="card-header">
 								<h3 class="card-title">계획서 조회</h3>	
-								<div class="card-tools">
-									<div class="input-group input-group-sm">
-										<a href="create"><button type="button" class="btn btn-default btn-sm float-right">신규 작성</button></a>
-									</div>
-								</div>
 							</div>								
 							<!-- /.card-header -->
 							<div class="card-body">
@@ -101,62 +99,79 @@
 									<div class="col-6">
 										<button type="button" class="btn btn-info btn-sm float-right">조회</button>
 									</div>
-								</div>
-								<table class="table table-bordered">
-									<thead>
-										<tr>
-											<th style="width: 10px">#</th>
-											<th>Task</th>
-											<th style="width: 40px">Label</th>
-										</tr>
-									</thead>
-									<tbody>
-										<tr>
-											<td>1.</td>
-											<td>Update software</td>
-											<td><span class="badge bg-danger">55%</span></td>
-										</tr>
-										<tr>
-											<td>2.</td>
-											<td>Clean database</td>
-											<td><span class="badge bg-warning">70%</span></td>
-										</tr>
-										<tr>
-											<td>3.</td>
-											<td>Cron job running</td>
-											<td><span class="badge bg-primary">30%</span></td>
-										</tr>
-										<tr>
-											<td>4.</td>
-											<td>Fix and squish bugs</td>
-											<td><span class="badge bg-success">90%</span></td>
-										</tr>
-										<tr>
-											<td>5.</td>
-											<td>Update software</td>
-											<td><span class="badge bg-danger">55%</span></td>
-										</tr>
-										<tr>
-											<td>6.</td>
-											<td>Update software</td>
-											<td><span class="badge bg-danger">55%</span></td>
-										</tr>
-										<tr>
-											<td>7.</td>
-											<td>Update software</td>
-											<td><span class="badge bg-danger">55%</span></td>
-										</tr>
-									</tbody>
-								</table>
+								</div>								
 							</div>
 							<!-- /.card-body -->
+							<table class="table table-bordered table-list">
+								<thead>
+									<tr>
+										<th>계획서정보</th>
+										<th>작성자</th>
+										<th>상태</th>
+									</tr>
+								</thead>
+								<tbody>
+									<c:forEach var="planning" items="${ plannings }">
+										<tr planNo=${ planning.planNo }>
+											<td>
+												<a href="edit01?planNo=${ planning.planNo }">
+													${ planning.prDate } ${ planning.suPIPropName } <br>
+													<c:choose>
+												        <c:when test="${fn:length(planning.gmDesc) gt 13}">
+												        	<c:out value="${fn:substring(planning.gmDesc, 0, 12)}..."></c:out>
+												        </c:when>
+												        <c:otherwise>
+												        	<c:out value="${planning.gmDesc}"></c:out>
+												        </c:otherwise>
+													</c:choose>
+												</a>
+											</td>
+											<td>${ planning.addUser }</td>
+											<td>
+											<c:set var="state" value="${ planning.state }" />
+											<c:choose>
+												<c:when test="${ state eq null }">
+													<button type="button" class="btn btn-default btn-sm">작성 중</button>
+												</c:when>
+												<c:when test="${ state == 'W' }">
+													<button type="button" class="btn btn-warning btn-sm" id="requestBtn">검토요청</button>
+												</c:when>
+												<c:when test="${ state == 'R' and state == ''}">
+													<!-- 관리자 -->
+													<button type="button" class="btn btn-secondary btn-sm" id="confirmBtn">관리자승인</button>
+												</c:when>
+												<c:when test="${ state == 'R' }">
+													<button type="button" class="btn btn-secondary btn-sm">검토요청 중</button>
+												</c:when>
+												<c:when test="${ state == 'C' }">
+													<button type="button" class="btn btn-primary btn-sm" id="evalBtn">평가서작성</button>
+												</c:when>
+												<c:otherwise>
+													<button type="button" class="btn btn-default btn-sm">평가서작성 중</button>
+												</c:otherwise>											
+											</c:choose>											
+											</td>
+										</tr>
+									</c:forEach>
+								</tbody>
+							</table>
 							<div class="card-footer clearfix">
+								<a href="create" class="btn btn-primary btn-sm">신규</a>
 								<ul class="pagination pagination-sm m-0 float-right">
-									<li class="page-item"><a class="page-link" href="#">«</a></li>
-									<li class="page-item"><a class="page-link" href="#">1</a></li>
-									<li class="page-item"><a class="page-link" href="#">2</a></li>
-									<li class="page-item"><a class="page-link" href="#">3</a></li>
-									<li class="page-item"><a class="page-link" href="#">»</a></li>
+									<c:if test="${ paging.prev }">
+										<li class="paginate_button page-item"><a class="page-link" href="list?page=${ paging.startPage-1 }">«</a></li>
+									</c:if>
+									<c:forEach begin="${ paging.startPage }" end="${ paging.endPage }" var="num">
+										<c:if test="${ criteria.page == num }">
+											<li class="paginate_button page-item active"><a class="page-link" href="list?page=${ num }">${ num }</a></li>
+										</c:if>
+										<c:if test="${ criteria.page != num }">
+											<li class="paginate_button page-item"><a class="page-link" href="list?page=${ num }">${ num }</a></li>
+										</c:if>	
+									</c:forEach>
+									<c:if test="${ paging.next && paging.endPage > 0 }">
+										<li class="paginate_button page-item"><a class="page-link" href="list?page=${ paging.endPage+1 }">»</a></li>
+									</c:if>
 								</ul>
 							</div>
 						</div>
@@ -169,4 +184,78 @@
 	</div>
 </body>
 <jsp:include page="/include/_footer.jsp" />
+<script type="text/javascript">
+	$(function() {
+		// 검토요청
+		$("#requestBtn").click(function () {
+			var pageNo = <c:out value="${criteria.page}"></c:out>;	// 페이지번호
+			var planNo = $(this).closest("tr").attr("planNo");		// 계획서번호
+			var inputData = {
+				"planNo": parseInt(planNo),
+				"pageNo": parseInt(pageNo)
+			};
+			
+			if(confirm("검토요청을 하시겠습니까?")) {
+				$.ajax({
+					url : "/planning/request",
+					type : "POST",
+					data: JSON.stringify(inputData),
+					dataType: "text",
+					contentType:"application/json;charset=UTF-8",
+				    async: false,
+				    success: function(){
+				    	alert("검토요청이 완료되었습니다.");
+				    	location.href = "list?page=" + pageNo;
+				    },
+				    error: function(xhr, status, error){
+				       alert(xhr.responseText);
+				    },
+				    complete: function(xhr, status){}
+				});
+			} else {
+				return false;	
+			}
+		});
+		
+		// 관리자승인
+		$("#confirmBtn").click(function () {
+			var pageNo = <c:out value="${criteria.page}"></c:out>;	// 페이지번호
+			var planNo = $(this).closest("tr").attr("planNo");		// 계획서번호
+			var inputData = {
+				"planNo": parseInt(planNo),
+				"pageNo": parseInt(pageNo)
+			};
+			
+			if(confirm("승인을 하시겠습니까?")) {
+				$.ajax({
+					url : "/planning/confirm",
+					type : "POST",
+					data: JSON.stringify(inputData),
+					dataType: "text",
+					contentType:"application/json;charset=UTF-8",
+				    async: false,
+				    success: function(){
+				    	alert("관리자승인이 완료되었습니다.");
+				    	location.href = "list?page=" + pageNo;
+				    },
+				    error: function(xhr, status, error){
+				       alert(xhr.responseText);
+				    },
+				    complete: function(xhr, status){}
+				});
+			} else {
+				return false;	
+			}
+		});
+		
+		// 평가서작성
+		$("#evalBtn").click(function () {
+			var planNo = $(this).closest("tr").attr("planNo");
+			
+			if(confirm("평가서작성을 하시겠습니까?")) {
+		    	location.href = "/evaluation/create?planNo=" + planNo;
+			}
+		});
+	});
+</script>
 </html>

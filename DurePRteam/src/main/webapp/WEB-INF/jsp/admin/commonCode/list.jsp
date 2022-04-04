@@ -46,41 +46,6 @@
 								</div>								
 								<!-- /.card-header -->
 								<div class="card-body">
-									<!--  
-									<div class="row">
-										<div class="col-md-4">
-											<div class="form-group row">
-												<label for="masterCode" class="col-md-3 col-form-label">분류코드</label>
-												<div class="col-md-9">
-													<input type="text" class="form-control" id="masterCode" placeholder="분류코드">
-												</div>
-											</div>
-										</div>
-										<div class="col-md-4">
-											<div class="form-group row">
-												<label for="masterText" class="col-md-3 col-form-label">코드명</label>
-												<div class="col-md-9">
-													<input type="text" class="form-control" id="masterText" placeholder="코드명">
-												</div>
-											</div>
-										</div>
-										<div class="col-md-3">
-											<div class="form-group row">
-												<label for="text" class="col-md-3 col-form-label">사용</label>
-												<div class="col-md-9">
-													<select class="form-control" name="masterActiveYN">
-														<option value="">전체</option>
-														<option value="Y">Y</option>
-														<option value="N">N</option>
-													</select>
-												</div>
-											</div>
-										</div>
-										<div class="col-md-1">
-											<button type="button" class="btn btn-info float-right">조회</button>
-										</div>
-									</div>
-									-->
 									<table class="table table-bordered">
 										<thead>
 											<tr>
@@ -121,16 +86,7 @@
 										<c:if test="${ paging.next && paging.endPage > 0 }">
 											<li class="paginate_button page-item"><a class="page-link" href="list?page=${ paging.endPage+1 }">»</a></li>
 										</c:if>
-									</ul>
-									<!-- 
-									<ul class="pagination pagination-sm m-0 float-right">
-										<li class="page-item"><a class="page-link" href="#">«</a></li>
-										<li class="page-item"><a class="page-link" href="#">1</a></li>
-										<li class="page-item"><a class="page-link" href="#">2</a></li>
-										<li class="page-item"><a class="page-link" href="#">3</a></li>
-										<li class="page-item"><a class="page-link" href="#">»</a></li>
-									</ul>
-									 -->
+									</ul>									
 								</div>
 							</div>
 						</div>
@@ -143,41 +99,6 @@
 								</div>								
 								<!-- /.card-header -->
 								<div class="card-body">
-									<!-- 
-									<div class="row">
-										<div class="col-md-4">
-											<div class="form-group row">
-												<label for="detailCode" class="col-md-5 col-form-label">상세분류코드</label>
-												<div class="col-md-7">
-													<input type="text" class="form-control" id="detailCode" placeholder="상세분류코드">
-												</div>
-											</div>
-										</div>
-										<div class="col-md-4">
-											<div class="form-group row">
-												<label for="detailText" class="col-md-3 col-form-label">코드명</label>
-												<div class="col-md-9">
-													<input type="text" class="form-control" id="detailText" placeholder="코드명">
-												</div>
-											</div>
-										</div>
-										<div class="col-md-3">
-											<div class="form-group row">
-												<label for="text" class="col-md-3 col-form-label">사용</label>
-												<div class="col-md-9">
-													<select class="form-control" name="detailActiveYN">
-														<option value="">전체</option>
-														<option value="Y">Y</option>
-														<option value="N">N</option>
-													</select>
-												</div>
-											</div>
-										</div>
-										<div class="col-md-1">
-											<button type="button" class="btn btn-info float-right">조회</button>
-										</div>
-									</div>
-									-->
 									<table class="table table-bordered">
 										<thead>
 											<tr>
@@ -201,16 +122,7 @@
 								</div>
 								<!-- /.card-body -->
 								<div class="card-footer clearfix">
-									<button type="button" class="btn btn-primary" id="create">신규</button>									
-									<!--
-									<ul class="pagination pagination-sm m-0 float-right">
-										<li class="page-item"><a class="page-link" href="#">«</a></li>
-										<li class="page-item"><a class="page-link" href="#">1</a></li>
-										<li class="page-item"><a class="page-link" href="#">2</a></li>
-										<li class="page-item"><a class="page-link" href="#">3</a></li>
-										<li class="page-item"><a class="page-link" href="#">»</a></li>
-									</ul>
-									 -->
+									<button type="button" class="btn btn-primary" id="create">신규</button>
 								</div>
 							</div>
 						</div>

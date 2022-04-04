@@ -6,8 +6,9 @@ import java.util.List;
 import lombok.Data;
 
 @Data
-public class Planning {
-	// 계획서
+public class Evaluation {
+	// 평가서
+	int evalNo;
 	int planNo;
 	String prName;
 	String piproperty;	

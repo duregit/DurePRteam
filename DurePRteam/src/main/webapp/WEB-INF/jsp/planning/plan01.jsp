@@ -45,7 +45,7 @@
 							<!-- /.card-header -->
 							<!-- form start -->
 							<form:form method="post" modelAttribute="planning">
-								<input type="hidden" name="planId" value="${ planning.planNo }"/>
+								<input type="hidden" id="planId" name="planId" value="${ planning.planNo }"/>
 								<input type="hidden" id="btnGubun" name="btnGubun" value=""/>
 								<div class="card-body">
 									<div class="form-group">
@@ -56,7 +56,7 @@
 									<div class="form-group">
 										<label for="PRName">홍보단명</label>										
 										<form:input path="prName" class="form-control" />
-									</div>															
+									</div>
 									<div class="form-group">
 										<label for="PIProperty">단협</label> 
 										<!--<form:select path="piproperty" items="${ piproperties }" itemLabel="piPropName" itemValue="piproperty" />-->
@@ -74,10 +74,9 @@
 									</div>
 									<div class="form-group">
 										<label>진행일</label>
-										<div class="input-group date dateYYYYMMDD" id="pDate" data-target-input="nearest">
-											<!-- <input type="text" class="form-control datetimepicker-input" id="pDate" data-target="#pDate"> -->
-											<form:input path="pDate" class="form-control datetimepicker-input" data-target="#pDate" />
-											<div class="input-group-append" data-target="#pDate" data-toggle="datetimepicker">
+										<div class="input-group date dateYYYYMMDD" id="prDate" data-target-input="nearest">
+											<form:input path="prDate" class="form-control datetimepicker-input" data-target="#prDate" />
+											<div class="input-group-append" data-target="#prDate" data-toggle="datetimepicker">
 												<div class="input-group-text">
 													<i class="fa fa-calendar"></i>
 												</div>
@@ -85,8 +84,8 @@
 										</div>
 									</div>
 									<div class="form-group">
-										<label for="pDay">진행요일</label>
-										<form:input path="pDay" class="form-control" readonly="true" />
+										<label for="prDay">진행요일</label>
+										<form:input path="prDay" class="form-control" readonly="true" />
 									</div>
 									<div class="form-group">
 										<label for="gubun">행사구분</label>
@@ -106,6 +105,7 @@
 								<!-- /.card-body -->
 
 								<div class="card-footer" style="text-align:center;">
+									<a href="list" class="btn btn-default">목록으로</a>
 									<button type="submit" class="btn btn-primary">다음</button>
 								</div>
 							</form:form>

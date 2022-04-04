@@ -16,7 +16,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.example.DurePRteam.dto.GoodsMaster;
+import com.example.DurePRteam.dto.PlanningGoodsInfo;
 import com.example.DurePRteam.mapper.GoodsMasterMapper;
+import com.example.DurePRteam.mapper.PlanningGoodsInfoMapper;
 import com.google.gson.Gson;
 
 @Controller
@@ -24,8 +26,9 @@ import com.google.gson.Gson;
 public class GoodsMasterController {
     
     @Autowired GoodsMasterMapper goodsMasterMapper;
+    @Autowired PlanningGoodsInfoMapper planningGoodsInfoMapper;
     
-    // [생활재] 검색
+    // [판매계획] 생활재 검색
     @PostMapping("searchGoods")
     @ResponseBody
     public String searchGoods(HttpServletResponse response, @RequestBody GoodsMaster gm) {
@@ -41,38 +44,36 @@ public class GoodsMasterController {
         
     	return jsonString;
     }
-
-//    // [공통코드] 등록페이지
-//    @GetMapping("commonCode/create")
-//    public String create(Model model) {
-//        model.addAttribute("commonCode", new CommonCode());
-//        
-//        return "admin/commonCode/edit";
-//    }
-//
-//    // [공통코드] 등록
-//    @PostMapping("commonCode/create")
-//    public String create(Model model, CommonCode commonCode) {
-//    	commonCodeMapper.insert(commonCode);
-//    	
-//        return "redirect:list";
-//    }
-//    
-//    // [공통코드] 수정페이지
-//    @GetMapping("commonCode/edit")
-//    public String edit(Model model, String masterCode) {
-//    	CommonCode commonCode = commonCodeMapper.findOne(masterCode);
-//    	
-//        model.addAttribute("commonCode", commonCode);
-//        
-//        return "admin/commonCode/edit";
-//    }
-//    
-//    // [공통코드] 수정
-//    @PostMapping("commonCode/edit")
-//    public String edit(Model model, CommonCode commonCode) {
-//    	commonCodeMapper.update(commonCode);
-//    	
-//        return "redirect:list";
-//    }
+    
+    // [판매계획] 생활재정보 조회
+    @PostMapping("planningSelect")
+    @ResponseBody
+    public String planningSelect(HttpServletResponse response, @RequestBody PlanningGoodsInfo plan) {
+    	// 생활재정보 조회
+    	List<PlanningGoodsInfo> planningGoodsInfos = planningGoodsInfoMapper.findByPlanNo(plan.getPlanNo());
+    	
+    	Gson gson = new Gson();
+    	Map<String, Object> map = new HashMap<String, Object>();
+    	
+    	for(int i = 0; i < planningGoodsInfos.size(); i++) {
+    		map.put("planningGoodsInfo"+i, planningGoodsInfos.get(i));
+    	}
+		
+    	String jsonString = gson.toJson(map);
+        
+    	return jsonString;
+    }
+    
+    // [판매계획] 생활재정보 삽입
+    @PostMapping("planningInsert")
+    @ResponseBody
+    public void planningInsert(HttpServletResponse response, @RequestBody List<PlanningGoodsInfo> plans) {
+    	// 생활재 정보 삭제
+    	planningGoodsInfoMapper.delete(plans.get(0).getPlanNo());
+    	for(int i = 0; i < plans.size(); i++) {
+	    	//System.out.println(planningGoodsInfos.get(i));
+        	// 생활재 정보 삽입
+        	planningGoodsInfoMapper.insert(plans.get(i));
+    	}
+    }
 }

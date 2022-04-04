@@ -30,13 +30,13 @@ public interface CommonCodeMapper {
 	@Select("SELECT * FROM pr_code_master WHERE MasterCode = #{masterCode}")
     CommonCode findOne(String masterCode);
 
-	// [공통코드] 생성
+	// [공통코드] 생성 #{addUser}
     @Insert("INSERT pr_code_master (MasterCode, Text, ActiveYN, Remark, AddUser, AddDate) "
     		+ "VALUES (#{masterCode}, #{text}, #{activeYN}, #{remark}, '장우진', SYSDATE() )")
     //@Options(useGeneratedKeys=true, keyProperty="id") 설명: id필드는 Auto Increment 속성
     void insert(CommonCode commonCode);
     
-	// [공통코드] 수정
+	// [공통코드] 수정 #{modUser}
 	@Update("UPDATE pr_code_master SET          " +
             "  Text = #{text}, 			        " +
             "  ActiveYN = #{activeYN},          " +
