@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,26 +9,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>생활재 홍보단 LOGIN</title>
 
-  <!-- Google Font: Source Sans Pro -->
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
-  <!-- Font Awesome -->
-  <link rel="stylesheet" href="/plugins/fontawesome-free/css/all.min.css">
-  <!-- Ionicons -->
-  <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
-  <!-- Tempusdominus Bootstrap 4 -->
-  <link rel="stylesheet" href="/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
-  <!-- iCheck -->
-  <link rel="stylesheet" href="/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
-  <!-- JQVMap -->
-  <link rel="stylesheet" href="/plugins/jqvmap/jqvmap.min.css">
-  <!-- Theme style -->
-  <link rel="stylesheet" href="/dist/css/adminlte.min.css">
-  <!-- overlayScrollbars -->
-  <link rel="stylesheet" href="/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
-  <!-- Daterange picker -->
-  <link rel="stylesheet" href="/plugins/daterangepicker/daterangepicker.css">
-  <!-- summernote -->
-  <link rel="stylesheet" href="/plugins/summernote/summernote-bs4.min.css">
+<jsp:include page="/include/_header.jsp" />
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
 	<div class="wrapper">
@@ -42,39 +25,8 @@
 							</div>
 							<!-- /.card-header -->
 							<!-- form start -->
-							<form>
+							<form:form method="post" modelAttribute="login" >
 								<div class="card-body">
-									
-								<!-- 
-									<div class="form-group">
-										<label for="UserId">아이디</label> 
-										<input type="text" class="form-control" id="UserId">
-									</div>
-									<div class="form-group">
-										<label for="UserPw">비밀번호</label> 
-										<input type="text" class="form-control" id="UserPw">
-									</div>
-									<div class="input-group">
-										<input type="text" class="form-control">
-		                                <div class="input-group-append"><i class="fa fa-user"></i></div>
-		                                <input type="text" id="userid" value='' placeholder="E-mail을 입력하세요" class="input-group-text" />
-		                            </div>
-		                            <div class="input-group">
-		                                <span class="input-group-addon"><i class="fa fa-lock"></i></span>
-		                                <input type="password" id="password" value='' placeholder="비밀번호를 입력하세요" class="form-control" />
-		                            </div>
-		                        	
-		                            
-		                            <div class="input-group">
-										<input type="text" class="form-control" placeholder="아이디를 입력하세요">
-										<div class="input-group-append">
-											<div class="input-group-text">
-												<i class="fa fa-user"></i>
-											</div>
-										</div>
-									</div>
-		                        -->	     
-									
 									<div class="form-group">
 										<div class="input-group">
 			                                <div class="input-group-prepend">
@@ -82,7 +34,7 @@
 													<i class="fa fa-user"></i>
 												</div>
 											</div>
-			                                <input type="text" id="UserId" value='' placeholder="아이디를 입력하세요" class="form-control" />
+			                                <input type="text" id="userId" name="userId" placeholder="아이디를 입력하세요" class="form-control" />
 			                            </div>
 			                         </div>
 									<div class="form-group">
@@ -92,17 +44,23 @@
 													<i class="fa fa-lock"></i>
 												</div>
 											</div>
-			                                <input type="password" id="UserPw" value='' placeholder="비밀번호를 입력하세요" class="form-control" />
+			                                <input type="password" id="userPW" name="userPW" placeholder="비밀번호를 입력하세요" class="form-control" />
 			                            </div>
 									</div>
+									
+									<c:if test="${msg == false}">
+										<p style="color:f00;">로그인에 실패했습니다. 아이디 또는 비밀번호를 다시 입력하세요.</p>
+									</c:if>
+
+
 								</div>
 								<!-- /.card-body -->
 
 								<div class="card-footer">																					
-									<button type="button" class="btn btn-warning float-left">회원가입</button>				
-									<button type="button" class="btn btn-primary float-right">로그인</button>	
+									<button type="button" class="btn btn-warning float-left" onclick="FnJoin()">회원가입</button>				
+									<button type="button" class="btn btn-primary float-right" onclick="FnSave()">로그인</button>	
 								</div>
-							</form>
+							</form:form>
 						</div>
 					</div>
 				</div>
@@ -111,39 +69,40 @@
 		</div>
 		<!-- ./wrapper -->
 	</div>
-
-	<!-- jQuery -->
-	<script src="/plugins/jquery/jquery.min.js"></script>
-	<!-- jQuery UI 1.11.4 -->
-	<script src="/plugins/jquery-ui/jquery-ui.min.js"></script>
-	<!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
-	<script>
-		$.widget.bridge('uibutton', $.ui.button)
-	</script>
-	<!-- Bootstrap 4 -->
-	<script src="/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-	<!-- ChartJS -->
-	<script src="/plugins/chart.js/Chart.min.js"></script>
-	<!-- Sparkline -->
-	<script src="/plugins/sparklines/sparkline.js"></script>
-	<!-- JQVMap -->
-	<script src="/plugins/jqvmap/jquery.vmap.min.js"></script>
-	<script src="/plugins/jqvmap/maps/jquery.vmap.usa.js"></script>
-	<!-- jQuery Knob Chart -->
-	<script src="/plugins/jquery-knob/jquery.knob.min.js"></script>
-	<!-- daterangepicker -->
-	<script src="/plugins/moment/moment.min.js"></script>
-	<script src="/plugins/daterangepicker/daterangepicker.js"></script>
-	<!-- Tempusdominus Bootstrap 4 -->
-	<script src="/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
-	<!-- Summernote -->
-	<script src="/plugins/summernote/summernote-bs4.min.js"></script>
-	<!-- overlayScrollbars -->
-	<script src="/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
-	<!-- AdminLTE App -->
-	<script src="/dist/js/adminlte.js"></script>
+<jsp:include page="/include/_footer.jsp" />
+<script type="text/javascript">
+	function FnJoin() {
+		frm = document.createElement('form');
+		frm.setAttribute('method','get');
+		frm.setAttribute('action', 'join/join01');    
+		document.body.appendChild(frm);
+		frm.submit();		
+	}
 	
-	<script type="text/javascript">
-	</script>
+	function FnLogin() {
+		frm = document.login
+		
+		//if($('#userId').val() == ""){
+		//	alert("아이디를 입력해주세요.")
+		//	return;
+		//}else if($('#userPw').val() == ""){
+		//	alert("비밀번호를 입력해주세요.")
+		//	return;
+		//}
+		
+		frm.submit();
+	}
+	
+	function FnSave() {
+		frm = document.login
+		
+		alert("로그인 하시겠습니까?");
+		
+		//저장
+
+		$("#login").submit();
+	}
+	
+</script>
 </body>
 </html>
