@@ -1,7 +1,6 @@
 package com.example.DurePRteam.dto;
 
 import java.util.Date;
-import java.util.List;
 
 import lombok.Data;
 
@@ -17,8 +16,12 @@ public class Evaluation {
 	String suPIPropName;
 	String prDate;
 	String prDay;
-	String gubun;
+	String gubun;	
 	String reason;
+	String weather;
+	String temperatures;
+	int orderCnt;
+	int salesCnt;
 	String startTime;
 	String endTime;
 	String linkedGoods;
@@ -26,6 +29,10 @@ public class Evaluation {
 	String prTools;
 	String prMessage;
 	String etc;
+	String goodsEvalGubun;
+	int TotalScore;
+	Double totalAVG;
+	String totalText;
 	String addUser;
 	Date addDate;
 	String modUser;

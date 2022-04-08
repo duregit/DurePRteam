@@ -46,7 +46,7 @@
 							<!-- form start -->
 							<form:form method="post" modelAttribute="planning">
 								<div class="card-body">
-									<input type="hidden" id="planId" name="planId" value="${ planning.planNo }"/>
+									<input type="hidden" id="planNo" name="planNo" value="${ planning.planNo }"/>
 									<div class="form-group">
 										<label for="linkedGoods">연계생활재</label>										
 										<form:input path="linkedGoods" class="form-control" />
@@ -92,7 +92,7 @@
 <script type="text/javascript">
 	//생활재정보 저장(ajax) 후 계획서 저장(submit)
 	function formSubmit(btn) {
-		var planNo = $("#planId").val();		// 계획서 번호
+		var planNo = $("#planNo").val();		// 계획서 번호
 		
 		var btnGubun = $(btn).attr("gubun");	// 버튼 종류
 		if (btnGubun == "save") {
@@ -104,7 +104,7 @@
 	
 	//이전페이지
 	function prePage() {	
-		var planNo = $("#planId").val();		// 계획서 번호	
+		var planNo = $("#planNo").val();		// 계획서 번호	
 		if (confirm("이전페이지로 이동하시겠습니까?")) {
 			location.href = "edit02?planNo=" + planNo;
 		} else {

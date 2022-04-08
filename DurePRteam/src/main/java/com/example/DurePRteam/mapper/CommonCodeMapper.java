@@ -32,7 +32,7 @@ public interface CommonCodeMapper {
 
 	// [공통코드] 생성 #{addUser}
     @Insert("INSERT pr_code_master (MasterCode, Text, ActiveYN, Remark, AddUser, AddDate) "
-    		+ "VALUES (#{masterCode}, #{text}, #{activeYN}, #{remark}, '장우진', SYSDATE() )")
+    		+ "VALUES (#{masterCode}, #{text}, #{activeYN}, #{remark}, 'IT관리자', SYSDATE() )")
     //@Options(useGeneratedKeys=true, keyProperty="id") 설명: id필드는 Auto Increment 속성
     void insert(CommonCode commonCode);
     
@@ -41,7 +41,7 @@ public interface CommonCodeMapper {
             "  Text = #{text}, 			        " +
             "  ActiveYN = #{activeYN},          " +
             "  Remark = #{remark},   	        " +
-            "  ModUser = '장우진',                " +
+            "  ModUser = 'IT관리자',                " +
             "  ModDate = SYSDATE()              " +
             "WHERE MasterCode = #{masterCode}	")
     void update(CommonCode commonCode);

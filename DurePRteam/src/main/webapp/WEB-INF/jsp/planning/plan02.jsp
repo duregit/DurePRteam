@@ -46,16 +46,16 @@
 							<!-- form start -->
 							<form:form method="post" modelAttribute="planning">
 								<div class="card-body">
-									<input type="hidden" id="planId" name="planId" value="${ planning.planNo }"/>
+									<input type="hidden" id="planNo" name=planNo value="${ planning.planNo }"/>
 									
 									<!-- 생활재정보 시작-->
 									<div id="goodsInfo">										
-									</div>
-									<!-- 생활재정보 끝-->
+									</div>									
 									<div class="form-group">
 										<button type="button" class="btn btn-info" id="addBtn" num="0">생활재 추가</button>
 										<button type="button" class="btn btn-danger" id="delBtn">생활재 삭제</button>
 									</div>
+									<!-- 생활재정보 끝-->
 									<div class="form-group">
 										<label for="startTime">시작시간</label>
 											<form:select path="startTime" class="form-control">
@@ -101,7 +101,7 @@
 	//시작 시 생활재 정보 초기화
 	function initSelect() {
 		$("#goodsInfo").html("");				// 생활재정보 초기화
-		var planNo = $("#planId").val();		// 계획서 번호	
+		var planNo = $("#planNo").val();		// 계획서 번호	
 		var inputData = {
 			"planNo": parseInt(planNo)
 		}
@@ -237,7 +237,7 @@
 	
 	// 생활재정보 저장(ajax) 후 계획서 저장(submit)
 	function formSubmit(btn) {
-		var planNo = $("#planId").val();		// 계획서 번호
+		var planNo = $("#planNo").val();		// 계획서 번호
 		var state = '<c:out value="${ planning.state }"></c:out>'
 			
 		var btnGubun = $(btn).attr("gubun");	// 버튼 종류
@@ -291,7 +291,7 @@
 	
 	//이전페이지
 	function prePage() {	
-		var planNo = $("#planId").val();		// 계획서 번호	
+		var planNo = $("#planNo").val();		// 계획서 번호	
 		if(confirm("이전페이지로 이동하시겠습니까?")) {
 			location.href = "edit01?planNo=" + planNo;
 		} else {

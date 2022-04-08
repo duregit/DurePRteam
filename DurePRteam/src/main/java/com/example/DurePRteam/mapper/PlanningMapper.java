@@ -41,7 +41,7 @@ public interface PlanningMapper {
     
     // 계획서 신규 생성 #{addUser}
     @Insert("INSERT pr_planning (AddUser, AddDate, PRName, PIProperty, SuPIProperty, PRDate, PRDay, Gubun, Reason)"
-    		+ " VALUES ('장우진', SYSDATE(), #{prName}, #{piproperty}, #{suPIProperty}, #{prDate}, #{prDay}, #{gubun}, #{reason})")
+    		+ " VALUES ('IT관리자', SYSDATE(), #{prName}, #{piproperty}, #{suPIProperty}, #{prDate}, #{prDay}, #{gubun}, #{reason})")
     @Options(useGeneratedKeys=true, keyProperty="planNo")
     void insert(Planning planning);
 	
@@ -54,7 +54,7 @@ public interface PlanningMapper {
     		+ "PRDay = #{prDay}, "
     		+ "Gubun = #{gubun}, "
     		+ "Reason = #{reason}, "
-    		+ "ModUser = '장우진', ModDate = SYSDATE() "
+    		+ "ModUser = 'IT관리자', ModDate = SYSDATE() "
     		+ "WHERE PlanNo = #{planNo} "
     		+ "AND (State IS NULL OR State = 'W') ")
     void update01(Planning planning);
@@ -63,7 +63,7 @@ public interface PlanningMapper {
     @Update("UPDATE pr_planning SET "
     		+ "StartTime = #{startTime}, "
     		+ "EndTime = #{endTime}, "
-    		+ "ModUser = '장우진', ModDate = SYSDATE() "
+    		+ "ModUser = 'IT관리자', ModDate = SYSDATE() "
     		+ "WHERE PlanNo = #{planNo} " 
     		+ "AND (State IS NULL OR State = 'W') ")
     void update02(Planning planning);
@@ -75,7 +75,7 @@ public interface PlanningMapper {
     		+ "PRTools = #{prTools}, "
     		+ "PRMessage = #{prMessage}, "
     		+ "Etc = #{etc}, "
-    		+ "ModUser = '장우진', ModDate = SYSDATE() "
+    		+ "ModUser = 'IT관리자', ModDate = SYSDATE() "
     		+ "WHERE PlanNo = #{planNo} "
     		+ "AND (State IS NULL OR State = 'W') ")
     void save03(Planning planning);
@@ -88,21 +88,22 @@ public interface PlanningMapper {
     		+ "PRMessage = #{prMessage}, "
     		+ "Etc = #{etc}, "
     		+ "State = 'W', "
-    		+ "ModUser = '장우진', ModDate = SYSDATE() "
+    		+ "ModUser = 'IT관리자', ModDate = SYSDATE() "
     		+ "WHERE PlanNo = #{planNo} "
     		+ "AND (State IS NULL OR State = 'W') ")
     void update03(Planning planning);
     
     // [계획서조회] 검토요청 #{modUser}
     @Update("UPDATE pr_planning SET "    		
-    		+ "State = 'R' "
+    		+ "State = 'R', "
+    		+ "ModUser = 'IT관리자', ModDate = SYSDATE() "
     		+ "WHERE PlanNo = #{planNo}")
     void request(int planNo);
 
     // [계획서조회] 관리자승인 #{ConfirmUser}
     @Update("UPDATE pr_planning SET "    		
-    		+ "State = 'C' "
-    		+ "ConfirmUser = '장우진', ConfirmDate = SYSDATE() "
+    		+ "State = 'C', "
+    		+ "ConfirmUser = 'IT관리자', ConfirmDate = SYSDATE() "
     		+ "WHERE PlanNo = #{planNo}")
     void confirm(int planNo);
     

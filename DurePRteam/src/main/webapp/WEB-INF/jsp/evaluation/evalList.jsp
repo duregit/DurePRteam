@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>평가서조회</title>
+  <title>생활재홍보단</title>
 
 <jsp:include page="/include/_header.jsp" />
 </head>

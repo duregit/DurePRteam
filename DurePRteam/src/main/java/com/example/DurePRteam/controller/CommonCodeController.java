@@ -33,6 +33,7 @@ public class CommonCodeController {
 
 		// 페이징 객체
 		Paging paging = new Paging();
+		cri.setCustomPerPageNum(20);	// 페이지 목록 개수
 		paging.setCri(cri);
 		paging.setTotalCount(commonCodeTotalCount);
 

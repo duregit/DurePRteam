@@ -24,6 +24,10 @@ public interface CommonCodeDetailMapper {
 	@Select("SELECT * FROM pr_code_detail WHERE MasterCode = #{masterCode}")
     List<CommonCodeDetail> findByMasterCode(String masterCode);
 	
+	// [상세 공통코드] 공통코드에 해당되는 전체조회(내림차순)
+	@Select("SELECT * FROM pr_code_detail WHERE MasterCode = #{masterCode} ORDER BY DetailCode DESC")
+    List<CommonCodeDetail> findByMasterCodeDesc(String masterCode);
+		
 	// [상세 공통코드] 공통코드에 해당되는 전체조회 count
 	@Select("SELECT COUNT(*) FROM pr_code_detail WHERE MasterCode = #{masterCode}")
     int findAllCount(CommonCodeDetail pCommonCodeDetail, String masterCode);
@@ -34,7 +38,7 @@ public interface CommonCodeDetailMapper {
 	
 	// [상세 공통코드] 생성 #{addUser}
     @Insert("INSERT pr_code_detail (MasterCode, DetailCode, Text, ActiveYN, Remark, AddUser, AddDate) "
-    		+ "VALUES (#{masterCode}, #{detailCode}, #{text}, #{activeYN}, #{remark}, '장우진', SYSDATE() )")
+    		+ "VALUES (#{masterCode}, #{detailCode}, #{text}, #{activeYN}, #{remark}, 'IT관리자', SYSDATE() )")
     //@Options(useGeneratedKeys=true, keyProperty="id") 설명: id필드는 Auto Increment 속성
     void insert(CommonCodeDetail commonCodeDetail);
 	
@@ -43,7 +47,7 @@ public interface CommonCodeDetailMapper {
             "	Text = #{text}, 			    " +
             "	ActiveYN = #{activeYN},         " +
             "	Remark = #{remark},   	        " +
-            "	ModUser = '장우진',               " +
+            "	ModUser = 'IT관리자',               " +
             "	ModDate = SYSDATE()             " +
             "WHERE MasterCode = #{masterCode}	" +
             "	AND DetailCode = #{detailCode}  ")

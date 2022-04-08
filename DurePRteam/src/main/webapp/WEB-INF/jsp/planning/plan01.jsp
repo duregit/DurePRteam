@@ -45,8 +45,7 @@
 							<!-- /.card-header -->
 							<!-- form start -->
 							<form:form method="post" modelAttribute="planning">
-								<input type="hidden" id="planId" name="planId" value="${ planning.planNo }"/>
-								<input type="hidden" id="btnGubun" name="btnGubun" value=""/>
+								<input type="hidden" id="planNo" name="planNo" value="${ planning.planNo }"/>								
 								<div class="card-body">
 									<div class="form-group">
 										<label for="addUser">작성자</label>

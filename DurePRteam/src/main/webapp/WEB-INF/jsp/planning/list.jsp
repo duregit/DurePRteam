@@ -115,10 +115,11 @@
 										<tr planNo=${ planning.planNo }>
 											<td>
 												<a href="edit01?planNo=${ planning.planNo }">
-													${ planning.prDate } ${ planning.suPIPropName } <br>
+													${ planning.prDate }<br>
+													${ planning.suPIPropName }<br>
 													<c:choose>
-												        <c:when test="${fn:length(planning.gmDesc) gt 13}">
-												        	<c:out value="${fn:substring(planning.gmDesc, 0, 12)}..."></c:out>
+												        <c:when test="${fn:length(planning.gmDesc) gt 10}">
+												        	<c:out value="${fn:substring(planning.gmDesc, 0, 11)}..."></c:out>
 												        </c:when>
 												        <c:otherwise>
 												        	<c:out value="${planning.gmDesc}"></c:out>
@@ -131,23 +132,23 @@
 											<c:set var="state" value="${ planning.state }" />
 											<c:choose>
 												<c:when test="${ state eq null }">
-													<button type="button" class="btn btn-default btn-sm">작성 중</button>
+													<button type="button" class="btn btn-default btn-xs btn-state">작성 중</button>
 												</c:when>
 												<c:when test="${ state == 'W' }">
-													<button type="button" class="btn btn-warning btn-sm" id="requestBtn">검토요청</button>
+													<button type="button" class="btn btn-warning btn-xs btn-state" id="requestBtn" onclick="btnRequest(this)">검토요청</button>
 												</c:when>
 												<c:when test="${ state == 'R' and state == ''}">
 													<!-- 관리자 -->
-													<button type="button" class="btn btn-secondary btn-sm" id="confirmBtn">관리자승인</button>
+													<button type="button" class="btn btn-secondary btn-xs btn-state" id="confirmBtn" onclick="btnConfirm(this)">관리자승인</button>
 												</c:when>
 												<c:when test="${ state == 'R' }">
-													<button type="button" class="btn btn-secondary btn-sm">검토요청 중</button>
+													<button type="button" class="btn btn-secondary btn-xs btn-state">검토요청 중</button>
 												</c:when>
 												<c:when test="${ state == 'C' }">
-													<button type="button" class="btn btn-primary btn-sm" id="evalBtn">평가서작성</button>
+													<button type="button" class="btn btn-primary btn-xs btn-state" id="evalBtn" onclick="btnEval(this)">평가서작성</button>
 												</c:when>
 												<c:otherwise>
-													<button type="button" class="btn btn-default btn-sm">평가서작성 중</button>
+													<button type="button" class="btn btn-default btn-xs btn-state">평가서작성 중</button>
 												</c:otherwise>											
 											</c:choose>											
 											</td>
@@ -185,6 +186,78 @@
 </body>
 <jsp:include page="/include/_footer.jsp" />
 <script type="text/javascript">
+	
+	// 검토요청
+	function btnRequest(btn) {
+		var pageNo = <c:out value="${criteria.page}"></c:out>;	// 페이지번호
+		var planNo = $(btn).closest("tr").attr("planNo");		// 계획서번호
+		var inputData = {
+			"planNo": parseInt(planNo),
+			"pageNo": parseInt(pageNo)
+		};
+		
+		if(confirm("검토요청을 하시겠습니까?")) {
+			$.ajax({
+				url : "/planning/request",
+				type : "POST",
+				data: JSON.stringify(inputData),
+				dataType: "text",
+				contentType:"application/json;charset=UTF-8",
+			    async: false,
+			    success: function(){
+			    	alert("검토요청이 완료되었습니다.");
+			    	location.href = "list?page=" + pageNo;
+			    },
+			    error: function(xhr, status, error){
+			       alert(xhr.responseText);
+			    },
+			    complete: function(xhr, status){}
+			});
+		} else {
+			return false;	
+		}
+	}
+	
+	// 관리자승인
+	function btnConfirm(btn) {
+		var pageNo = <c:out value="${criteria.page}"></c:out>;	// 페이지번호
+		var planNo = $(this).closest("tr").attr("planNo");		// 계획서번호
+		var inputData = {
+			"planNo": parseInt(planNo),
+			"pageNo": parseInt(pageNo)
+		};
+		
+		if(confirm("승인을 하시겠습니까?")) {
+			$.ajax({
+				url : "/planning/confirm",
+				type : "POST",
+				data: JSON.stringify(inputData),
+				dataType: "text",
+				contentType:"application/json;charset=UTF-8",
+			    async: false,
+			    success: function(){
+			    	alert("관리자승인이 완료되었습니다.");
+			    	location.href = "list?page=" + pageNo;
+			    },
+			    error: function(xhr, status, error){
+			       alert(xhr.responseText);
+			    },
+			    complete: function(xhr, status){}
+			});
+		} else {
+			return false;	
+		}
+	}
+	
+	// 평가서작성
+	function btnEval(btn) {
+		var planNo = $(btn).closest("tr").attr("planNo");
+		
+		if(confirm("평가서작성을 하시겠습니까?")) {
+	    	location.href = "/evaluation/create?planNo=" + planNo;
+		}
+	}
+	/*
 	$(function() {
 		// 검토요청
 		$("#requestBtn").click(function () {
@@ -257,5 +330,6 @@
 			}
 		});
 	});
+	*/
 </script>
 </html>

@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -38,30 +39,38 @@
 			<section class="content">
 				<div class="container-fluid">
 					<div class="row">
-						<!-- 공통코드 -->
-						<div class="col-md-6">
+						<!-- 생활재평가 구분별 항목 설정 -->
+						<div class="col-md-12">
 							<div class="card card-primary">
 								<div class="card-header">
-									<h3 class="card-title">공통코드</h3>
+									<h3 class="card-title">생활재평가 구분별 항목</h3>
 								</div>								
 								<!-- /.card-header -->
 								<div class="card-body">
 									<table class="table table-bordered">
 										<thead>
 											<tr>
-												<th>공통코드</th>
-												<th>코드명</th>
-												<th>사용</th>
-												<th>비고</th>
+												<th>구분-상세코드</th>
+												<th>구분-코드명</th>
+												<th>항목-상세코드</th>
+												<th>항목-코드명</th>
+												<th>등록자</th>
+												<th>등록시간</th>
+												<th>수정자</th>
+												<th>수정시간</th>
 											</tr>
 										</thead>
 										<tbody>
-											<c:forEach var="commonCode" items="${ commonCodes }">
-												<tr data-url="list?page=${ criteria.page }&masterCode=${ commonCode.masterCode }" class="${ commonCode.masterCode == masterCode ? 'clicked' : '' }">
-													<td>${ commonCode.masterCode }</td>
-													<td>${ commonCode.text }</td>													
-													<td>${ commonCode.activeYN }</td>
-													<td>${ commonCode.remark }</td>
+											<c:forEach var="goodsEval" items="${ goodsEvals }">
+												<tr data-url="/admin/goodsEval/edit?cgeNo=${ goodsEval.cgeNo }">
+													<td>${ goodsEval.gubunDCode }</td>
+													<td>${ goodsEval.gubunDText }</td>													
+													<td>${ goodsEval.itemDCode }</td>
+													<td>${ goodsEval.itemDText }</td>
+													<td>${ goodsEval.addUser }</td>
+													<td><fmt:formatDate value="${goodsEval.addDate}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
+													<td>${ goodsEval.modUser }</td>
+													<td><fmt:formatDate value="${goodsEval.modDate}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
 												</tr>
 											</c:forEach>
 										</tbody>
@@ -69,8 +78,7 @@
 								</div>
 								<!-- /.card-body -->
 								<div class="card-footer clearfix">
-									<a href="create" class="btn btn-primary">신규</a>
-									<button type="button" class="btn btn-warning" id="edit">수정</button>													
+									<a href="create" class="btn btn-primary">신규</a>										
 									<ul class="pagination pagination-sm m-0 float-right">
 										<c:if test="${ paging.prev }">
 											<li class="paginate_button page-item"><a class="page-link" href="list?page=${ paging.startPage-1 }">«</a></li>
@@ -90,43 +98,7 @@
 								</div>
 							</div>
 						</div>
-						<!-- /.공통코드-->
-						<!-- 공통코드 상세-->
-						<div class="col-md-6">
-							<div class="card card-primary">
-								<div class="card-header">
-									<h3 class="card-title">상세 공통코드</h3>
-								</div>								
-								<!-- /.card-header -->
-								<div class="card-body">
-									<table class="table table-bordered">
-										<thead>
-											<tr>
-												<th>상세코드</th>												
-												<th>코드명</th>
-												<th>사용</th>
-												<th>비고</th>
-											</tr>
-										</thead>
-										<tbody>
-											<c:forEach var="commonCodeDetail" items="${ commonCodeDetails }">
-												<tr data-url="/admin/commonCodeDetail/edit?masterCode=${ commonCodeDetail.masterCode }&detailCode=${ commonCodeDetail.detailCode }">													
-													<td>${ commonCodeDetail.detailCode }</td>
-													<td>${ commonCodeDetail.text }</td>													
-													<td>${ commonCodeDetail.activeYN }</td>
-													<td>${ commonCodeDetail.remark }</td>
-												</tr>
-											</c:forEach>
-										</tbody>
-									</table>
-								</div>
-								<!-- /.card-body -->
-								<div class="card-footer clearfix">
-									<button type="button" class="btn btn-primary" id="create">신규</button>
-								</div>
-							</div>
-						</div>
-						<!-- /.공통코드 상세-->
+						<!-- /.생활재평가 구분별 항목 설정-->
 					</div>
 					<!-- /.row -->
 				</div>				
@@ -138,27 +110,5 @@
 </body>
 <jsp:include page="/include/_footer.jsp" />
 <script type="text/javascript">
-	$(document).ready(function () {
-		// 공통코드 수정
-		$("#edit").click(function () {			
-		    var url = $('.clicked').attr("data-url");
-		    url = url.replace('list','edit');
-		    location.href = url;
-		});
-		
-		// 상세공통코드 생성
-		$("#create").click(function () {			
-		    var masterCode = $('.clicked').attr("data-url");
-		    if(masterCode == "" || masterCode == undefined) {
-		    	alert("공통코드를 선택하세요");
-		    	return false;
-		    } else {		    	
-		    	var url = $('.clicked').attr("data-url");
-		    	url = url.replace('list','create');
-		    	url = "/admin/commonCodeDetail/" + url;
-			    location.href = url;
-		    }		    
-		});
-	});
 </script>
 </html>
