@@ -118,6 +118,10 @@
 											<td>17.</td>
 											<td><a href="admin/commonCode/list">[관리자]공통코드관리</a></td>
 										</tr>
+										<tr>
+											<td>18.</td>
+											<td><a href="admin/commonProp/list">[관리자]단협 및 매장 코드 관리</a></td>
+										</tr>
 									</tbody>
 								</table>
 							</div>
