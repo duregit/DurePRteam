@@ -19,8 +19,7 @@ public interface PlanningMapper {
 	
 	// 전체조회
 	@Select("SELECT A.*, "
-			+ "'희망도화점' AS SUPIPropName, "
-			//+ "(SELECT GmDesc FROM pr_planning_goods_info WHERE A.PlanNo = PlanNo LIMIT 1) AS GmDesc "	// 매장명
+			+ "(SELECT SuPIPropName FROM pr_subproperty WHERE A.PIProperty = PIProperty AND A.SuPIProperty = SuPIProperty LIMIT 1) AS SUPIPropName, "	// 매장명
 			+ "(SELECT GmDesc FROM pr_planning_goods_info WHERE A.PlanNo = PlanNo LIMIT 1) AS GmDesc "	// 생활재명
 			+ "FROM pr_planning A "
 			+ "ORDER BY A.PlanNo DESC "
@@ -56,7 +55,7 @@ public interface PlanningMapper {
     		+ "Reason = #{reason}, "
     		+ "ModUser = 'IT관리자', ModDate = SYSDATE() "
     		+ "WHERE PlanNo = #{planNo} "
-    		+ "AND (State IS NULL OR State = 'W') ")
+    		+ "AND (State IS NULL OR State = '' OR State = 'W') ")
     void update01(Planning planning);
     
     // [판매계획] 수정(임시저장 or 다음) #{modUser}
@@ -65,7 +64,7 @@ public interface PlanningMapper {
     		+ "EndTime = #{endTime}, "
     		+ "ModUser = 'IT관리자', ModDate = SYSDATE() "
     		+ "WHERE PlanNo = #{planNo} " 
-    		+ "AND (State IS NULL OR State = 'W') ")
+    		+ "AND (State IS NULL OR State = '' OR State = 'W') ")
     void update02(Planning planning);
     
     // [홍보포인트] 수정(임시저장) #{modUser}
@@ -77,7 +76,7 @@ public interface PlanningMapper {
     		+ "Etc = #{etc}, "
     		+ "ModUser = 'IT관리자', ModDate = SYSDATE() "
     		+ "WHERE PlanNo = #{planNo} "
-    		+ "AND (State IS NULL OR State = 'W') ")
+    		+ "AND (State IS NULL OR State = ''OR State = 'W') ")
     void save03(Planning planning);
     
     // [홍보포인트] 수정(계획서작성) #{modUser}
@@ -90,21 +89,28 @@ public interface PlanningMapper {
     		+ "State = 'W', "
     		+ "ModUser = 'IT관리자', ModDate = SYSDATE() "
     		+ "WHERE PlanNo = #{planNo} "
-    		+ "AND (State IS NULL OR State = 'W') ")
+    		+ "AND (State IS NULL OR State = '' OR State = 'W') ")
     void update03(Planning planning);
     
     // [계획서조회] 검토요청 #{modUser}
     @Update("UPDATE pr_planning SET "    		
     		+ "State = 'R', "
     		+ "ModUser = 'IT관리자', ModDate = SYSDATE() "
-    		+ "WHERE PlanNo = #{planNo}")
+    		+ "WHERE PlanNo = #{planNo} ")
     void request(int planNo);
 
+    // [계획서조회] 반려 #{ConfirmUser}
+    @Update("UPDATE pr_planning SET "    		
+    		+ "State = 'N', "
+    		+ "ConfirmUser = 'IT관리자', ConfirmDate = SYSDATE() "
+    		+ "WHERE PlanNo = #{planNo} ")
+    void reject(int planNo);
+    
     // [계획서조회] 관리자승인 #{ConfirmUser}
     @Update("UPDATE pr_planning SET "    		
     		+ "State = 'C', "
     		+ "ConfirmUser = 'IT관리자', ConfirmDate = SYSDATE() "
-    		+ "WHERE PlanNo = #{planNo}")
+    		+ "WHERE PlanNo = #{planNo} ")
     void confirm(int planNo);
     
 

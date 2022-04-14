@@ -26,7 +26,7 @@ import com.example.DurePRteam.mapper.CommonSubPropMapper;
 @RequestMapping("admin")
 public class CommonSubPropController {
 
-    @Autowired CommonCodeMapper commonCodeMapper;
+    //@Autowired CommonCodeMapper commonCodeMapper;
     @Autowired CommonPropMapper commonPropMapper;
     @Autowired CommonSubPropMapper commonSubPropMapper;
 

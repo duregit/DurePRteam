@@ -15,7 +15,7 @@
 
 <jsp:include page="/include/_header.jsp" />
 </head>
-<body class="hold-transition sidebar-mini layout-fixed">
+<body class="hold-transition sidebar-mini layout-fixed" onload="initSelect()">
 	<div class="wrapper">
 		<!-- Content Wrapper. Contains page content -->
 		<div class="content-wrapper" style="min-height: 1345.31px;">
@@ -44,7 +44,7 @@
 					<div class="col-sm-12">
 						<div class="card card-primary">
 							<div class="card-header">
-								<h3 class="card-title">평가서(생활재)</h3>
+								<h3 class="card-title">평가서(생활재평가)</h3>
 							</div>
 							<!-- /.card-header -->
 							<!-- form start -->
@@ -60,26 +60,24 @@
 													<label for="item${ status.count }">${ goodsEval.itemDText }</label>
 												</div>
 												<div class="col-7">
-													<select class="form-control" id="score${ status.count }" name="score${ status.count }" item="${ goodsEval.itemDCode }" cnt="${ status.count }" onchange="scoreChange(this)">
+													<select class="form-control" id="score${ status.count }" name="score${ status.count }" item="sel${ goodsEval.itemDCode }" cnt="${ status.count }" onchange="scoreChange(this)">
 														<option value="0" label="==선택하세요==" />
 														<c:forEach var="evalScore" items="${ selEvalScores }">
-															<option value="${ evalScore.detailCode }" label="${ evalScore.text }" />
+															<option value="${ evalScoresupip.detailCode }" label="${ evalScore.text }" />
 														</c:forEach>
 													</select>
 												</div>
 											</div>
 										</div>
-										<div class="form-group" style="display:none" id="textDiv${ status.count }">
-											<input type="text" class="form-control" id="text${ status.count }" name="text${ status.count }" placeholder="텍스트입력">
-											<!-- 
-											<div class="row">												
+										<div class="form-group" style="display:none;" id="textDiv${ status.count }" item="div${ goodsEval.itemDCode }">
+											<div class="row">
 												<div class="col-5"></div>
 												<div class="col-7">
-													<input type="text" class="form-control" id="text${ status.count }" name="text${ status.count }" placeholder="텍스트입력">
-												</div>												 
+													<input type="text" class="form-control" id="text${ status.count }" name="text${ status.count }" item="input${ goodsEval.itemDCode }" placeholder="텍스트입력">
+												</div>
 											</div>
-											-->
-										</div>
+										</div>											
+										
 									</c:forEach>
 									
 									<div class="form-group"> 
@@ -127,44 +125,42 @@
 	</div>
 </body>
 <jsp:include page="/include/_footer.jsp" />
-<script type="text/javascript">
-	//시작 시 생활재 정보 초기화
+<script type="text/javascript">	
+	//시작 시 생활재평가 구분별 항목 초기화
 	function initSelect() {
-		$("#goodsInfo").html("");				// 생활재정보 초기화
-		var evalNo = $("#evalNo").val();		// 평가서 번호	
+		$("#goodsInfo").html("");					// 생활재정보 초기화
+		var evalNo = $("#evalNo").val();			// 평가서 번호
+		var goodsEvallen = $("#goodsEvallen").val();// 생활재정보 항목 개수
 		var inputData = {
 			"evalNo": parseInt(evalNo)
 		}
 		
 		$.ajax({
-			url : "/goodsMaster/evaluationSelect",
+			url : "/evaluationGoodsEval/goodsEval/select",
 			type : "POST",
 			data: JSON.stringify(inputData),
 			dataType: "json",
 			contentType:"application/json;charset=UTF-8",
 		    async: false,
 		    success: function(data){
-		    	var evaluationGoodsInfos = data;
-		    	console.log(data);
+		    	var evaluationGoodsEvals = data;
+		    	//console.log(data);
 		    	
-		        if ($.isEmptyObject(evaluationGoodsInfos)) {
-		        	// (신규)생활재 없으면 1개 추가
-		        	addGoodsInfo();
-		        } else {
+		        if (!($.isEmptyObject(evaluationGoodsEvals))) {
+		        	var cnt = 1;
 		        	// (수정)생활재 있는 개수만큼 추가 후 데이터 바인딩
-		        	$.each(evaluationGoodsInfos, function(key, value) {
-		        		addGoodsInfo();
-		        		var num = $("#addBtn").attr("num");
-		        		var divInfo = $("#good"+(num));
-		        		divInfo.find("#piproperty").val(value.piproperty);
-		        		divInfo.find("#gmSeq").val(value.gmSeq);
-		        		divInfo.find("#gmDesc").val(value.gmDesc);
-			        	divInfo.find("#gmNo").val(value.gmNo);
-			        	divInfo.find("#gmName").val(value.gmName);
-			        	divInfo.find("#gmGubun").val(value.gmGubun);
-			        	divInfo.find("#salesTarget").val(value.salesTarget);	        		
+		        	$.each(evaluationGoodsEvals, function(key, value) {
+		        		$("[item=sel"+value.item+"]").val(value.score);
+		        		$("[item=input"+value.item+"]").val(value.text);
+		        		//$("#score"+cnt).val(value.score);
+		        		//$("#text"+cnt).val(value.text);
+		        		
+		        		if (value.score != 0 && value.score <= 3) {
+		        			$("[item=div"+value.item+"]").css("display", "");
+		        		}
+			        	cnt++;
 		        	});
-		    	}
+		        }
 		    },
 		    error: function(xhr, status, error){
 		       alert(xhr.responseText);
@@ -172,7 +168,6 @@
 		    complete: function(xhr, status){}
 		});
 	}
-
 	// 생활재평가 구분별 항목 선택 이벤트
 	function scoreChange(sel) {
 		var goodsEvallen = $("#goodsEvallen").val();	// 평가목록 개수
@@ -194,7 +189,8 @@
 			totalScore = totalScore + parseInt($("#score" + (i + 1)).val());
 		}
 		totalAVG = (totalScore / goodsEvallen);
-		$("#totalAVG").val(totalAVG);	// 평점
+		$("#totalScore").val(totalScore);	// 총점
+		$("#totalAVG").val(totalAVG);		// 평점
 	}
 	
 	// 생활재평가 저장(ajax) 후 평가서 저장(submit)
@@ -213,7 +209,8 @@
 			
 			var inputDataArray = [];
 			for(var i = 0; i < goodsEvallen; i++) {
-				var item = $("#score" + (i + 1)).attr("item");	// 평가항목(상세코드)
+				var item = $("#score" + (i + 1)).attr("item").replace("sel", "");	// 평가항목(상세코드)
+				//var item = $("#score" + (i + 1)).attr("item");	// 평가항목(상세코드)
 				var score = $("#score" + (i + 1)).val();		// 평가점수(상세코드=점수)
 				var text = $("#text" + (i + 1)).val();			// 텍스트
 				
@@ -228,7 +225,7 @@
 				// 객체배열에 추가
 			    inputDataArray.push(inputData);
 			}
-			//console.log("inputDataArray", inputDataArray);
+			console.log("inputDataArray", inputDataArray);
 						
 			$.ajax({
 				url : "/evaluationGoodsEval/goodsEval/insert",

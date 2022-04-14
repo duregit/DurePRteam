@@ -3,6 +3,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -47,18 +48,26 @@
 							<div class="card-body">
 								<div class="row">
 									<div class="col-6">
-										<div class="form-group">										
-											<select class="form-control form-control-sm" id="gubun">
-												<option>단협</option>
-												<option>참좋은두레생협</option>
+										<div class="form-group">
+											<select id="piproperty" name="piproperty" class="form-control form-control-sm" onchange="pipChange(this)">
+												<option value="0" label="=선택=" />
+												<c:forEach var="pip" items="${ selPIProperty }">
+													<option value="${ pip.piProperty }" label="${ pip.piPropname }" 
+													<c:if test='${ piproperty == pip.piProperty }'>selected</c:if>/>
+												</c:forEach>
 											</select>
 										</div>
 									</div>
 									<div class="col-6">
-										<select class="form-control form-control-sm" id="gubun">
-											<option>매장</option>
-											<option>option 2</option>
-										</select>
+										<div class="form-group">
+											<select id="suPIProperty" name="suPIProperty" class="form-control form-control-sm">
+												<option value="0" label="=선택=" />
+												<c:forEach var="supip" items="${ selSuPIProperty }">
+													<option value="${ supip.suPiproperty }" label="${ supip.suPipropname }" 
+													<c:if test='${ suPIProperty == supip.suPiproperty }'>selected</c:if>/>
+												</c:forEach>
+											</select>
+										</div>
 									</div>										
 								</div>
 								<div class="row">
@@ -99,7 +108,7 @@
 									<div class="col-6">
 										<button type="button" class="btn btn-info btn-sm float-right">조회</button>
 									</div>
-								</div>								
+								</div>
 							</div>
 							<!-- /.card-body -->
 							<table class="table table-bordered table-list">
@@ -137,9 +146,13 @@
 												<c:when test="${ state == 'W' }">
 													<button type="button" class="btn btn-warning btn-xs btn-state" id="requestBtn" onclick="btnRequest(this)">검토요청</button>
 												</c:when>
+												<c:when test="${ state == 'N' }">
+													<button type="button" class="btn btn-warning btn-xs btn-state" id="requestBtn" onclick="btnRequest(this)">재검토요청</button>
+												</c:when>
 												<c:when test="${ state == 'R' and state == ''}">
 													<!-- 관리자 -->
-													<button type="button" class="btn btn-secondary btn-xs btn-state" id="confirmBtn" onclick="btnConfirm(this)">관리자승인</button>
+													<button type="button" class="btn btn-secondary btn-xs btn-state" id="confirmBtn" onclick="btnConfirm(this)">승인</button>
+													<button type="button" class="btn btn-secondary btn-xs btn-state" id="rejectBtn" onclick="btnReject(this)">거절</button>
 												</c:when>
 												<c:when test="${ state == 'R' }">
 													<button type="button" class="btn btn-secondary btn-xs btn-state">검토요청 중</button>
@@ -183,11 +196,52 @@
 		</div>
 		<!-- ./wrapper -->
 	</div>
-</body>
 <jsp:include page="/include/_footer.jsp" />
 <script type="text/javascript">
+
+	// 단협
+	function pipChange(sel) {
+		FnSubPropCd('suPIProperty',$(sel).val() ,'');
+	}
 	
-	// 검토요청
+	// 매장
+	function FnSubPropCd(id, pdata, sdata) {
+		$("select#suPIProperty option").remove();
+		frm = document.join
+		
+		var piproperty = $('#piproperty').val()
+		
+		var inputData = {
+				"piProperty": piproperty
+			}
+		
+		//alert(inputData);
+	
+		var htmlStr = "";
+		$.ajax ({
+			url: "/admin/commonSubProp/subPropCode",
+			type : "POST",
+			data : JSON.stringify(inputData),
+			dataType: "json",
+			contentType:"application/json;charset=UTF-8",
+		    async: false,
+			success : function(data) {
+				$(data).each(function(index, value){
+					//alert(value.suPipropname);
+					var strHtml = ''
+						+ '		<option value = "'+value.suPiproperty+'"> '+value.suPipropname+'</option> '
+	
+					$("#suPIProperty").append(strHtml);
+				});
+			 },
+			 error: function(xhr, status, error){
+		       //alert(xhr.responseText);
+		       alert("error")
+		    }
+		});
+	}
+	
+	// 검토요청(재검토)
 	function btnRequest(btn) {
 		var pageNo = <c:out value="${criteria.page}"></c:out>;	// 페이지번호
 		var planNo = $(btn).closest("tr").attr("planNo");		// 계획서번호
@@ -249,6 +303,37 @@
 		}
 	}
 	
+	// 관리자반려
+	function btnReject(btn) {
+		var pageNo = <c:out value="${criteria.page}"></c:out>;	// 페이지번호
+		var planNo = $(this).closest("tr").attr("planNo");		// 계획서번호
+		var inputData = {
+			"planNo": parseInt(planNo),
+			"pageNo": parseInt(pageNo)
+		};
+		
+		if(confirm("반려를 하시겠습니까?")) {
+			$.ajax({
+				url : "/planning/reject",
+				type : "POST",
+				data: JSON.stringify(inputData),
+				dataType: "text",
+				contentType:"application/json;charset=UTF-8",
+			    async: false,
+			    success: function(){
+			    	alert("관리자반려가 완료되었습니다.");
+			    	location.href = "list?page=" + pageNo;
+			    },
+			    error: function(xhr, status, error){
+			       alert(xhr.responseText);
+			    },
+			    complete: function(xhr, status){}
+			});
+		} else {
+			return false;	
+		}
+	}
+	
 	// 평가서작성
 	function btnEval(btn) {
 		var planNo = $(btn).closest("tr").attr("planNo");
@@ -257,7 +342,7 @@
 	    	location.href = "/evaluation/create?planNo=" + planNo;
 		}
 	}
-	/*
+	/**
 	$(function() {
 		// 검토요청
 		$("#requestBtn").click(function () {
@@ -320,7 +405,6 @@
 				return false;	
 			}
 		});
-		
 		// 평가서작성
 		$("#evalBtn").click(function () {
 			var planNo = $(this).closest("tr").attr("planNo");
@@ -330,6 +414,7 @@
 			}
 		});
 	});
-	*/
+	**/	
 </script>
+</body>
 </html>

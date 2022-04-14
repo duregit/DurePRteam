@@ -3,12 +3,14 @@ package com.example.DurePRteam.dto;
 import lombok.Data;
 
 @Data
-public class Join {
+public class My {
 	String userId;
 	String userPW;
 	String userName ;
 	String piProperty;
+	String piPropName;
 	String suPIProperty;
+	String suPIPropName;
 	String userZip ;
 	String userAddr1 ;
 	String userAddr2 ;

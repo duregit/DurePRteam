@@ -115,7 +115,7 @@
 		    async: false,
 		    success: function(data){
 		    	var planningGoodsInfos = data;
-		    	console.log(data);
+		    	//console.log(data);
 		    	
 		        if ($.isEmptyObject(planningGoodsInfos)) {
 		        	// (신규)생활재 없으면 1개 추가
@@ -167,9 +167,16 @@
 		    async: false,
 		    success: function(data){
 		        if ($.isEmptyObject(data)) {
+		        	// 조회결과 없으면 값 초기화
 		    	    alert('조회 결과가 없습니다.');
-		    	    goodsDiv.find("#gmSeq").val("");
-		    	    goodsDiv.find("#gmSeq").focus();
+		    	    goodsDiv.find("#piproperty").val("");
+		        	goodsDiv.find("#gmSeq").val("");
+		        	goodsDiv.find("#gmDesc").val("");
+		        	goodsDiv.find("#gmNo").val("");
+		        	goodsDiv.find("#gmName").val("");
+		        	goodsDiv.find("#gmGubun").val("");
+		    	    goodsDiv.find("#salesTarget").val("");	
+		    	    goodsDiv.find("#gmSeq").focus();		    	      
 					return false;
 		        } else {
 		        	goodsDiv.find("#piproperty").val(data.goodsMaster.piproperty);
@@ -307,7 +314,7 @@ $(function() {
 
 	//생활재 삭제
 	$("#delBtn").click(function() {
-		console.log("num", $("#addBtn").attr("num"));
+		//console.log("num", $("#addBtn").attr("num"));
 		if ($("#addBtn").attr("num") == 1) {
 			alert("최소 1개는 필요합니다.");
 			return false;

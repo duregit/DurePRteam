@@ -2,6 +2,8 @@
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -25,18 +27,25 @@
 							</div>
 							<!-- /.card-header -->
 							<div class="card-footer">								
-								<font size="1px">OOO님 환영합니다.</font>
+								<font size="2px">
+									${ usermain.userId } 님 환영합니다.
+								</font>
 							</div>
+						
 							
 							<!-- form start -->
 							<form:form method="post" modelAttribute="main"  style="text-align:center;">
 								<div style="margin:20px;">
 									<button type="button" style="margin:15px;" class="btn btn-success" onclick="location.href='my/my01'">My Page</button>
-								</br>
-									<button type="button" style="margin:15px;" class="btn btn-success" onclick="location.href='userlist/userlist01'">회원관리</button>	
-								</br>
+								<br/>
+							<c:choose>
+								<c:when test="${usermain.userLevel == 'A' }">
+									<button type="button" style="margin:15px;" class="btn btn-success" onclick="location.href='userlist/userlist01'">회원관리</button>						
+								<br/>
+								</c:when>
+							</c:choose>	
 									<button type="button" style="margin:15px;" class="btn btn-success" onclick="location.href='planning/plan01'">계획서 작성</button>	
-								</br>	
+								<br/>
 									<button type="button" style="margin:15px;" class="btn btn-success" onclick="location.href='evaluation/eval01'">평가서 작성</button>		
 								</div>
 								<!-- /.card-body -->
@@ -45,6 +54,7 @@
 						</div>
 					</div>
 				</div>
+
 				<!-- /.container-fluid -->
 			</section>
 		</div>

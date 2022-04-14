@@ -75,8 +75,16 @@
 
 								<div class="card-footer" style="text-align:center;">
 									<button type="button" class="btn btn-default" gubun="pre" onclick="prePage(this)">이전</button>
-									<button type="button" class="btn btn-warning" gubun="save" onclick="formSubmit(this)">임시저장</button>
-									<button type="button" class="btn btn-primary" gubun="next" onclick="formSubmit(this)">계획서작성</button>
+									<c:set var="state" value="${ planning.state }" />
+									<c:choose>
+										<c:when test="${ state eq null or state == 'W' }">
+											<button type="button" class="btn btn-warning" gubun="save" onclick="formSubmit(this)">임시저장</button>
+											<button type="button" class="btn btn-primary" gubun="next" onclick="formSubmit(this)">작성완료</button>
+										</c:when>
+										<c:when test="${ state == 'R' or state == 'C' }">
+											<button type="button" class="btn btn-primary" gubun="next" onclick="formSubmit(this)">목록으로</button>
+										</c:when>
+									</c:choose>
 								</div>
 							</form:form>
 						</div>
@@ -90,7 +98,6 @@
 </body>
 <jsp:include page="/include/_footer.jsp" />
 <script type="text/javascript">
-	//생활재정보 저장(ajax) 후 계획서 저장(submit)
 	function formSubmit(btn) {
 		var planNo = $("#planNo").val();		// 계획서 번호
 		

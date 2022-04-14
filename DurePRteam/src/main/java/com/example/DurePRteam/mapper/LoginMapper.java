@@ -9,7 +9,7 @@ public interface LoginMapper {
 			+ "WHERE UserID = #{UserId}")
 	int checkId(String UserId);
 
-	@Select("SELECT UserPass FROM pr_usermaster "
+	@Select("SELECT UserPW FROM pr_usermaster "
 			+ "WHERE UserID = #{UserId}")
 	String checkPw(String UserId);
 }

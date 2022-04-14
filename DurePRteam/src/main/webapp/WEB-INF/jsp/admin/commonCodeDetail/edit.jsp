@@ -56,8 +56,8 @@
 										<input type="text" class="form-control" value="${ commonCode.text }" readonly disabled />
 									</div>	
 									<div class="form-group">
-										<label for="detailCode">상세 공통코드</label>
-										<form:input path="detailCode" class="form-control"
+										<label for="detailCode">상세코드번호 (평점항목은 점수로 입력) ex.상세코드번호: 3 상세코드명: 3점(적절)</label>
+										<form:input path="detailCode" class="form-control" placeholder="ex) 01 or 1" maxlength="2"
 											readonly="${ not empty commonCodeDetail.masterCode ? true : false }"
 											disabled="${ not empty commonCodeDetail.masterCode ? true : false }" />
 									</div>
