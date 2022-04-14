@@ -56,19 +56,24 @@
 										<form:input path="prName" class="form-control" />
 									</div>
 									<div class="form-group">
-										<label for="PIProperty">단협</label> 
-										<!--<form:select path="piproperty" items="${ piproperties }" itemLabel="piPropName" itemValue="piproperty" />-->
-										<select class="form-control" name="piproperty">
-											<option value="1">option 1</option>
-											<option value="1">option 2</option>
-										</select>
+										<label for="piproperty">단협</label> 
+										<form:select path="piproperty" class="form-control" onchange="pipChange(this)">
+											<form:option value="0" label="=선택=" />
+											<form:options itemValue="piProperty" itemLabel="piPropname" items="${ selPIProperty }" />
+										</form:select>
 									</div>
 									<div class="form-group">
-										<label for="suPIProperty">매장</label> 
-										<select class="form-control" name="suPIProperty">
-											<option value="1">option 1</option>
-											<option value="1">option 2</option>
-										</select>
+										<label for="suPIProperty">매장</label>
+										<form:select path="suPIProperty" class="form-control">									
+											<c:choose>
+												<c:when test="${ selSuPIProperty eq null }">
+													<form:option value="0" label="=선택=" />
+												</c:when>
+												<c:otherwise>													
+													<form:options itemValue="suPiproperty" itemLabel="suPipropname" items="${ selSuPIProperty }" />
+												</c:otherwise>
+											</c:choose>
+										</form:select>
 									</div>
 									<div class="form-group">
 										<label>진행일</label>
@@ -122,6 +127,51 @@
 		</div>
 		<!-- ./wrapper -->
 	</div>
-</body>
 <jsp:include page="/include/_footer.jsp" />
+<script type="text/javascript">
+$(function() {
+	$("select[name='piproperty']").change(function(){
+		//init_select('suPIProperty','=선택=');
+		FnSubPropCd('suPIProperty',$(this).val() ,'');
+  	});
+});
+
+function FnSubPropCd(id, pdata, sdata)
+{
+	$("select#suPIProperty option").remove();
+	frm = document.join
+	
+	var piproperty = $('#piproperty').val()
+	
+	var inputData = {
+			"piProperty": piproperty
+		}
+	
+	//alert(inputData);
+
+	var htmlStr = "";
+	$.ajax ({
+		url: "/admin/commonSubProp/subPropCode",
+		type : "POST",
+		data : JSON.stringify(inputData),
+		dataType: "json",
+		contentType:"application/json;charset=UTF-8",
+	    async: false,
+		success : function(data) {
+			$(data).each(function(index, value){
+				//alert(value.suPipropname);
+				var strHtml = ''
+					+ '		<option value = "'+value.suPiproperty+'"> '+value.suPipropname+'</option> '
+
+				$("#suPIProperty").append(strHtml);
+			});
+		 },
+		 error: function(xhr, status, error){
+	       //alert(xhr.responseText);
+	       alert("error")
+	    }
+	});
+}
+</script>
+</body>
 </html>

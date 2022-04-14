@@ -1,15 +1,24 @@
 package com.example.DurePRteam.controller;
 
+import java.util.List;
+
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.example.DurePRteam.dto.CommonProp;
 import com.example.DurePRteam.dto.CommonsSubProp;
+import com.example.DurePRteam.dto.Join;
+import com.example.DurePRteam.mapper.CommonCodeMapper;
 import com.example.DurePRteam.mapper.CommonPropMapper;
 import com.example.DurePRteam.mapper.CommonSubPropMapper;
 
@@ -64,5 +73,16 @@ public class CommonSubPropController {
     	commonSubPropMapper.update(commonsSubProp);
 
         return "redirect:/admin/commonSubProp/edit?piProperty=" + commonsSubProp.getPiProperty() + "&suPiproperty=" + commonsSubProp.getSuPiproperty();
+    }
+    
+	// 단협 선택 후 매장리스트
+	@RequestMapping("commonSubProp/subPropCode")
+	@ResponseBody
+    public List<CommonsSubProp> SubPropCode( ModelMap model , HttpServletResponse response, @RequestBody CommonsSubProp commonsSubProp) throws Exception {		
+
+		List<CommonsSubProp> commonSubProps = commonSubPropMapper.findByPropCode(commonsSubProp.getPiProperty()); // 매장
+		model.addAttribute("commonSubProps",commonSubProps);
+
+		return commonSubProps;
     }
 }

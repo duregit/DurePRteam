@@ -102,7 +102,7 @@
 									<table class="table table-bordered">
 										<thead>
 											<tr>
-												<th>상세코드</th>												
+												<th>상세코드번호</th>												
 												<th>코드명</th>
 												<th>사용</th>
 												<th>비고</th>

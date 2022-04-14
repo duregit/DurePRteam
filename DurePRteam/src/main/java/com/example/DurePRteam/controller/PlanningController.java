@@ -19,10 +19,13 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.example.DurePRteam.dto.CommonCode;
 import com.example.DurePRteam.dto.CommonCodeDetail;
+import com.example.DurePRteam.dto.CommonsSubProp;
 import com.example.DurePRteam.dto.GoodsMaster;
 import com.example.DurePRteam.dto.Planning;
 import com.example.DurePRteam.dto.PlanningGoodsInfo;
 import com.example.DurePRteam.mapper.CommonCodeDetailMapper;
+import com.example.DurePRteam.mapper.CommonPropMapper;
+import com.example.DurePRteam.mapper.CommonSubPropMapper;
 import com.example.DurePRteam.mapper.PlanningMapper;
 import com.example.DurePRteam.paging.Criteria;
 import com.example.DurePRteam.paging.Paging;
@@ -32,10 +35,10 @@ import com.google.gson.Gson;
 @RequestMapping("planning")
 public class PlanningController {
 
-	@Autowired
-	PlanningMapper planningMapper;
-	@Autowired
-	CommonCodeDetailMapper commonCodeDetailMapper;
+	@Autowired PlanningMapper planningMapper;
+	@Autowired CommonCodeDetailMapper commonCodeDetailMapper;
+	@Autowired CommonPropMapper commonPropMapper;
+	@Autowired CommonSubPropMapper commonSubPropMapper;
 
 	// [계획서 조회]
 	@RequestMapping("list")
@@ -52,8 +55,16 @@ public class PlanningController {
 
 		// 리스트 조회쿼리
 		List<Planning> plannings = planningMapper.findAll(cri);
-		// 페이징 소스 끝
+		// 페이징 소스 끝		
 
+		// 사용자정보
+		model.addAttribute("piproperty", "000");	// 단협
+		model.addAttribute("suPIProperty", "00");	// 매장
+		
+		// selectbox
+		model.addAttribute("selPIProperty", commonPropMapper.findAllS());					// 단협
+		model.addAttribute("selSuPIProperty", commonSubPropMapper.findByPropCode("000"));	// 매장(사용자 단협정보)
+		
 		model.addAttribute("plannings", plannings);
 		model.addAttribute("paging", paging);
 		model.addAttribute("criteria", cri);
@@ -66,9 +77,9 @@ public class PlanningController {
 	public String create(Model model) throws Exception {
 		model.addAttribute("planning", new Planning());
 
-		// 단협, 매장 모델 추가
-
 		// selectbox
+		model.addAttribute("selPIProperty", commonPropMapper.findAllS());	// 단협
+		model.addAttribute("selSuPIProperty", null);						// 매장
 		model.addAttribute("selGubuns", commonCodeDetailMapper.findByMasterCode("PL0001")); // 행사구분
 		model.addAttribute("selReasons", commonCodeDetailMapper.findByMasterCode("PL0002")); // 진행배경
 
@@ -93,9 +104,9 @@ public class PlanningController {
 
 		model.addAttribute("planning", planning);
 
-		// 단협, 매장 모델 추가
-
 		// selectbox
+		model.addAttribute("selPIProperty", commonPropMapper.findAllS()); 	// 단협
+		model.addAttribute("selSuPIProperty", commonSubPropMapper.findByPropCode(planning.getPiproperty()));	// 매장
 		model.addAttribute("selGubuns", commonCodeDetailMapper.findByMasterCode("PL0001")); // 행사구분
 		model.addAttribute("selReasons", commonCodeDetailMapper.findByMasterCode("PL0002")); // 진행배경
 
@@ -105,7 +116,10 @@ public class PlanningController {
 	// [기본사항] 수정
 	@PostMapping("edit01")
 	public String edit01(Model model, Planning planning) {
-		planningMapper.update01(planning);
+		String state = planning.getState();
+		if (state == null || state.equals("") || state == "W") {
+			planningMapper.update01(planning);
+		}
 
 		return "redirect:edit02?planNo=" + planning.getPlanNo();
 	}
@@ -130,7 +144,10 @@ public class PlanningController {
 	// [판매계획] 수정(임시저장)
 	@PostMapping("save02")
 	public String save02(Model model, Planning planning) {
-		planningMapper.update02(planning);
+		String state = planning.getState();
+		if (state == null || state.equals("") || state == "W") {
+			planningMapper.update02(planning);
+		}
 
 		return "redirect:edit02?planNo=" + planning.getPlanNo();
 	}
@@ -138,7 +155,10 @@ public class PlanningController {
 	// [판매계획] 수정(다음)
 	@PostMapping("edit02")
 	public String edit02(Model model, Planning planning) {
-		planningMapper.update02(planning);
+		String state = planning.getState();
+		if (state == null || state.equals("") || state == "W") {
+			planningMapper.update02(planning);
+		}
 
 		return "redirect:edit03?planNo=" + planning.getPlanNo();
 	}
@@ -159,7 +179,10 @@ public class PlanningController {
 	// [홍보포인트] 수정(임시저장)
 	@PostMapping("save03")
 	public String save03(Model model, Planning planning) {
-		planningMapper.save03(planning);
+		String state = planning.getState();
+		if (state == null || state.equals("") || state == "W") {
+			planningMapper.save03(planning);
+		}
 
 		return "redirect:edit03?planNo=" + planning.getPlanNo();
 	}
@@ -167,7 +190,10 @@ public class PlanningController {
 	// [홍보포인트] 수정(계획서등록)
 	@PostMapping("edit03")
 	public String edit03(Model model, Planning planning) {
-		planningMapper.update03(planning);
+		String state = planning.getState();
+		if (state == null || state.equals("") || state == "W") {
+			planningMapper.update03(planning);
+		}
 
 		return "redirect:list";
 	}
@@ -180,6 +206,14 @@ public class PlanningController {
 		planningMapper.request(planning.getPlanNo());
 	}
 	
+	// [계획서조회] 관리자반려
+	@PostMapping("reject")
+	@ResponseBody
+	public void reject(Model model, @RequestBody Planning planning) throws Exception {
+		// 관리자반려
+		planningMapper.reject(planning.getPlanNo());
+	}
+		
 	// [계획서조회] 관리자승인
 	@PostMapping("confirm")
 	@ResponseBody
