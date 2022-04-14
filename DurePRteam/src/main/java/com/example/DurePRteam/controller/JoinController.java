@@ -1,5 +1,7 @@
 package com.example.DurePRteam.controller;
 
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
@@ -41,12 +43,25 @@ public class JoinController {
 		return "join/join01";
     }
 
+	// 사용자 생성
 	@PostMapping("join01")
-	public String create(Model model , Join join) {
-		System.out.println("joincreate");
+	public String create(HttpServletResponse response , Model model , Join join) throws IOException {
 		joinMapper.insert(join);
 
-		return "redirect:/login";
+		//response.setContentType("text/html; charset=euc-kr");
+		//PrintWriter out = response.getWriter();
+		//out.println("<script>alert('회원가입이 완료되었습니다.'); </script>");
+		//out.flush();
+
+
+		//return "redirect:/login";
+		response.setContentType("text/html; charset=UTF-8");
+		PrintWriter out = response.getWriter();
+		out.println("<script>alert('회원가입이 완료되었습니다.'); location.href='/login';</script>");
+		out.flush();
+
+		return null;
+
 	}
 
 

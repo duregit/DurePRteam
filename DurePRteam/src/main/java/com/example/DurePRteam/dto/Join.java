@@ -14,7 +14,5 @@ public class Join {
 	String userAddr2 ;
 	String userCtel ;
 	String bCode;
-	String acNum;
-
-
+	String userACNum;
 }
