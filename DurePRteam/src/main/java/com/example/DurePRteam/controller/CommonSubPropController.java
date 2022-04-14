@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.DurePRteam.dto.CommonProp;
 import com.example.DurePRteam.dto.CommonsSubProp;
-import com.example.DurePRteam.mapper.CommonCodeMapper;
 import com.example.DurePRteam.mapper.CommonPropMapper;
 import com.example.DurePRteam.mapper.CommonSubPropMapper;
 
@@ -18,7 +17,7 @@ import com.example.DurePRteam.mapper.CommonSubPropMapper;
 @RequestMapping("admin")
 public class CommonSubPropController {
 
-    @Autowired CommonCodeMapper commonCodeMapper;
+    //@Autowired CommonCodeMapper commonCodeMapper;
     @Autowired CommonPropMapper commonPropMapper;
     @Autowired CommonSubPropMapper commonSubPropMapper;
 
