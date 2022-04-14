@@ -96,7 +96,7 @@
 	function FnSave() {
 		frm = document.login
 		
-		alert("로그인 하시겠습니까?");
+		//alert("로그인 하시겠습니까?");
 		
 		//저장
 
