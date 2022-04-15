@@ -55,7 +55,7 @@ public class LoginController {
 				System.out.println(session.getAttribute("login_id"));
 				//System.out.println(SessionConfig.getSessionidCheck("login_id", id));
 
-				return "redirect:main";
+				return "redirect:planning/list";
 			} else {
 				response.setContentType("text/html; charset=euc-kr");
 				PrintWriter out = response.getWriter();
