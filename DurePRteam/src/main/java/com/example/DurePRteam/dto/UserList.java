@@ -11,5 +11,6 @@ public class UserList {
 	String userLevel;
 	String userId;
 	String userName ;
+	String userActive ;
 
 }
