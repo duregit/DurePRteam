@@ -11,8 +11,10 @@
 
 <jsp:include page="/include/_header.jsp" />
 </head>
-<body class="hold-transition sidebar-mini layout-fixed" onload="initSelect()">
+<body class="sidebar-mini layout-navbar-fixed" onload="initSelect()">
 	<div class="wrapper">
+		<!-- 네비게이션 바 -->
+		<jsp:include page="/include/_navbar.jsp" />
 		<!-- Content Wrapper. Contains page content -->
 		<div class="content-wrapper" style="min-height: 1345.31px;">
 			<!-- Content Header (Page header) -->
@@ -76,15 +78,23 @@
 								<div class="card-footer" style="text-align:center;">
 									<button type="button" class="btn btn-default" gubun="pre" onclick="prePage(this)">이전</button>
 									<c:set var="state" value="${ planning.state }" />
-									<c:choose>
-										<c:when test="${ state eq null or state == 'W' }">
-											<button type="button" class="btn btn-warning" gubun="save" onclick="formSubmit(this)">임시저장</button>
-											<button type="button" class="btn btn-primary" gubun="next" onclick="formSubmit(this)">다음</button>
-										</c:when>
-										<c:when test="${ state == 'R' or state == 'C' }">
-											<button type="button" class="btn btn-primary" gubun="next" onclick="formSubmit(this)">다음</button>
-										</c:when>
-									</c:choose>
+									<!-- 작성자 O -->
+									<c:if test="${ planning.addUser eq user.userId }">
+										<c:choose>
+											<c:when test="${ state eq null or state == 'W' or state == 'N' }">
+												<button type="button" class="btn btn-warning" gubun="save" onclick="formSubmit(this)">임시저장</button>
+												<button type="button" class="btn btn-primary" gubun="next" onclick="formSubmit(this)">다음</button>
+											</c:when>											
+											<c:when test="${ state == 'R' or state == 'C' }">
+												<!-- 검토요청 중 or 승인 시 수정 X -->
+												<a href="edit03?planNo=${ planning.planNo }" class="btn btn-primary">다음</a>
+											</c:when>
+										</c:choose>
+									</c:if>
+									<!-- 작성자 X -->
+									<c:if test="${ planning.addUser ne user.userId }">
+										<a href="edit03?planNo=${ planning.planNo }" class="btn btn-primary">다음</a>
+									</c:if>
 								</div>
 							</form:form>
 						</div>
@@ -92,6 +102,7 @@
 				</div>
 				<!-- /.container-fluid -->
 			</section>
+			<section class="content-header"></section>
 		</div>
 		<!-- ./wrapper -->
 	</div>
@@ -116,7 +127,11 @@
 		    success: function(data){
 		    	var planningGoodsInfos = data;
 		    	//console.log(data);
-		    	
+		    	var planNo = '<c:out value="${ planning.planNo }"></c:out>'
+				var userId = '<c:out value="${ user.userId }"></c:out>'
+				var addUser = '<c:out value="${ planning.addUser }"></c:out>'	
+				var state = '<c:out value="${ planning.state }"></c:out>'
+				
 		        if ($.isEmptyObject(planningGoodsInfos)) {
 		        	// (신규)생활재 없으면 1개 추가
 		        	addGoodsInfo();
@@ -132,7 +147,26 @@
 			        	divInfo.find("#gmNo").val(value.gmNo);
 			        	divInfo.find("#gmName").val(value.gmName);
 			        	divInfo.find("#gmGubun").val(value.gmGubun);
-			        	divInfo.find("#salesTarget").val(value.salesTarget);	        		
+			        	divInfo.find("#salesTarget").val(value.salesTarget);
+			        	
+			        	// [수정] 본인이 아닌경우 disabled
+			        	if (addUser != '' && userId != addUser) {
+			        		divInfo.find("#piproperty").attr("disabled", "true");
+			        		divInfo.find("#gmSeq").attr("disabled", "true");
+			        		divInfo.find("#gmDesc").attr("disabled", "true");
+			        		divInfo.find("#gmNo").attr("disabled", "true");
+			        		divInfo.find("#gmName").attr("disabled", "true");		
+			        		divInfo.find("#gmGubun").attr("disabled", "true");		
+			        		divInfo.find("#salesTarget").attr("disabled", "true");		
+			        	} else if(state == 'R' || state == 'C') {
+			        		divInfo.find("#piproperty").attr("disabled", "true");
+			        		divInfo.find("#gmSeq").attr("disabled", "true");
+			        		divInfo.find("#gmDesc").attr("disabled", "true");
+			        		divInfo.find("#gmNo").attr("disabled", "true");
+			        		divInfo.find("#gmName").attr("disabled", "true");		
+			        		divInfo.find("#gmGubun").attr("disabled", "true");		
+			        		divInfo.find("#salesTarget").attr("disabled", "true");	
+			        	}
 		        	});
 		    	}
 		    },
@@ -257,7 +291,7 @@
 			var divCnt = $("#addBtn").attr("num");	// 생활재 개수
 			
 			var inputDataArray = [];
-			for(var i = 0; i < divCnt; i++) {
+			for (var i = 0; i < divCnt; i++) {
 				var divInfo = $("#good"+(i+1));
 				
 				// 객체 초기화
@@ -273,8 +307,12 @@
 				inputData.salesTarget = divInfo.find("#salesTarget").val();	// 판매목표
 				
 				// 객체배열에 추가
-			    inputDataArray.push(inputData);
+			    inputDataArray.push(inputData);				
+
+				// 생활재 단협정보는 disabled (세션정보랑 겹침)
+				divInfo.find("#piproperty").attr("disabled", "true");
 			}
+			
 			
 			$.ajax({
 				url : "/goodsMaster/planningInsert",
@@ -307,6 +345,25 @@
 	}
 
 $(function() {
+	var planNo = '<c:out value="${ planning.planNo }"></c:out>'
+	var userId = '<c:out value="${ user.userId }"></c:out>'
+	var addUser = '<c:out value="${ planning.addUser }"></c:out>'
+	var state = '<c:out value="${ planning.state }"></c:out>'
+	
+	// [수정] 본인이 아닌경우 disabled
+	if (addUser != '' && userId != addUser) {
+		$("#startTime").attr("disabled", "true");
+		$("#endTime").attr("disabled", "true");
+		$("#addBtn").attr("disabled", "true");
+		$("#delBtn").attr("disabled", "true");		
+	} else if(state == 'R' || state == 'C') {
+		// 본인이여도 검토요청중 이거나 관리자승인 상태면 disabled
+		$("#startTime").attr("disabled", "true");
+		$("#endTime").attr("disabled", "true");
+		$("#addBtn").attr("disabled", "true");
+		$("#delBtn").attr("disabled", "true");
+	}
+		
 	//생활재 추가
 	$("#addBtn").click(function() {
 		addGoodsInfo();
@@ -327,6 +384,42 @@ $(function() {
 			$("#addBtn").attr("num", parseInt($("#addBtn").attr("num")) - 1);
 		}
 	});
+	
+	// 유효성 검사
+	$('#planning').submit(function() {
+		var divCnt = $("#addBtn").attr("num");
+		
+		for (var i = 0; i < divCnt; i++) {
+			var divInfo = $("#good"+(i+1));
+			
+			if (divInfo.find("#gmSeq").val() == '' || divInfo.find("#gmSeq").val() == '0') {
+	        	alert('생활재를 검색하세요.');
+	        	divInfo.find("#gmSeq").focus();
+	            return false;
+	        }			
+			if (divInfo.find("#gmGubun").val() == '0') {
+	        	alert('생활재구분을 선택하세요.');
+	        	divInfo.find("#gmGubun").focus();
+	            return false;
+	        }
+			if (divInfo.find("#salesTarget").val() == '') {
+	        	alert('판매목표를 입력하세요.');
+	        	divInfo.find("#salesTarget").focus();
+	            return false;
+	        }			
+		}
+			
+        if ($('#startTime').val() == '0') {
+        	alert('시작시간을 선택하세요.');
+            $('#startTime').focus();
+            return false;
+        }
+        if ($('#endTime').val() == '0') {
+        	alert('종료시간을 선택하세요.');
+            $('#startTime').focus();
+            return false;
+        }
+    });
 });
 </script>
 </html>

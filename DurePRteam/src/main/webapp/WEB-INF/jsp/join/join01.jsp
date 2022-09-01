@@ -7,7 +7,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>생활재 홍보단 JOIN</title>
+  <title>생활재 홍보단</title>
 
 <jsp:include page="/include/_header.jsp" />
 </head>
@@ -50,7 +50,7 @@
 										<label for="userId">아이디</label> 
 										<div class="input-group">
 											<input type="text" class="form-control" id="userId" name="userId">
-											<button type="button" style="margin-left:10px;" class="btn btn-danger" onclick="FnCheckId()">
+											<button type="button" id="checkIdBtn" style="margin-left:10px;" class="btn btn-danger" onclick="FnCheckId()">
 												중복확인
 											</button>
 										</div>
@@ -112,20 +112,20 @@
 										<input type="text" class="form-control" id="userCtel" name="userCtel" placeholder="' - ' 를 포함해서 입력하세요">
 									</div>
 									<div class="form-group">
-										<label for="ACNum">계좌</label> 
+										<label for="userACNum">계좌</label> 
 										<div style="padding-bottom:5px">
 											<form:select path="bCode" class="form-control" id="bCode">
 												<form:option value="0" label="=선택=" />
 												<form:options itemValue="bCode" itemLabel="bName" items="${ bCode }" />
 											</form:select>
 										</div>
-										<input type="text" class="form-control" id="acNum" name="userACNum" placeholder="' - ' 를 제외해서 입력하세요">
+										<input type="text" class="form-control" id="userACNum" name="userACNum" placeholder="' - ' 를 제외해서 입력하세요">
 									</div>
 								</div>
 								<!-- /.card-body -->
 
 								<div class="card-footer" style="text-align:center;">
-									<button type="button" class="btn btn-primary" onclick="FnSave()">저장</button>
+									<button type="button" class="btn btn-primary" onclick="FnSave()">회원가입</button>
 								</div>
 							</form:form>
 						</div>
@@ -168,13 +168,14 @@
 			contentType:"application/json;charset=UTF-8",
 		    async: false,
 			success : function(data) {
+				var strHtml = '<option value="0" label="=매장선택=" />'
+					
 				$(data).each(function(index, value){
 					//alert(value.suPipropname);
-					var strHtml = ''
-						+ '		<option value = "'+value.suPiproperty+'"> '+value.suPipropname+'</option> '
-
-					$("#suPIProperty").append(strHtml);
+					strHtml += '<option value = "'+value.suPiproperty+'"> '+value.suPipropname+'</option> '				
 				});
+				
+				$("#suPIProperty").append(strHtml);
 			 },
 			 error: function(xhr, status, error){
 		       //alert(xhr.responseText);
@@ -211,9 +212,15 @@
 				//alert(data);
 		        if (data > 0) {
 		    	    alert('아이디가 존재합니다. 다른 아이디를 입력해주세요.');
+		    	    $('#userId').val("");
+		    	    idck = 0;
 		        } else {
-		    	    alert('사용 가능한 아이디입니다.');
-		    	    idck = 1;
+		    	    if (confirm('사용 가능한 아이디입니다. 사용하시겠습니까?')) {
+		    	    	$('#userId').attr("readOnly", "true");
+		    	    	$('#checkIdBtn').css("display", "none");
+		    	    	$('#userPW').focus();
+		    	    	idck = 1;
+		    	    }		    	    
 		    	}
 		    },
 		    error: function(xhr, status, error){
@@ -274,43 +281,52 @@
 		
 		if(idck == 0){
 			alert("아이디 중복체크를 해주세요");
+			$('#userId').focus();
+			return false;
+		}
+		if (typeof $('#userId').val() == "undefined" || $('#userId').val() == "") {
+			alert("아이디를 입력해주세요.")
+			$('#userId').focus();
+			return false;
+		} else if (typeof $('#userPW').val() == "undefined" || $('#userPW').val() == "") {
+			alert("비밀번호를 입력해주세요.")
+			$('#userPW').focus();
+			return false;
+		} else if (typeof $('#userName').val() == "undefined" || $('#userName').val() == "") {
+			alert("이름을 입력해주세요.")
+			$('#userName').focus();
+			return false;
+		} else if (typeof $('#piProperty').val() == "undefined" || $('#piProperty').val() == "0") {
+			alert("단협을 선택해주세요.")
+			$('#piProperty').focus();
+			return false;
+		} else if (typeof $('#suPIProperty').val() == "undefined" || $('#suPIProperty').val() == "0") {
+			alert("매장을 선택해주세요.")
+			$('#suPIProperty').focus();
+			return false;
+		} else if (typeof $('#userZip').val() == "undefined" || $('#userAddr1').val() == "undefined" || $('#userZip').val() == "" || $('#userAddr1').val() == "") {
+			alert("우편주소 및 기본주소를 입력해주세요.")
+			$('#userZip').focus();
+			return false;
+		} else if (typeof $('#userAddr2').val() == "undefined" || $('#userAddr2').val() == "") {
+			alert("상세주소를 입력해주세요.")
+			$('#userAddr2').focus();
+			return false;
+		} else if (typeof $('#userCtel').val() == "undefined" || $('#userCtel').val() == "") {
+			alert("휴대폰번호를 입력해주세요.")
+			$('#userCtel').focus();
+			return false;
+		} else if (typeof $('#bCode').val() == "undefined" || $('#bCode').val() == "0") {
+			alert("은행을 선택해주세요.")
+			$('#bCode').focus();
+			return false;
+		} else if (typeof $('#userACNum').val() == "undefined" || $('#userACNum').val() == "") {
+			alert("계좌번호를 입력해주세요.")
+			$('#userACNum').focus();
 			return false;
 		}
 		
-		if($('#UserId').val() == ""){
-			alert("아이디를 입력해주세요.")
-			return;
-		}else if($('#UserPw').val() == ""){
-			alert("비밀번호를 입력해주세요.")
-			return;
-		}else if($('#UserNm').val() == ""){
-			alert("이름을 입력해주세요.")
-			return;
-		}else if($('#PIProperty').val() == ""){
-			alert("단협을 선택해주세요.")
-			return;
-		}else if($('#suPIProperty').val() == ""){
-			alert("매장을 선택해주세요.")
-			return;
-		}else if($('#Zip').val() == "" || $('#Addr1').val() == ""){
-			alert("우편주소 및 기본주소를 입력해주세요.")
-			return;
-		}else if($('#Addr2').val() == ""){
-			alert("상세주소를 입력해주세요.")
-			return;
-		}else if($('#UserCTel').val() == ""){
-			alert("휴대폰번호를 입력해주세요.")
-			return;
-		}else if($('#bCode').val() == ""){
-			alert("은행을 선택해주세요.")
-			return;
-		}else if($('#userACNum').val() == ""){
-			alert("계좌번호를 입력해주세요.")
-			return;
-		}
-		
 		//저장
-
 		$("#join").submit();
 	}
 	

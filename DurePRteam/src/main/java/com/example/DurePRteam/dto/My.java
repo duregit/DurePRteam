@@ -11,10 +11,14 @@ public class My {
 	String piPropName;
 	String suPIProperty;
 	String suPIPropName;
-	String userZip ;
-	String userAddr1 ;
-	String userAddr2 ;
-	String userCtel ;
+	String userZip;
+	String userAddr1;
+	String userAddr2;
+	String userCtel;
 	String bCode;
+	String bName;
 	String userACNum;
+	
+	String userLevel;
+	String userActive;	
 }

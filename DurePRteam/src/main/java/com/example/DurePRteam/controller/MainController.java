@@ -15,11 +15,8 @@ public class MainController {
 
 	@Autowired MainMapper mainMapper;
 
-    @RequestMapping("/")
-    public String preview() {
-        return "preview";
-    }
 
+	
     @RequestMapping("/main")
     public String main(HttpSession session , Model model) {
     	String login_id = (String) session.getAttribute("login_id");

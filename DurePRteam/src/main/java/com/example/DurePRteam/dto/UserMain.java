@@ -6,6 +6,8 @@ import lombok.Data;
 public class UserMain {
 	String userId;
 	String userName;
+	String piproperty;
+	String suPIProperty;
 	String userLevel;
-
+	String userActive;
 }

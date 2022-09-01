@@ -21,11 +21,11 @@ public interface FileMapper {
 	
 	// 특정조회(평가서번호로 조회)
     @Select("SELECT * FROM pr_evaluation_file WHERE EvalNo = #{evalNo}")
-    FileDto findByEvalNo(int evalNo);
+    List<FileDto> findByEvalNo(int evalNo);
     
     // 파일 업로드 생성
-    @Insert("INSERT pr_evaluation_file (Uuid, EvalNo, FilePath, FileName, ContentType) "
-    		+ "VALUES (#{uuid}, #{evalNo}, #{filePath}, #{fileName}, #{contentType} )")
+    @Insert("INSERT pr_evaluation_file (Uuid, EvalNo, FilePath, FileName, OriginName, ContentType) "
+    		+ "VALUES (#{uuid}, #{evalNo}, #{filePath}, #{fileName}, #{originName}, #{contentType} )")
     //@Options(useGeneratedKeys=true, keyProperty="evalNo")
     void insert(FileDto file);
     

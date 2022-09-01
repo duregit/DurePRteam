@@ -7,12 +7,14 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>공통코드</title>
+  <title>생활재홍보단</title>
 
 <jsp:include page="/include/_header.jsp" />
 </head>
-<body class="hold-transition sidebar-mini layout-fixed">
+<body class="sidebar-mini layout-navbar-fixed">
 	<div class="wrapper">
+		<!-- 네비게이션 바 -->
+		<jsp:include page="/include/_navbar.jsp" />
 		<!-- Content Wrapper. Contains page content -->
 		<div class="content-wrapper" style="min-height: 1345.31px;">
 			<!-- Content Header (Page header) -->

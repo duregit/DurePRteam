@@ -9,7 +9,7 @@
 	
 <jsp:include page="/include/_header.jsp" />
 </head>
-<body class="hold-transition sidebar-mini layout-fixed">
+<body class="sidebar-mini layout-navbar-fixed sidebar-closed sidebar-collapse">
 	<div class="wrapper">
 		<!-- Content Wrapper. Contains page content -->
 		<div class="content-wrapper" style="min-height: 1345.31px;">

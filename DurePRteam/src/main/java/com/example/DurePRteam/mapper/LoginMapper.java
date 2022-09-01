@@ -10,6 +10,6 @@ public interface LoginMapper {
 	int checkId(String UserId);
 
 	@Select("SELECT UserPW FROM pr_usermaster "
-			+ "WHERE UserID = #{UserId}")
+			+ "WHERE UserID = #{UserId} AND UserActive != 'X' ")
 	String checkPw(String UserId);
 }

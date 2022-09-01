@@ -15,3 +15,10 @@ tr[data-url]:hover {
 .btn-state {
 	width: 100%;
 }
+.memberReady { 
+	background-color: #ececec; 
+}
+.img-banner { 
+	max-width: 100%;
+	border: 0;
+}

@@ -43,7 +43,7 @@ public class GoodsMasterController {
 
     	String jsonString = gson.toJson(map);
 
-    	System.out.print(jsonString);
+    	//System.out.print(jsonString);
     	return jsonString;
     }
 

@@ -10,6 +10,6 @@ public class UserList {
 	String suPIPropName;
 	String userLevel;
 	String userId;
-	String userName ;
-
+	String userName;
+	String userActive;
 }

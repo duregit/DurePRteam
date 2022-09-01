@@ -7,7 +7,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>생활재 홍보단 LOGIN</title>
+  <title>생활재 홍보단</title>
 
 <jsp:include page="/include/_header.jsp" />
 </head>
@@ -18,14 +18,17 @@
 			<!-- Content Header (Page header) -->
 			<section class="content-header">
 				<div class="container-fluid">
+					<div class="col-sm-12" style="text-align: center;">
+						<img src="/include/banner.jpg" alt="banner" class="img-banner">
+					</div>
 					<div class="col-sm-12">
 						<div class="card card-primary">
 							<div class="card-header">
-								<h3 class="card-title">생활재 홍보단</h3>
+								<h3 class="card-title">생활재 홍보단</h3>								
 							</div>
 							<!-- /.card-header -->
 							<!-- form start -->
-							<form:form method="post" modelAttribute="login" >
+							<form:form method="post" modelAttribute="login">
 								<div class="card-body">
 									<div class="form-group">
 										<div class="input-group">
@@ -57,8 +60,8 @@
 								<!-- /.card-body -->
 
 								<div class="card-footer">																					
-									<button type="button" class="btn btn-warning float-left" onclick="FnJoin()">회원가입</button>				
-									<button type="button" class="btn btn-primary float-right" onclick="FnSave()">로그인</button>	
+									<button type="button" class="btn btn-warning float-left" onclick="FnJoin()">회원가입</button>
+									<button type="button" class="btn btn-primary float-right"onclick="FnLogin()">로그인</button>
 								</div>
 							</form:form>
 						</div>
@@ -71,38 +74,25 @@
 	</div>
 <jsp:include page="/include/_footer.jsp" />
 <script type="text/javascript">
-	function FnJoin() {
-		frm = document.createElement('form');
-		frm.setAttribute('method','get');
-		frm.setAttribute('action', 'join/join01');    
-		document.body.appendChild(frm);
-		frm.submit();		
+	// 회원가입
+	function FnJoin() {		
+		location.href = "/join/join01";
 	}
 	
-	function FnLogin() {
-		frm = document.login
-		
-		//if($('#userId').val() == ""){
-		//	alert("아이디를 입력해주세요.")
-		//	return;
-		//}else if($('#userPw').val() == ""){
-		//	alert("비밀번호를 입력해주세요.")
-		//	return;
-		//}
-		
-		frm.submit();
-	}
-	
-	function FnSave() {
-		frm = document.login
-		
-		//alert("로그인 하시겠습니까?");
-		
-		//저장
-
+	// 로그인
+	function FnLogin() {		
+		if ($('#userId').val() == "") {
+			alert("아이디를 입력해주세요.")
+			$('#userId').focus();
+			return;
+		} else if ($('#userPW').val() == "") {
+			alert("비밀번호를 입력해주세요.")
+			$('#userPW').focus();
+			return;
+		}
+		$("#login").attr("action", "/loginCheck");
 		$("#login").submit();
 	}
-	
 </script>
 </body>
 </html>

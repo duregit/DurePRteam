@@ -9,5 +9,6 @@ public class FileDto {
 	int evalNo;
 	String filePath;
 	String fileName;
+	String originName;
 	String contentType;
 }

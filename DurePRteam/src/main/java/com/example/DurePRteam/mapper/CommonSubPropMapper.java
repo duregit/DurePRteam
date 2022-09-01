@@ -7,8 +7,10 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.DurePRteam.dto.CommonsSubProp;
+import com.example.DurePRteam.dto.UserMain;
 
 @Mapper
 public interface CommonSubPropMapper {
@@ -29,19 +31,19 @@ public interface CommonSubPropMapper {
 	@Select("SELECT * FROM pr_subproperty WHERE PIProperty = #{piProperty} AND SuPIProperty = #{suPiproperty}")
 	CommonsSubProp findOne(@Param("piProperty") String piProperty, @Param("suPiproperty") String suPiproperty);
 
-	// [상세 공통코드] 생성 #{addUser}
+	// [상세 공통코드] 생성
     @Insert("INSERT pr_subproperty (PIProperty, SuPIProperty, SuPIPropName, SuPIActive, SuPIAddDate, SuPIAddUser ) "
-    		+ "				VALUES (#{piProperty}, #{suPiproperty}, #{suPipropname}, #{supiActive}, SYSDATE(), '장우진' )")
+    		+ "				VALUES (#{commonsSubProp.piProperty}, #{commonsSubProp.suPiproperty}, #{commonsSubProp.suPipropname}, #{commonsSubProp.supiActive}, SYSDATE(), #{user.userId} )")
     //@Options(useGeneratedKeys=true, keyProperty="id") 설명: id필드는 Auto Increment 속성
-    void insert(CommonsSubProp commonsSubProp);
+    void insert(@RequestParam("commonsSubProp") CommonsSubProp commonsSubProp, UserMain user);
 
-	// [공통코드] 수정 #{modUser}
+	// [공통코드] 수정
 	@Update("UPDATE pr_subproperty SET          " +
-            "	SuPIActive = #{supiActive},     " +
-            "	SuPIModUser = '장우진',               " +
+            "	SuPIActive = #{commonsSubProp.supiActive},     " +
+            "	SuPIModUser = #{user.userId},               " +
             "	SuPIModDate = SYSDATE()             " +
-            "WHERE PIProperty = #{piProperty}	" +
-            "	AND SuPIProperty = #{suPiproperty}  ")
-    void update(CommonsSubProp commonsSubProp);
+            "WHERE PIProperty = #{commonsSubProp.piProperty}	" +
+            "	AND SuPIProperty = #{commonsSubProp.suPiproperty}  ")
+    void update(@RequestParam("commonsSubProp") CommonsSubProp commonsSubProp, UserMain user);
 
 }

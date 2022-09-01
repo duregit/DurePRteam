@@ -35,3 +35,11 @@
 <script src="/include/_common.js"></script>
 <!-- bs-custom-file-input -->
 <script src="/plugins/bs-custom-file-input/bs-custom-file-input.min.js"></script>
+<!-- jquery.ae.image.resize -->
+<script src="/plugins/Dynamic-Image-Resizing-Plugin-with-jQuery/src/jquery.ae.image.resize.js"></script>
+<footer class="main-footer" style="font-size: 0.85rem;">
+	<div class="float-right d-none d-sm-block">
+		<b>Version</b> 1.0.0
+	</div>
+	Copyright © <strong>사단법인두레생산자회.</strong> All rights reserved.
+</footer>

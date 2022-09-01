@@ -7,12 +7,13 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>생활재 홍보단 MyPage</title>
+  <title>생활재 홍보단</title>
 
 <jsp:include page="/include/_header.jsp" />
 </head>
-<body class="hold-transition sidebar-mini layout-fixed">
+<body class="sidebar-mini layout-navbar-fixed">
 	<div class="wrapper">
+		<jsp:include page="/include/_navbar.jsp" />
 		<!-- Content Wrapper. Contains page content -->
 		<div class="content-wrapper" style="min-height: 1345.31px;">
 			<!-- Content Header (Page header) -->
@@ -40,11 +41,11 @@
 					<div class="col-sm-12">
 						<div class="card card-primary">
 							<div class="card-header">
-								<h3 class="card-title">MyPage</h3>
+								<h3 class="card-title">마이페이지</h3>
 							</div>
 							<!-- /.card-header -->
 							<!-- form start -->
-							<form:form method="post" modelAttribute="my" name="my" id="my">
+							<form:form method="post" modelAttribute="my">
 								<div class="card-body">
 									<div class="form-group">
 										<label for="userId">아이디</label> 
@@ -111,9 +112,9 @@
 									<div class="form-group">
 										<label for="ACNum">계좌</label> 
 										<div style="padding-bottom:5px">
-											<form:select path="bCode" class="form-control" id="bCode">
+											<form:select path="bCode" class="form-control">
 												<form:option value="0" label="=선택=" />
-												<form:options itemValue="bCode" itemLabel="bName" items="${ bCode }" />
+												<form:options itemValue="bCode" itemLabel="bName" items="${ bCodes }" />
 											</form:select>
 										</div>
 										<input type="text" class="form-control" id="userACNum" name="userACNum" value="${ my.userACNum }" placeholder="' - ' 를 제외해서 입력하세요">
@@ -130,7 +131,7 @@
 				</div>
 				<!-- /.container-fluid -->
 			</section>
-			<iframe name="ifrm_Process" id="ifrm_Process" style="width:100%;height:100px;display:none;" ></iframe>
+			<section class="content-header"></section>
 		</div>
 		<!-- ./wrapper -->
 	</div>
@@ -161,7 +162,7 @@
 		    async: false,
 		    success: function(data){
 				//alert(data);
-		    	    alert('비밀번호가 변경되었습니다.');
+	    	    alert('비밀번호가 변경되었습니다.');
 		    },
 		    error: function(xhr, status, error){
 		       //alert(xhr.responseText);
@@ -225,24 +226,29 @@
 	
 	function FnSave() {
 		
-		if($('#userName').val() == ""){
+		if ($('#userName').val() == "") {
 			alert("이름을 입력해주세요.")
-			return;
-		}else if($('#userZip').val() == "" || $('#userAddr1').val() == ""){
+			$('#userName').focus();
+			return false;
+		} else if($('#userZip').val() == "" || $('#userAddr1').val() == "") {
 			alert("우편주소 및 기본주소를 입력해주세요.")
-			return;
-		}else if($('#userAddr2').val() == ""){
+			$('#userZip').focus();
+			return false;
+		} else if($('#userAddr2').val() == "") {
 			alert("상세주소를 입력해주세요.")
-			return;
-		}else if($('#userCtel').val() == ""){
+			$('#userAddr2').focus();
+			return false;
+		} else if($('#userCtel').val() == "") {
 			alert("휴대폰번호를 입력해주세요.")
-			return;
-		}else if($('#bCode').val() == ""){
-			alert("은행을 선택해주세요.")
-			return;
-		}else if($('#userACNum').val() == ""){
+			$('#userCtel').focus();
+			return false;
+		} else if($('#bCode').val() == "0") {
+			$('#bCode').focus();
+			return false;
+		} else if($('#userACNum').val() == "") {
 			alert("계좌번호를 입력해주세요.")
-			return;
+			$('#userACNum').focus();
+			return false;
 		}
 		
 		//저장

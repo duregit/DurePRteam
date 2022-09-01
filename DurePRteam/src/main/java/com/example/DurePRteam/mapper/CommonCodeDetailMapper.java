@@ -10,8 +10,10 @@ import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.SelectKey;
 import org.apache.ibatis.annotations.Update;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.DurePRteam.dto.CommonCodeDetail;
+import com.example.DurePRteam.dto.UserMain;
 
 @Mapper
 public interface CommonCodeDetailMapper {
@@ -36,21 +38,21 @@ public interface CommonCodeDetailMapper {
 	@Select("SELECT * FROM pr_code_detail WHERE MasterCode = #{masterCode} AND DetailCode = #{detailCode}")
     CommonCodeDetail findOne(@Param("masterCode") String masterCode, @Param("detailCode") String detailCode);
 	
-	// [상세 공통코드] 생성 #{addUser}
+	// [상세 공통코드] 생성
     @Insert("INSERT pr_code_detail (MasterCode, DetailCode, Text, ActiveYN, Remark, AddUser, AddDate) "
-    		+ "VALUES (#{masterCode}, #{detailCode}, #{text}, #{activeYN}, #{remark}, 'IT관리자', SYSDATE() )")
+    		+ "VALUES (#{commonCodeDetail.masterCode}, #{commonCodeDetail.detailCode}, #{commonCodeDetail.text}, #{commonCodeDetail.activeYN}, #{commonCodeDetail.remark}, #{userId}, SYSDATE() )")
     //@Options(useGeneratedKeys=true, keyProperty="id") 설명: id필드는 Auto Increment 속성
-    void insert(CommonCodeDetail commonCodeDetail);
+    void insert(@RequestParam("commonCodeDetail") CommonCodeDetail commonCodeDetail, String userId);
 	
-	// [공통코드] 수정 #{modUser}
-	@Update("UPDATE pr_code_detail SET          " +
-            "	Text = #{text}, 			    " +
-            "	ActiveYN = #{activeYN},         " +
-            "	Remark = #{remark},   	        " +
-            "	ModUser = 'IT관리자',               " +
-            "	ModDate = SYSDATE()             " +
-            "WHERE MasterCode = #{masterCode}	" +
-            "	AND DetailCode = #{detailCode}  ")
-    void update(CommonCodeDetail commonCodeDetail);
+	// [공통코드] 수정
+	@Update("UPDATE pr_code_detail SET          			" +
+            "	Text = #{commonCodeDetail.text}, 			" +
+            "	ActiveYN = #{commonCodeDetail.activeYN},    " +
+            "	Remark = #{commonCodeDetail.remark},   	    " +
+            "	ModUser = #{user.userId},      				" +
+            "	ModDate = SYSDATE()             			" +
+            "WHERE MasterCode = #{commonCodeDetail.masterCode}	" +
+            "	AND DetailCode = #{commonCodeDetail.detailCode}  ")
+    void update(@RequestParam("commonCodeDetail") CommonCodeDetail commonCodeDetail, UserMain user);
 
 }

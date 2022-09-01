@@ -13,7 +13,7 @@
 
 <jsp:include page="/include/_header.jsp" />
 </head>
-<body class="hold-transition sidebar-mini layout-fixed">
+<body class="sidebar-mini layout-navbar-fixed sidebar-closed sidebar-collapse">
 	<div class="wrapper">
 		<!-- Content Wrapper. Contains page content -->
 		<div class="content-wrapper" style="min-height: 1345.31px;">
@@ -46,7 +46,9 @@
 							</c:choose>	
 									<button type="button" style="margin:15px;" class="btn btn-success" onclick="location.href='planning/plan01'">계획서 작성</button>	
 								<br/>
-									<button type="button" style="margin:15px;" class="btn btn-success" onclick="location.href='evaluation/eval01'">평가서 작성</button>		
+									<button type="button" style="margin:15px;" class="btn btn-success" onclick="location.href='evaluation/eval01'">평가서 작성</button>
+								<br/>
+									<button type="button" style="margin:15px;" class="btn btn-success" onclick="location.href='/logout'">로그아웃</button>		
 								</div>
 								<!-- /.card-body -->
 

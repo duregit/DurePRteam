@@ -11,8 +11,10 @@
 
 <jsp:include page="/include/_header.jsp" />
 </head>
-<body class="hold-transition sidebar-mini layout-fixed">
+<body class="sidebar-mini layout-navbar-fixed">
 	<div class="wrapper">
+		<!-- 네비게이션 바 -->
+		<jsp:include page="/include/_navbar.jsp" />
 		<!-- Content Wrapper. Contains page content -->
 		<div class="content-wrapper" style="min-height: 1345.31px;">
 			<!-- Content Header (Page header) -->
@@ -76,15 +78,23 @@
 								<div class="card-footer" style="text-align:center;">
 									<button type="button" class="btn btn-default" gubun="pre" onclick="prePage(this)">이전</button>
 									<c:set var="state" value="${ planning.state }" />
-									<c:choose>
-										<c:when test="${ state eq null or state == 'W' }">
-											<button type="button" class="btn btn-warning" gubun="save" onclick="formSubmit(this)">임시저장</button>
-											<button type="button" class="btn btn-primary" gubun="next" onclick="formSubmit(this)">작성완료</button>
-										</c:when>
-										<c:when test="${ state == 'R' or state == 'C' }">
-											<button type="button" class="btn btn-primary" gubun="next" onclick="formSubmit(this)">목록으로</button>
-										</c:when>
-									</c:choose>
+									<!-- 작성자 O -->
+									<c:if test="${ planning.addUser eq user.userId }">
+										<c:choose>
+											<c:when test="${ state eq null or state == 'W' or state == 'N' }">
+												<button type="button" class="btn btn-warning" gubun="save" onclick="formSubmit(this)">임시저장</button>
+												<button type="button" class="btn btn-primary" gubun="next" onclick="formSubmit(this)">작성완료</button>
+											</c:when>											
+											<c:when test="${ state == 'R' or state == 'C' }">
+												<!-- 검토요청 중 or 승인 시 수정 X -->
+												<a href="list" class="btn btn-primary">목록으로</a>
+											</c:when>
+										</c:choose>
+									</c:if>
+									<!-- 작성자 X -->
+									<c:if test="${ planning.addUser ne user.userId }">
+										<a href="list" class="btn btn-primary">목록으로</a>
+									</c:if>
 								</div>
 							</form:form>
 						</div>
@@ -103,7 +113,7 @@
 		
 		var btnGubun = $(btn).attr("gubun");	// 버튼 종류
 		if (btnGubun == "save") {
-			$("#planning").attr("action", "/planning/save03?planNo=" + planNo)
+			$("#planning").attr("action", "/planning/save03?planNo=" + planNo);
 		}
 		
 		$("#planning").submit();
@@ -120,6 +130,25 @@
 	}
 	
 $(function() {
+	var planNo = '<c:out value="${ planning.planNo }"></c:out>'
+	var userId = '<c:out value="${ user.userId }"></c:out>'
+	var addUser = '<c:out value="${ planning.addUser }"></c:out>'
+	var state = '<c:out value="${ planning.state }"></c:out>'
+		
+	// [수정] 본인이 아닌경우 disabled
+	if (addUser != '' && userId != addUser) {
+		$("#linkedGoods").attr("disabled", "true");
+		$("#prMethod").attr("disabled", "true");
+		$("#prMessage").attr("disabled", "true");
+		$("#etc").attr("disabled", "true");
+	} else if(state == 'R' || state == 'C') {
+		// 본인이여도 검토요청중 이거나 관리자승인 상태면 disabled
+		$("#linkedGoods").attr("disabled", "true");
+		$("#prMethod").attr("disabled", "true");
+		$("#prMessage").attr("disabled", "true");
+		$("#etc").attr("disabled", "true");
+	}
+	
 	$("#prMethod").change(function(){
 		// 홍보도구(05) 선택 시 홍보도구 칸 활성화
 		if ($(this).val() == "05") {
@@ -128,6 +157,35 @@ $(function() {
 			$("#prTools").attr("disabled", true);
 		}		
 	});
+	
+	// 유효성 검사
+	$('#planning').submit(function() {
+        if ($('#linkedGoods').val() == '') {
+            alert('연계생활재를 입력하세요.');
+            $('#linkedGoods').focus();
+            return false;
+        }
+        if ($('#prMethod').val() == '0') {
+            alert('홍보방법을 선택하세요.');
+            $('#prMethod').focus();
+            return false;
+        }
+        if ($("#prMethod").val() == '05' && $('#prTools').val() == '') {
+        	alert('홍보도구(상세)를 입력하세요.');
+        	$('#prTools').focus();
+            return false;
+        }
+        if ($('#prMessage').val() == '') {
+        	alert('홍보멘트를 입력하세요.');
+        	$('#prMessage').focus();
+            return false;
+        }
+        if ($('#etc').val() == '') {
+        	alert('기타를 입력하세요.');
+        	$('#etc').focus();
+            return false;
+        }
+    });
 });
 </script>
 </html>

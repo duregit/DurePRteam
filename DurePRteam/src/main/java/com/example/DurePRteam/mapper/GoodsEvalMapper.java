@@ -10,8 +10,10 @@ import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.SelectKey;
 import org.apache.ibatis.annotations.Update;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.DurePRteam.dto.GoodsEval;
+import com.example.DurePRteam.dto.UserMain;
 import com.example.DurePRteam.paging.Criteria;
 
 @Mapper
@@ -48,19 +50,19 @@ public interface GoodsEvalMapper {
 			+ "WHERE GubunDCode = #{detailCode}")
 	List<GoodsEval> findByDetailCode(String detailCode);
 	
-	// [생활재평가 구분별 항목] 생성 #{addUser}, #{modUser}
+	// [생활재평가 구분별 항목] 생성
     @Insert("INSERT pr_code_goods_eval (GubunMCode, GubunDCode, ItemMCode, ItemDCode, AddUser, AddDate, ModUser, ModDate) "
-    		+ "VALUES (#{gubunMCode}, #{gubunDCode}, #{itemMCode}, #{itemDCode}, 'IT관리자', SYSDATE(), 'IT관리자', SYSDATE() )")
-    @Options(useGeneratedKeys=true, keyProperty="cgeNo")// 설명: id필드는 Auto Increment 속성
-    void insert(GoodsEval goodsEval);
+    		+ "VALUES (#{goodsEval.gubunMCode}, #{goodsEval.gubunDCode}, #{goodsEval.itemMCode}, #{goodsEval.itemDCode}, #{user.userId}, SYSDATE(), #{user.userId}, SYSDATE() )")
+    @Options(useGeneratedKeys=true, keyProperty="goodsEval.cgeNo")// 설명: id필드는 Auto Increment 속성
+    void insert(@RequestParam("goodsEval") GoodsEval goodsEval, UserMain user);
     
 //	// [생활재평가 구분별 항목] 수정 #{modUser}
 //	@Update("UPDATE pr_code_goods_eval SET          " +
 //            "  Text = #{text}, 			        " +
-//            "  ActiveYN = #{activeYN},          " +
-//            "  Remark = #{remark},   	        " +
-//            "  ModUser = 'IT관리자',                " +
-//            "  ModDate = SYSDATE()              " +
+//            "  ActiveYN = #{activeYN},          	" +
+//            "  Remark = #{remark},   	        	" +
+//            "  ModUser = #{modUser},            	" +
+//            "  ModDate = SYSDATE()              	" +
 //            "WHERE MasterCode = #{masterCode}	")
 //    void update(CommonCode commonCode);
     

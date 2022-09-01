@@ -3,9 +3,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
-
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -15,8 +12,10 @@
 
 <jsp:include page="/include/_header.jsp" />
 </head>
-<body class="hold-transition sidebar-mini layout-fixed" onload="initSelect()">
+<body class="sidebar-mini layout-navbar-fixed" onload="initSelect()">
 	<div class="wrapper">
+		<!-- 네비게이션 바 -->
+		<jsp:include page="/include/_navbar.jsp" />
 		<!-- Content Wrapper. Contains page content -->
 		<div class="content-wrapper" style="min-height: 1345.31px;">
 			<!-- Content Header (Page header) -->
@@ -63,7 +62,7 @@
 													<select class="form-control" id="score${ status.count }" name="score${ status.count }" item="sel${ goodsEval.itemDCode }" cnt="${ status.count }" onchange="scoreChange(this)">
 														<option value="0" label="==선택하세요==" />
 														<c:forEach var="evalScore" items="${ selEvalScores }">
-															<option value="${ evalScoresupip.detailCode }" label="${ evalScore.text }" />
+															<option value="${ evalScore.detailCode }" label="${ evalScore.text }" />
 														</c:forEach>
 													</select>
 												</div>
@@ -104,15 +103,23 @@
 								<div class="card-footer" style="text-align:center;">
 									<button type="button" class="btn btn-default" gubun="pre" onclick="prePage(this)">이전</button>
 									<c:set var="state" value="${ evaluation.state }" />
-									<c:choose>
-										<c:when test="${ state eq null or state == 'W' }">
-											<button type="button" class="btn btn-warning" gubun="save" onclick="formSubmit(this)">임시저장</button>
-											<button type="button" class="btn btn-primary" gubun="next" onclick="formSubmit(this)">다음</button>
-										</c:when>
-										<c:when test="${ state == 'R' or state == 'C' }">
-											<button type="button" class="btn btn-primary" gubun="next" onclick="formSubmit(this)">다음</button>
-										</c:when>
-									</c:choose>
+									<!-- 작성자 O -->
+									<c:if test="${ evaluation.addUser eq user.userId }">										
+										<c:choose>
+											<c:when test="${ state eq null or state == 'W' or state == 'N' }">
+												<button type="button" class="btn btn-warning" gubun="save" onclick="formSubmit(this)">임시저장</button>
+												<button type="button" class="btn btn-primary" gubun="next" onclick="formSubmit(this)">다음</button>
+											</c:when>
+											<c:when test="${ state == 'R' or state == 'C' }">
+												<!-- 검토요청 중 or 승인 시 수정 X -->
+												<a href="edit04?evalNo=${ evaluation.evalNo }" class="btn btn-primary">다음</a>
+											</c:when>
+										</c:choose>
+									</c:if>
+									<!-- 작성자 X -->
+									<c:if test="${ evaluation.addUser ne user.userId }">
+										<a href="edit04?evalNo=${ evaluation.evalNo }" class="btn btn-primary">다음</a>
+									</c:if>
 								</div>
 							</form:form>
 						</div>
@@ -120,6 +127,7 @@
 				</div>
 				<!-- /.container-fluid -->
 			</section>
+			<section class="content-header"></section>
 		</div>
 		<!-- ./wrapper -->
 	</div>
@@ -145,10 +153,13 @@
 		    success: function(data){
 		    	var evaluationGoodsEvals = data;
 		    	//console.log(data);
-		    	
+		    	var evalNo = '<c:out value="${ evaluation.evalNo }"></c:out>'
+				var userId = '<c:out value="${ user.userId }"></c:out>'
+				var addUser = '<c:out value="${ evaluation.addUser }"></c:out>'	
+				
 		        if (!($.isEmptyObject(evaluationGoodsEvals))) {
 		        	var cnt = 1;
-		        	// (수정)생활재 있는 개수만큼 추가 후 데이터 바인딩
+		        	// (수정) 데이터 바인딩
 		        	$.each(evaluationGoodsEvals, function(key, value) {
 		        		$("[item=sel"+value.item+"]").val(value.score);
 		        		$("[item=input"+value.item+"]").val(value.text);
@@ -189,8 +200,8 @@
 			totalScore = totalScore + parseInt($("#score" + (i + 1)).val());
 		}
 		totalAVG = (totalScore / goodsEvallen);
-		$("#totalScore").val(totalScore);	// 총점
-		$("#totalAVG").val(totalAVG);		// 평점
+		$("#totalScore").val(totalScore);			// 총점
+		$("#totalAVG").val(totalAVG.toFixed(2));	// 평점
 	}
 	
 	// 생활재평가 저장(ajax) 후 평가서 저장(submit)
@@ -258,11 +269,56 @@
 		}
 	}
 $(function() {
+	var evalNo = '<c:out value="${ evaluation.evalNo }"></c:out>'
+	var userId = '<c:out value="${ user.userId }"></c:out>'
+	var addUser = '<c:out value="${ evaluation.addUser }"></c:out>'
+	var state = '<c:out value="${ evaluation.state }"></c:out>'
+	var goodsEvallen = '<c:out value="${ fn:length(goodsEvals) }"></c:out>'
+		
+	// [수정] 본인이 아닌경우 disabled
+	if (addUser != '' && userId != addUser) {
+		$("#totalText").attr("disabled", "true");
+		
+		for (var i = 1; i <= goodsEvallen; i++) {
+      		$("#score" + i).attr("disabled", "true");
+      		$("#text" + i).attr("disabled", "true");
+		}
+	} else if(state == 'R' || state == 'C') {
+		// 본인이여도 검토요청중 이거나 관리자승인 상태면 disabled
+		$("#totalText").attr("disabled", "true");
+		
+		for (var i = 1; i <= goodsEvallen; i++) {
+      		$("#score" + i).attr("disabled", "true");
+      		$("#text" + i).attr("disabled", "true");
+		}
+	}
 	/*
 	$("#gubunDCode").change(function(){
 		$("#gubunMCode").val($("#gubunDCode option:selected").attr("mcode"));
 	});
 	*/
+	// 유효성 검사
+	$('#evaluation').submit(function() {
+		var goodsEvallen = $("#goodsEvallen").val();	// 평가목록 개수
+		
+		for (var i = 1; i <= goodsEvallen; i++) {
+      		if ($("#score" + i).val() == '0') {
+      			alert('점수를 선택하세요.');
+      			$("#score" + i).focus();
+                return false;
+      		}
+    		if ($("#score" + i).val() != 0 && $("#score" + i).val() <= 3 && $("#text" + i).val() == '') {
+    			alert('내용을 입력하세요.');
+    			$("#text" + i).focus();
+                return false;
+    		}
+		}
+		if ($('#totalText').val() == '') {
+        	alert('종합평가 내용을 입력하세요.');
+            $('#totalText').focus();
+            return false;
+        }
+    });
 });
 </script>
 </html>

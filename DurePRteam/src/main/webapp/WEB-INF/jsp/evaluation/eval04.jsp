@@ -11,8 +11,10 @@
 
 <jsp:include page="/include/_header.jsp" />
 </head>
-<body class="hold-transition sidebar-mini layout-fixed">
+<body class="sidebar-mini layout-navbar-fixed">
 	<div class="wrapper">
+		<!-- 네비게이션 바 -->
+		<jsp:include page="/include/_navbar.jsp" />
 		<!-- Content Wrapper. Contains page content -->
 		<div class="content-wrapper" style="min-height: 1345.31px;">
 			<!-- Content Header (Page header) -->
@@ -47,7 +49,9 @@
 							<form:form method="post" modelAttribute="evaluation">
 								<div class="card-body">
 									<input type="hidden" id="evalNo" name="evalNo" value="${ evaluation.evalNo }"/>
-									<small>※ 당일 홍보활동에 대한 평가입니다. 소중한 의견 부탁드려요~~</small>
+									<div class="form-group">
+										<small>※ 당일 홍보활동에 대한 평가입니다.<br>소중한 의견 부탁드려요~~</small>
+									</div>
 									<div class="form-group">
 										<div class="row">
 											<div class="col-5">
@@ -197,15 +201,24 @@
 								<div class="card-footer" style="text-align:center;">
 									<button type="button" class="btn btn-default" gubun="pre" onclick="prePage(this)">이전</button>
 									<c:set var="state" value="${ evaluation.state }" />
-									<c:choose>
-										<c:when test="${ state eq null or state == 'W' }">
-											<button type="button" class="btn btn-warning" gubun="save" onclick="formSubmit(this)">임시저장</button>
-											<button type="button" class="btn btn-primary" gubun="next" onclick="formSubmit(this)">다음</button>
-										</c:when>
-										<c:when test="${ state == 'R' or state == 'C' }">
-											<button type="button" class="btn btn-primary" gubun="next" onclick="formSubmit(this)">다음</button>
-										</c:when>
-									</c:choose>
+									<!-- 작성자 O -->
+									<c:if test="${ evaluation.addUser eq user.userId }">
+										<c:choose>
+											<c:when test="${ state eq null or state == 'W' or state == 'N' }">
+												<button type="button" class="btn btn-warning" gubun="save" onclick="formSubmit(this)">임시저장</button>
+												<button type="button" class="btn btn-primary" gubun="next" onclick="formSubmit(this)">다음</button>
+											</c:when>
+											<c:when test="${ state == 'R' or state == 'C' }">
+												<!-- 검토요청 중 or 승인 시 수정 X -->
+												<a href="edit05?evalNo=${ evaluation.evalNo }" class="btn btn-primary">다음</a>
+											</c:when>
+										</c:choose>
+									</c:if>									
+									<!-- 작성자 X -->
+									<c:if test="${ evaluation.addUser ne user.userId }">
+										<a href="edit05?evalNo=${ evaluation.evalNo }" class="btn btn-primary">다음</a>
+									</c:if>
+									
 								</div>
 							</form:form>
 						</div>
@@ -219,6 +232,92 @@
 </body>
 <jsp:include page="/include/_footer.jsp" />
 <script type="text/javascript">
+$(function() {
+	var evalNo = '<c:out value="${ evaluation.evalNo }"></c:out>'
+	var userId = '<c:out value="${ user.userId }"></c:out>'
+	var addUser = '<c:out value="${ evaluation.addUser }"></c:out>'
+	var state = '<c:out value="${ evaluation.state }"></c:out>'
+		
+	// [수정] 본인이 아닌경우 disabled
+	if (addUser != '' && userId != addUser) {
+		$("#p4Weather").attr("disabled", "true");
+		$("#p4Setting").attr("disabled", "true");
+		$("#p4Ment").attr("disabled", "true");
+		$("#p4Support").attr("disabled", "true");
+		$("#p4PRMethod").attr("disabled", "true");
+		$("#p4GoodsSel").attr("disabled", "true");
+		$("#p4Age").attr("disabled", "true");
+		$("#p4Gender").attr("disabled", "true");
+		$("#p4Response").attr("disabled", "true");
+		$("#p4Time").attr("disabled", "true");		
+	} else if(state == 'R' || state == 'C') {
+		// 본인이여도 검토요청중 이거나 관리자승인 상태면 disabled
+		$("#p4Weather").attr("disabled", "true");
+		$("#p4Setting").attr("disabled", "true");
+		$("#p4Ment").attr("disabled", "true");
+		$("#p4Support").attr("disabled", "true");
+		$("#p4PRMethod").attr("disabled", "true");
+		$("#p4GoodsSel").attr("disabled", "true");
+		$("#p4Age").attr("disabled", "true");
+		$("#p4Gender").attr("disabled", "true");
+		$("#p4Response").attr("disabled", "true");
+		$("#p4Time").attr("disabled", "true");
+	}
+	
+	// 유효성 검사
+	$('#evaluation').submit(function() {
+        if ($('#p4Weather').val() == '0') {
+            alert('날씨/기후를 선택하세요.');
+            $('#p4Weather').focus();
+            return false;
+        }
+        if ($('#p4Setting').val() == '0') {
+            alert('준비/세팅을 선택하세요.');
+            $('#p4Setting').focus();
+            return false;
+        }
+        if ($('#p4Ment').val() == '0') {
+            alert('홍보물/멘트를 선택하세요.');
+            $('#p4Ment').focus();
+            return false;
+        }
+        if ($('#p4Support').val() == '0') {
+            alert('매장협조를 선택하세요.');
+            $('#p4Support').focus();
+            return false;
+        }
+        if ($('#p4PRMethod').val() == '0') {
+            alert('홍보방법을 선택하세요.');
+            $('#p4PRMethod').focus();
+            return false;
+        }
+        if ($('#p4GoodsSel').val() == '0') {
+            alert('생활재선택을 선택하세요.');
+            $('#p4GoodsSel').focus();
+            return false;
+        }
+        if ($('#p4Age').val() == '0') {
+            alert('주요연령대를 선택하세요.');
+            $('#p4Age').focus();
+            return false;
+        }
+        if ($('#p4Gender').val() == '0') {
+            alert('조합원성별을 선택하세요.');
+            $('#p4Gender').focus();
+            return false;
+        }
+        if ($('#p4Response').val() == '0') {
+            alert('조합원호응도를 선택하세요.');
+            $('#p4Response').focus();
+            return false;
+        }
+        if ($('#p4Time').val() == '0') {
+            alert('주요시간대를 선택하세요.');
+            $('#p4Time').focus();
+            return false;
+        }
+    });
+});
 
 	// 항목 선택 이벤트
 	function scoreChange(sel) {

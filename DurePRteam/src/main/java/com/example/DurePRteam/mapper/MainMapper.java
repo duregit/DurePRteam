@@ -11,7 +11,7 @@ public interface MainMapper {
 	// 전체 조회
 	@Select("SELECT * "
 			+ "FROM pr_usermaster "
-			+ "WHERE UserID = #{login_id} ")
-	UserMain findUser(String login_id);
+			+ "WHERE UserID = #{userId} ")
+	UserMain findUser(String userId);
 
 }

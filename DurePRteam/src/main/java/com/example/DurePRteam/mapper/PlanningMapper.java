@@ -17,18 +17,31 @@ import com.example.DurePRteam.paging.Criteria;
 @Mapper
 public interface PlanningMapper {
 	
-	// 전체조회
+	// 조건조회
 	@Select("SELECT A.*, "
-			+ "(SELECT SuPIPropName FROM pr_subproperty WHERE A.PIProperty = PIProperty AND A.SuPIProperty = SuPIProperty LIMIT 1) AS SUPIPropName, "	// 매장명
-			+ "(SELECT GmDesc FROM pr_planning_goods_info WHERE A.PlanNo = PlanNo LIMIT 1) AS GmDesc "	// 생활재명
-			+ "FROM pr_planning A "
-			+ "ORDER BY A.PlanNo DESC "
-			+ "LIMIT #{pageStart}, #{perPageNum} ")
-    List<Planning> findAll(Criteria cri);
+		+ "		(SELECT SuPIPropName FROM pr_subproperty WHERE A.PIProperty = PIProperty AND A.SuPIProperty = SuPIProperty LIMIT 1) AS SUPIPropName, "
+		+ " 	(SELECT GmDesc FROM pr_planning_goods_info WHERE A.PlanNo = PlanNo LIMIT 1) AS GmDesc "
+		+ "	FROM pr_planning A "
+		+ "	WHERE 1 = 1 "
+		+ "		AND IF(#{piproperty}='0', TRUE, PIProperty = #{piproperty}) "
+		+ "		AND IF(#{suPIProperty}='0', TRUE, SUPIProperty = #{suPIProperty}) "
+		+ "		AND IF(#{monthFrom}='0', TRUE, PRDate >= #{monthFrom}) "
+		+ "		AND IF(#{monthTo}='0', TRUE, PRDate <= #{monthTo}) "
+		+ "		AND IF(#{myPlan}='Y', AddUser = #{userId}, TRUE) "
+		+ "ORDER BY A.AddDate DESC "
+		+ "LIMIT #{cri.pageStart}, #{cri.perPageNum} ")
+	List<Planning> findAll(Criteria cri, String piproperty, String suPIProperty, String monthFrom, String monthTo, String myPlan, String userId);
 	
-	// 전체조회 count
-	@Select("SELECT COUNT(*) FROM pr_planning")
-    int findAllCount();
+		
+	// 조건조회 count
+	@Select("SELECT COUNT(*) FROM pr_planning "
+			+ "WHERE 1 = 1 "			
+			+ "		AND IF(#{piproperty}='0', TRUE, PIProperty = #{piproperty}) "
+			+ "		AND IF(#{suPIProperty}='0', TRUE, SUPIProperty = #{suPIProperty}) "
+			+ "		AND IF(#{monthFrom}='0', TRUE, PRDate >= #{monthFrom}) "
+			+ "		AND IF(#{monthTo}='0', TRUE, PRDate <= #{monthTo}) "
+			+ "		AND IF(#{myPlan}='Y', AddUser = #{userId}, TRUE) ")
+    int findAllCount(String piproperty, String suPIProperty, String monthFrom, String monthTo, String myPlan, String userId);
 	
 	// 특정조회
     @Select("SELECT * FROM pr_planning WHERE PlanNo = #{planNo}")
@@ -38,13 +51,13 @@ public interface PlanningMapper {
     @Select("SELECT * FROM pr_planning WHERE PlanNo = #{planNo}")
     Evaluation findByPlanNo(int planNo);
     
-    // 계획서 신규 생성 #{addUser}
+    // 계획서 신규 생성 
     @Insert("INSERT pr_planning (AddUser, AddDate, PRName, PIProperty, SuPIProperty, PRDate, PRDay, Gubun, Reason)"
-    		+ " VALUES ('IT관리자', SYSDATE(), #{prName}, #{piproperty}, #{suPIProperty}, #{prDate}, #{prDay}, #{gubun}, #{reason})")
+    		+ " VALUES (#{addUser}, SYSDATE(), #{prName}, #{piproperty}, #{suPIProperty}, #{prDate}, #{prDay}, #{gubun}, #{reason})")
     @Options(useGeneratedKeys=true, keyProperty="planNo")
     void insert(Planning planning);
 	
-    // [기본사항] 수정(다음) #{modUser}
+    // [기본사항] 수정(다음) 
     @Update("UPDATE pr_planning SET "
     		+ "PRName = #{prName}, "
     		+ "PIProperty = #{piproperty}, "
@@ -53,33 +66,34 @@ public interface PlanningMapper {
     		+ "PRDay = #{prDay}, "
     		+ "Gubun = #{gubun}, "
     		+ "Reason = #{reason}, "
-    		+ "ModUser = 'IT관리자', ModDate = SYSDATE() "
+    		+ "ModUser = #{modUser}, ModDate = SYSDATE() "
     		+ "WHERE PlanNo = #{planNo} "
-    		+ "AND (State IS NULL OR State = '' OR State = 'W') ")
+    		+ "AND (State IS NULL OR State = '' OR State = 'W') "
+    		+ "AND AddUser = #{modUser} ")    
     void update01(Planning planning);
     
-    // [판매계획] 수정(임시저장 or 다음) #{modUser}
+    // [판매계획] 수정(임시저장 or 다음) 
     @Update("UPDATE pr_planning SET "
     		+ "StartTime = #{startTime}, "
     		+ "EndTime = #{endTime}, "
-    		+ "ModUser = 'IT관리자', ModDate = SYSDATE() "
+    		+ "ModUser = #{modUser}, ModDate = SYSDATE() "
     		+ "WHERE PlanNo = #{planNo} " 
     		+ "AND (State IS NULL OR State = '' OR State = 'W') ")
     void update02(Planning planning);
     
-    // [홍보포인트] 수정(임시저장) #{modUser}
+    // [홍보포인트] 수정(임시저장) 
     @Update("UPDATE pr_planning SET "
     		+ "LinkedGoods = #{linkedGoods}, "
     		+ "PRMethod = #{prMethod}, "
     		+ "PRTools = #{prTools}, "
     		+ "PRMessage = #{prMessage}, "
     		+ "Etc = #{etc}, "
-    		+ "ModUser = 'IT관리자', ModDate = SYSDATE() "
+    		+ "ModUser = #{modUser}, ModDate = SYSDATE() "
     		+ "WHERE PlanNo = #{planNo} "
     		+ "AND (State IS NULL OR State = ''OR State = 'W') ")
     void save03(Planning planning);
     
-    // [홍보포인트] 수정(계획서작성) #{modUser}
+    // [홍보포인트] 수정(계획서작성) 
     @Update("UPDATE pr_planning SET "
     		+ "LinkedGoods = #{linkedGoods}, "
     		+ "PRMethod = #{prMethod}, "
@@ -87,31 +101,31 @@ public interface PlanningMapper {
     		+ "PRMessage = #{prMessage}, "
     		+ "Etc = #{etc}, "
     		+ "State = 'W', "
-    		+ "ModUser = 'IT관리자', ModDate = SYSDATE() "
+    		+ "ModUser = #{modUser}, ModDate = SYSDATE() "
     		+ "WHERE PlanNo = #{planNo} "
     		+ "AND (State IS NULL OR State = '' OR State = 'W') ")
     void update03(Planning planning);
     
-    // [계획서조회] 검토요청 #{modUser}
+    // [계획서조회] 검토요청 
     @Update("UPDATE pr_planning SET "    		
     		+ "State = 'R', "
-    		+ "ModUser = 'IT관리자', ModDate = SYSDATE() "
+    		+ "ModUser = #{userId}, ModDate = SYSDATE() "
     		+ "WHERE PlanNo = #{planNo} ")
-    void request(int planNo);
+    void request(int planNo, String userId);
 
-    // [계획서조회] 반려 #{ConfirmUser}
+    // [계획서조회] 반려
     @Update("UPDATE pr_planning SET "    		
     		+ "State = 'N', "
-    		+ "ConfirmUser = 'IT관리자', ConfirmDate = SYSDATE() "
+    		+ "ModUser = #{userId}, ModDate = SYSDATE() "
     		+ "WHERE PlanNo = #{planNo} ")
-    void reject(int planNo);
+    void reject(int planNo, String userId);
     
-    // [계획서조회] 관리자승인 #{ConfirmUser}
+    // [계획서조회] 관리자승인
     @Update("UPDATE pr_planning SET "    		
     		+ "State = 'C', "
-    		+ "ConfirmUser = 'IT관리자', ConfirmDate = SYSDATE() "
+    		+ "ConfirmUser = #{userId}, ConfirmDate = SYSDATE() "
     		+ "WHERE PlanNo = #{planNo} ")
-    void confirm(int planNo);
+    void confirm(int planNo, String userId);
     
 
 //    @Delete("DELETE FROM pr_planning WHERE PlanNo = #{planNo}")

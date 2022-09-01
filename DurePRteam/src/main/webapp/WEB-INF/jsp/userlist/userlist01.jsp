@@ -11,8 +11,10 @@
 
 <jsp:include page="/include/_header.jsp" />
 </head>
-<body class="hold-transition sidebar-mini layout-fixed">
+<body class="sidebar-mini layout-navbar-fixed">
 	<div class="wrapper">
+		<!-- 네비게이션 바 -->
+		<jsp:include page="/include/_navbar.jsp" />
 		<!-- Content Wrapper. Contains page content -->
 		<div class="content-wrapper" style="min-height: 1345.31px;">
 			<!-- Content Header (Page header) -->
@@ -151,13 +153,14 @@ function FnSubPropCd(id, pdata, sdata)
 		contentType:"application/json;charset=UTF-8",
 	    async: false,
 		success : function(data) {
+			var strHtml = '<option value="0" label="=매장선택=" />'
+				
 			$(data).each(function(index, value){
-				var strHtml = ''
-//					+ '		<option value = 0 > '+'=선택='+'</option> '
-					+ '		<option value = "'+value.suPiproperty+'"> '+value.suPipropname+'</option> '
-
-				$("#suPIProperty").append(strHtml);
+				//alert(value.suPipropname);
+				strHtml += '<option value = "'+value.suPiproperty+'"> '+value.suPipropname+'</option> '				
 			});
+			
+			$("#suPIProperty").append(strHtml);
 		 },
 		 error: function(xhr, status, error){
 	       //alert(xhr.responseText);
