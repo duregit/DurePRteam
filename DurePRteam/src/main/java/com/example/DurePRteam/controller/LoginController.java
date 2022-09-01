@@ -22,6 +22,7 @@ import org.springframework.web.bind.support.SessionStatus;
 import com.example.DurePRteam.dto.Login;
 import com.example.DurePRteam.dto.UserList;
 import com.example.DurePRteam.dto.UserMain;
+import com.example.DurePRteam.listener.SessionConfig;
 import com.example.DurePRteam.mapper.LoginMapper;
 import com.example.DurePRteam.mapper.MainMapper;
 import com.example.DurePRteam.mapper.MemberMapper;
@@ -114,13 +115,7 @@ public class LoginController {
 				// 세션 저장
 				UserMain user = mainMapper.findUser(id);				
 				model.addAttribute("user", user);
-
-				// 로그인 후 페이지 이동
-				if (user.getUserActive().equals("Y")) {
-					return "redirect:/planning/list";
-				} else {
-					return "redirect:/my/my01";
-				}
+				
 				//String userId = SessionConfig.getSessionidCheck("login_id", id);
 				//System.out.println(id + " : " +userId);
 				session.setMaxInactiveInterval(60 * 60);
@@ -130,7 +125,14 @@ public class LoginController {
 				System.out.println(session.getAttribute("login_id"));
 				//System.out.println(SessionConfig.getSessionidCheck("login_id", id));
 
-				return "redirect:planning/list";
+
+				// 로그인 후 페이지 이동
+				if (user.getUserActive().equals("Y")) {
+					return "redirect:/planning/list";
+				} else {
+					return "redirect:/my/my01";
+				}
+
 			} else {
 				response.setContentType("text/html; charset=euc-kr");
 				PrintWriter out = response.getWriter();
