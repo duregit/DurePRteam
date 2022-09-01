@@ -20,19 +20,7 @@
 			<!-- Content Header (Page header) -->
 			<section class="content-header">
 				<div class="container-fluid">
-				<!--  
-					<div class="row mb-2">
-						<div class="col-sm-6">
-							<h1>General Form</h1>
-						</div>
-						<div class="col-sm-6">
-							<ol class="breadcrumb float-sm-right">
-								<li class="breadcrumb-item"><a href="#">Home</a></li>
-								<li class="breadcrumb-item active">General Form</li>
-							</ol>
-						</div>
-					</div>
-				-->
+
 				</div>
 				<!-- /.container-fluid -->
 			</section>
@@ -45,7 +33,7 @@
 								<h3 class="card-title">회원관리</h3>
 							</div>
 							<!-- /.card-header -->
-							<form:form method="post" modelAttribute="userLists" >
+							<form:form method="post" modelAttribute="userList" >
 								<!-- form start -->
 									<div class="card-body" >	
 										<div class="row">									
@@ -53,7 +41,10 @@
 												<tr>
 													<td>단협</td>
 													<td>
-														
+														<form:select path="piProperty" id="piProperty">
+															<form:option value="0" label="=선택=" />
+															<form:options itemValue="piProperty" itemLabel="piPropname" items="${ piProperty }" />
+														</form:select>
 													</td>
 													<td>매장</td>
 													<td>
@@ -81,38 +72,56 @@
 														<input type="text" id="userName" name="userName">
 													</td>
 													<td colspan="2">
-														<button type="button" class="btn btn-info btn-sm float-right">조회</button>
+														<button type="button" class="btn btn-info btn-sm float-right" onclick="FnSearch();">조회</button>
 													</td>
 												</tr>
 											</table>
 										</div>
 									</div>
-
+							</form:form>
+							<form:form method="post" modelAttribute="userList2" >
 										<table class="table table-bordered table-list">
 											<thead>
 												<tr>
-													<th>단협</th>
-													<th>매장</th>
-													<th>아이디</th>
-													<th>이름</th>
+													<th style="text-align:center;">
+														<input type="checkbox" id="cbx_chkAll"  />														
+													</th>
+													<th style="text-align:center;">단협</th>
+													<th style="text-align:center;">매장</th>
+													<th style="text-align:center;">아이디</th>
+													<th style="text-align:center;">이름</th>
+													<th style="text-align:center;">회원상태</th>
 												</tr>
 											</thead>
 											<tbody>
-												
+												<c:forEach var="usrelist" items="${ userLists }">
+												<c:set var="i" value="${i+1}" />		
+												<tr>
+													<td  style="text-align:center;">
+														<input type="checkbox" name="chk" value="${i}">
+													</td>
+													<td>${ usrelist.piPropName }</td>
+													<td>${ usrelist.suPIPropName }</td>
+													<td>${ usrelist.userId }</td>
+													<td>${ usrelist.userName }</td>
+													<td style="text-align:center;">${ usrelist.userActive }</td>
+												</tr>
+												</c:forEach>
 											</tbody>
 										</table>
-							</form:form>
 								<!-- /.card-body -->
 								<div class="card-footer">
 									<div class="input-group-prepend"style="float:right;">
-										<select style="width:90px" class="form-control">
-											<option>=선택=</option>
-											<option>가입</option>
-											<option>탈퇴</option>
+										<select style="width:100px" class="form-control">
+											<option value="">=선택=</option>
+											<option value="N">대기</option>
+											<option value="Y">승인</option>
+											<option value="X">탈퇴</option>
 										</select>
-										<button style="float:right;margin-left:10px" type="button" class="btn btn-warning">회원상태 변경</button>
+										<button style="float:right;margin-left:10px" type="button" class="btn btn-warning" onclick="FnActiveChg();">회원상태 변경</button>
 									</div>
 								</div>
+							</form:form>
 						</div>
 						
 					</div>
@@ -124,17 +133,33 @@
 	</div>
 <jsp:include page="/include/_footer.jsp" />
 <script type="text/javascript">
-$(document).ready(function(){
+$(document).ready(function() {
 	$("select[name='piProperty']").change(function(){
 	   //init_select('suPIProperty','=선택=');
 		FnSubPropCd('suPIProperty',$(this).val() ,'');
    });
+	
+	$("#cbx_chkAll").click(function() {
+		if($("#cbx_chkAll").is(":checked")) $("input[name=chk]").prop("checked", true);
+		else $("input[name=chk]").prop("checked", false);
+	});
+
+	$("input[name=chk]").click(function() {
+		var total = $("input[name=chk]").length;
+		var checked = $("input[name=chk]:checked").length;
+		//alert(total);
+		//alert(checked);
+
+		if(total != checked) $("#cbx_chkAll").prop("checked", false);
+		else $("#cbx_chkAll").prop("checked", true); 
+	});
+	
 });
+
 
 function FnSubPropCd(id, pdata, sdata)
 {
-	$("select#suPIProperty option").remove();
-	frm = document.join
+	$("select#suPIProperty option").remove();	
 	
 	var piProperty = $('#piProperty').val()
 	
@@ -146,7 +171,7 @@ function FnSubPropCd(id, pdata, sdata)
 
 	var htmlStr = "";
 	$.ajax ({
-		url: "/join/subPropCode",
+		url: "/userlist/subPropCode",
 		type : "POST",
 		data : JSON.stringify(inputData),
 		dataType: "json",
@@ -168,6 +193,36 @@ function FnSubPropCd(id, pdata, sdata)
 	    }
 	});
 }
+
+
+function FnActiveChg() {
+	var checked = $("input[name=chk]:checked").length;
+	//var checkVal = $(this).val();
+	//alert(checkVal);
+	$("input:checkbox[name=chk]:checked").each(function() {
+		var checkVal = $(this).val();
+		alert(checkVal)
+	});
+	
+	if ($("input[name=chk]:checked").length == 0){
+		alert("사용자를 선택해주세요.");
+		return;
+	}else {
+		
+		alert("회원상태 변경");
+		
+	}
+}
+
+
+function FnSearch() {
+	//검색 버튼 처리 이벤트
+	var userList = $("#userList");
+	//alert(userList);
+	
+	userList.submit();
+}
+
 </script>
 </body>
 </html>
