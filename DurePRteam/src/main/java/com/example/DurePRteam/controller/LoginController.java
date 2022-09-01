@@ -111,7 +111,6 @@ public class LoginController {
 
 		if (idChkCount == 1) {
 			if (inputPw.equals(pwChk)) {
-<<<<<<< HEAD
 				// 세션 저장
 				UserMain user = mainMapper.findUser(id);				
 				model.addAttribute("user", user);
@@ -122,7 +121,6 @@ public class LoginController {
 				} else {
 					return "redirect:/my/my01";
 				}
-=======
 				//String userId = SessionConfig.getSessionidCheck("login_id", id);
 				//System.out.println(id + " : " +userId);
 				session.setMaxInactiveInterval(60 * 60);
@@ -133,7 +131,6 @@ public class LoginController {
 				//System.out.println(SessionConfig.getSessionidCheck("login_id", id));
 
 				return "redirect:planning/list";
->>>>>>> 5ebb79388a8e2e4bfe3fa9a27eae787168d4cc9a
 			} else {
 				response.setContentType("text/html; charset=euc-kr");
 				PrintWriter out = response.getWriter();
